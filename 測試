@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>我的互動書櫃</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>歡迎來到我的書櫃！</h1>
+
+  <div class="bookshelf">
+    <div class="book" onclick="showEgg('這是彩蛋1: 一本神秘的魔法書!')">書1</div>
+    <div class="book" onclick="showEgg('這是彩蛋2: 裡面藏著古老地圖!')">書2</div>
+    <div class="book" onclick="showEgg('這是彩蛋3: 找到了一個小秘密!')">書3</div>
+    <div class="book" onclick="showEgg('這是彩蛋4: 書本會說話啦!')">書4</div>
+    <div class="book" onclick="showEgg('這是彩蛋5: 一段小故事被發現!')">書5</div>
+    <div class="book" onclick="showEgg('這是彩蛋6: 神秘音效觸發!')">書6</div>
+    <!-- 可以依照喜好再增加更多書 -->
+  </div>
+
+  <script>
+    function showEgg(message) {
+      alert(message); // 點擊書本彈出提示
+    }
+  </script>
+</body>
+</html>
