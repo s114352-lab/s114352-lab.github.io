@@ -2,12 +2,109 @@
 <html>
   <head>
     <meta charset = "utf-8">
-    <title>我的網頁</title>
+    <title>呱琉</title>
     <link rel="icon" href="icon cat.jpg">
-  </head>
-  <body>
-      hello world lalala
-      (   ¯꒳¯ )◞ ̑̑ෆ⸒⸒
-      meow meow meow
-  </body>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f5f3ef;
+    font-family:sans-serif;
+}
+
+#container{
+    text-align:center;
+}
+
+p{
+    font-size:24px;
+    transition:opacity 1s;
+}
+
+img{
+    width:300px;
+    margin-top:20px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+
+<p id="text">噠噠噠，下雨天。</p>
+
+<img id="gualiu" src="gualiu.png" style="display:none;">
+
+<button id="btn" style="display:none;">
+查看呱琉遞過來的履歷
+</button>
+
+<img id="intro" src="intro.png" style="display:none; width:500px;">
+
+</div>
+
+<script>
+
+const text = document.getElementById("text");
+const gualiu = document.getElementById("gualiu");
+const btn = document.getElementById("btn");
+const intro = document.getElementById("intro");
+
+function nextText(message,time,next){
+
+    text.style.opacity=0;
+
+    setTimeout(()=>{
+
+        text.innerText=message;
+        text.style.opacity=1;
+
+        setTimeout(next,time);
+
+    },1000);
+}
+
+setTimeout(()=>{
+
+    nextText("你遇見了一隻蝸牛。",1500,()=>{
+
+        nextText("不。",1000,()=>{
+
+            nextText("準確來說，他是呱琉。",1500,()=>{
+
+                text.style.display="none";
+
+                gualiu.style.display="block";
+                btn.style.display="inline-block";
+
+            });
+
+        });
+
+    });
+
+},2000);
+
+btn.onclick=function(){
+
+    intro.style.display="block";
+
+}
+
+</script>
+
+</body>
 </html>
