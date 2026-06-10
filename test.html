@@ -28,3 +28,91 @@
 </body>
 
 </html>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f3ef;
+  font-family: sans-serif;
+}
+
+#container {
+  text-align: center;
+}
+
+p {
+  font-size: 20px;
+  transition: opacity 1s ease;
+}
+
+img {
+  width: 200px;
+  margin-top: 20px;
+}
+const text = document.getElementById("text");
+const desc = document.getElementById("desc");
+const gualiu = document.getElementById("gualiu");
+const btn = document.getElementById("btn");
+const intro = document.getElementById("intro");
+
+// 工具：讓文字淡出
+function fadeOut(el, callback) {
+  el.style.opacity = 0;
+  setTimeout(() => {
+    el.style.display = "none";
+    if (callback) callback();
+  }, 1000);
+}
+
+// 工具：顯示
+function show(el) {
+  el.style.display = "block";
+  el.style.opacity = 1;
+}
+
+// 劇情開始
+setTimeout(() => {
+  fadeOut(text, () => {
+
+    const t2 = document.createElement("p");
+    t2.innerText = "（文字消失）你遇見了一隻蝸牛。";
+    document.body.appendChild(t2);
+
+    setTimeout(() => {
+      fadeOut(t2, () => {
+
+        const t3 = document.createElement("p");
+        t3.innerText = "不。";
+        document.body.appendChild(t3);
+
+        setTimeout(() => {
+          fadeOut(t3, () => {
+
+            const t4 = document.createElement("p");
+            t4.innerText = "準確來說，他是呱琉。";
+            document.body.appendChild(t4);
+
+            setTimeout(() => {
+              fadeOut(t4, () => {
+
+                show(gualiu);
+                show(btn);
+
+              });
+            }, 1500);
+
+          });
+        }, 1000);
+
+      });
+    }, 1500);
+
+  });
+}, 2000);
+
+// 按鈕事件
+btn.onclick = () => {
+  intro.style.display = "block";
+};
