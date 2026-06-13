@@ -48,6 +48,53 @@ button{
   #intro{
     width:min(90vw, 900px);
 }
+
+  /* 整個第二場景 */
+#scene2{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+}
+
+/* 呱琉：左下（第三象限） */
+#gualiuBox{
+  position:absolute;
+  left:10%;
+  bottom:10%;
+}
+
+#gualiu2{
+  width:min(25vw,180px);
+}
+
+/* 對話：第二象限偏中 */
+#dialogBox{
+  position:absolute;
+  top:25%;
+  left:25%;
+  font-size:32px;
+}
+
+/* 選項：右半邊 */
+#choiceBox{
+  position:absolute;
+  right:10%;
+  top:35%;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.choice{
+  cursor:pointer;
+  font-size:20px;
+}
+
+.choice:hover{
+  opacity:0.6;
+}
 </style>
 
 </head>
@@ -226,18 +273,69 @@ throwBtn.onclick=function(){
                     1500,
                     ()=>{
 
-                        // 下一階段寫這裡
+                        document.getElementById("scene2").style.display = "block";
 
-                    }
-                );
+const dialogText = document.getElementById("dialogText");
 
-            }
-        );
+setTimeout(()=>{
 
+  typeText("嘎", dialogText, 150, ()=>{
+
+    setTimeout(()=>{
+
+      typeText("你好。", dialogText, 120);
+
+    },600);
+
+  });
+
+},800);
+
+  function typeText(text, el, speed = 120, callback){
+
+  el.innerText = "";
+  let i = 0;
+
+  function typing(){
+    if(i < text.length){
+      el.innerText += text[i];
+      i++;
+      setTimeout(typing, speed);
+    }else{
+      if(callback) callback();
     }
+  }
 
+  typing();
+}
+                      document.querySelectorAll(".choice")[0].onclick = ()=>{
+  typeText("那就好。", dialogText);
+}
+
+document.querySelectorAll(".choice")[1].onclick = ()=>{
+  typeText("嗯……", dialogText);
+}
+
+document.querySelectorAll(".choice")[2].onclick = ()=>{
+  typeText("……（已讀亂回）", dialogText);
 }
 </script>
+<div id="scene2" style="display:none;">
 
+  <div id="gualiuBox">
+    <img id="gualiu2" src="gualiu.png">
+  </div>
+
+  <div id="dialogBox">
+    <p id="dialogText"></p>
+  </div>
+
+  <div id="choiceBox">
+    <p class="choice">•你好</p>
+    <p class="choice">•我不好</p>
+    <p class="choice">•啦啦啦</p>
+  </div>
+
+</div>
 </body>
 </html>
