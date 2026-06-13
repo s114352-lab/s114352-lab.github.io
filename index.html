@@ -70,15 +70,12 @@ button{
 • 丟掉履歷
 </p>
 
-<p id="message" style="display:none;"></p>
 
 <p id="recoverBtn" class="link" style="display:none;">
 • 撿回來
 </p>
 
-<p id="nextBtn" class="link" style="display:none;">
-• 查看今日收藏
-</p>
+
   
 </div>
 
@@ -90,8 +87,7 @@ const btn = document.getElementById("btn");
 const intro = document.getElementById("intro");
   const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
-const message = document.getElementById("message");
-const nextBtn = document.getElementById("nextBtn");
+
 
 let throwCount = 0;
 
@@ -107,6 +103,30 @@ function nextText(message,time,next){
         setTimeout(next,time);
 
     },1000);
+}
+
+  function showMessage(message,time,next){
+
+    text.style.display = "block";
+    text.innerText = message;
+    text.style.opacity = 1;
+
+    setTimeout(()=>{
+
+        text.style.opacity = 0;
+
+        setTimeout(()=>{
+
+            text.style.display = "none";
+
+            if(next){
+                next();
+            }
+
+        },1000);
+
+    },time);
+
 }
 
 setTimeout(()=>{
@@ -138,45 +158,52 @@ btn.onclick=function(){
 
     intro.style.display="block";
     throwBtn.style.display="block";
-    throwBtn.style.display="block";
 }
 
  
-  throwBtn.onclick=function(){
+throwBtn.onclick=function(){
 
     throwCount++;
 
     intro.style.display="none";
     throwBtn.style.display="none";
 
-    gualiu.style.display="block";
-
-    message.style.display="block";
-
     if(throwCount === 1){
 
-        message.innerText = "履歷已成功丟棄";
+        showMessage(
+            "履歷已成功丟棄",
+            1500,
+            ()=>{
+
+                gualiu.style.display="block";
+                recoverBtn.style.display="block";
+
+            }
+        );
 
     }
 
     else{
 
-        message.innerText = "呱琉看起來有點受傷";
+        showMessage(
+            "呱琉看起來有點受傷",
+            1500,
+            ()=>{
+
+                gualiu.style.display="block";
+                recoverBtn.style.display="block";
+
+            }
+        );
 
     }
 
-    recoverBtn.style.display="block";
-
 }
-
-
-recoverBtn.onclick=function(){
+  recoverBtn.onclick=function(){
 
     recoverBtn.style.display="none";
 
     if(throwCount < 2){
-
-        message.style.display="none";
 
         gualiu.style.display="none";
 
@@ -189,19 +216,23 @@ recoverBtn.onclick=function(){
 
         gualiu.style.display="none";
 
-        message.innerText = "……";
+        showMessage(
+            "……",
+            1000,
+            ()=>{
 
-        setTimeout(()=>{
+                showMessage(
+                    "別鬧了。",
+                    1500,
+                    ()=>{
 
-            message.innerText = "別鬧了！";
+                        // 下一階段寫這裡
 
-        },1000);
+                    }
+                );
 
-        setTimeout(()=>{
-
-            nextBtn.style.display="block";
-
-        },2000);
+            }
+        );
 
     }
 
