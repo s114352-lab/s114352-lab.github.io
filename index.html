@@ -65,6 +65,10 @@ button{
 </p>
 
 <img id="intro" src="intro.png" style="display:none;">
+
+<p id="throwBtn" class="link" style="display:none;">
+• 丟掉履歷
+</p>
   
 </div>
 
@@ -110,15 +114,23 @@ setTimeout(()=>{
 
 },2000);
 
+const throwBtn = document.getElementById("throwBtn");
+
 btn.onclick=function(){
 
     gualiu.style.display="none";
     btn.style.display="none";
 
     intro.style.display="block";
+    throwBtn.style.display="block";
 
 }
+  throwBtn.onclick=function(){
 
+    intro.style.display="none";
+    throwBtn.style.display="none";
+
+}
 </script>
 
 </body>
