@@ -69,6 +69,16 @@ button{
 <p id="throwBtn" class="link" style="display:none;">
 • 丟掉履歷
 </p>
+
+<p id="message" style="display:none;"></p>
+
+<p id="recoverBtn" class="link" style="display:none;">
+• 撿回來
+</p>
+
+<p id="nextBtn" class="link" style="display:none;">
+• 查看今日收藏
+</p>
   
 </div>
 
@@ -78,6 +88,12 @@ const text = document.getElementById("text");
 const gualiu = document.getElementById("gualiu");
 const btn = document.getElementById("btn");
 const intro = document.getElementById("intro");
+  const throwBtn = document.getElementById("throwBtn");
+const recoverBtn = document.getElementById("recoverBtn");
+const message = document.getElementById("message");
+const nextBtn = document.getElementById("nextBtn");
+
+let throwCount = 0;
 
 function nextText(message,time,next){
 
@@ -125,10 +141,77 @@ btn.onclick=function(){
     throwBtn.style.display="block";
 
 }
+    throwBtn.style.display="block";
+
+}
   throwBtn.onclick=function(){
 
     intro.style.display="none";
     throwBtn.style.display="none";
+
+}
+  throwBtn.onclick=function(){
+
+    throwCount++;
+
+    intro.style.display="none";
+    throwBtn.style.display="none";
+
+    gualiu.style.display="block";
+
+    message.style.display="block";
+
+    if(throwCount === 1){
+
+        message.innerText = "履歷已成功丟棄";
+
+    }
+
+    else{
+
+        message.innerText = "呱琉看起來有點受傷";
+
+    }
+
+    recoverBtn.style.display="block";
+
+}
+
+
+recoverBtn.onclick=function(){
+
+    recoverBtn.style.display="none";
+
+    if(throwCount < 2){
+
+        message.style.display="none";
+
+        gualiu.style.display="none";
+
+        intro.style.display="block";
+        throwBtn.style.display="block";
+
+    }
+
+    else{
+
+        gualiu.style.display="none";
+
+        message.innerText = "……";
+
+        setTimeout(()=>{
+
+            message.innerText = "別鬧了！";
+
+        },1000);
+
+        setTimeout(()=>{
+
+            nextBtn.style.display="block";
+
+        },2000);
+
+    }
 
 }
 </script>
