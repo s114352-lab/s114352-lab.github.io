@@ -176,6 +176,26 @@ function nextText(message,time,next){
 
 }
 
+  function typeText(text, el, speed = 120, callback){
+
+ if(el.innerText != ""){
+    el.innerText += "\n";
+}
+  let i = 0;
+
+  function typing(){
+    if(i < text.length){
+      el.innerText += text[i];
+      i++;
+      setTimeout(typing, speed);
+    }else{
+      if(callback) callback();
+    }
+  }
+
+  typing();
+}
+
 setTimeout(()=>{
 
     nextText("你遇見了一隻蝸牛。",1500,()=>{
@@ -269,56 +289,47 @@ throwBtn.onclick=function(){
             ()=>{
 
                 showMessage(
-                    "別鬧了。",
-                    1500,
-                    ()=>{
+    "別鬧了。",
+    1500,
+    ()=>{
 
-                        document.getElementById("scene2").style.display = "block";
+        document.getElementById("scene2").style.display = "block";
 
-const dialogText = document.getElementById("dialogText");
+        const dialogText = document.getElementById("dialogText");
 
-setTimeout(()=>{
+        setTimeout(()=>{
 
-  typeText("嘎", dialogText, 150, ()=>{
+            typeText("嘎。", dialogText, 150, ()=>{
 
-    setTimeout(()=>{
+                setTimeout(()=>{
 
-      typeText("你好。", dialogText, 120);
+                    typeText("你好。", dialogText, 120, ()=>{
 
-    },600);
+                        document.getElementById("choiceBox").style.display = "flex";
 
-  });
+                    });
 
-},800);
+                },600);
 
-  function typeText(text, el, speed = 120, callback){
+            });
 
-  el.innerText = "";
-  let i = 0;
+        },800);
 
-  function typing(){
-    if(i < text.length){
-      el.innerText += text[i];
-      i++;
-      setTimeout(typing, speed);
-    }else{
-      if(callback) callback();
-    }
-  }
+    } // ← 關掉 showMessage 的 callback
+);    // ← 關掉 showMessage
 
-  typing();
-}
+    } // ← 關掉 else
+
+} // ← 關掉 recoverBtn.onclick
+
                       document.querySelectorAll(".choice")[0].onclick = ()=>{
   typeText("那就好。", dialogText);
 }
 
 document.querySelectorAll(".choice")[1].onclick = ()=>{
   typeText("嗯……", dialogText);
-}
+}};
 
-document.querySelectorAll(".choice")[2].onclick = ()=>{
-  typeText("……（已讀亂回）", dialogText);
-}
 </script>
 <div id="scene2" style="display:none;">
 
@@ -330,10 +341,9 @@ document.querySelectorAll(".choice")[2].onclick = ()=>{
     <p id="dialogText"></p>
   </div>
 
-  <div id="choiceBox">
+ <div id="choiceBox" style="display:none;">
     <p class="choice">•你好</p>
     <p class="choice">•我不好</p>
-    <p class="choice">•啦啦啦</p>
   </div>
 
 </div>
