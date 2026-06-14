@@ -382,10 +382,8 @@ setTimeout(()=>{
 }
 
 choice1[1].onclick = () => {
-  
- document.getElementById("choiceBox").style.pointerEvents = "none";
 
-  dialogText.innerText = "";
+  document.getElementById("choiceBox").style.pointerEvents = "none";
 
   typeText("嗯……", dialogText, 120, () => {
 
@@ -404,11 +402,10 @@ choice1[1].onclick = () => {
                     setTimeout(() => {
                       typeText("你平常都在做什麼？", dialogText, 120, () => {
 
-                        
-document.querySelectorAll(".choice").forEach(e => e.style.display = "none");
-document.querySelectorAll(".choice2").forEach(e => {
-    e.style.display = "block";
-});
+                        document.querySelectorAll(".choice").forEach(e => e.style.display = "none");
+                        document.querySelectorAll(".choice2").forEach(e => {
+                          e.style.display = "block";
+                        });
 
                         document.getElementById("choiceBox").style.pointerEvents = "auto";
 
@@ -428,8 +425,7 @@ document.querySelectorAll(".choice2").forEach(e => {
     }, 500);
 
   });
-};
-                     
+};               
 </script>
 </body>
 </html>
