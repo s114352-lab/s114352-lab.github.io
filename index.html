@@ -180,9 +180,9 @@ const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
 
 const dialogText = document.getElementById("dialogText");
-const choice1 = document.querySelectorAll(".choice");
-const choice2 = document.querySelectorAll(".choice2");
-
+const choices = document.querySelectorAll(".choice");
+const extraChoices = document.querySelectorAll(".choice2");
+  
 let throwCount = 0;
 
 function nextText(message,time,next){
@@ -376,12 +376,12 @@ setTimeout(()=>{
     }
 }  
   
-  choices[0].onclick = ()=>{
+  choices[0].onclick = () => {
   dialogText.innerText = "";
   typeText("那就好。", dialogText);
-}
+};
 
-choice1[1].onclick = () => {
+choices[1].onclick = () => {
 
   document.getElementById("choiceBox").style.pointerEvents = "none";
 
@@ -402,8 +402,9 @@ choice1[1].onclick = () => {
                     setTimeout(() => {
                       typeText("你平常都在做什麼？", dialogText, 120, () => {
 
-                        document.querySelectorAll(".choice").forEach(e => e.style.display = "none");
-                        document.querySelectorAll(".choice2").forEach(e => {
+                        choices.forEach(e => e.style.display = "none");
+
+                        extraChoices.forEach(e => {
                           e.style.display = "block";
                         });
 
@@ -425,7 +426,7 @@ choice1[1].onclick = () => {
     }, 500);
 
   });
-};               
+};
 </script>
 </body>
 </html>
