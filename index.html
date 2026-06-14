@@ -322,8 +322,120 @@ recoverBtn.onclick=function(){
 }  
   
 choiceMain[0].onclick = () => {
+    // 💥 1. 光速洗掉第一層選項的文字，鎖住點擊，保留排版高度
+    choiceMain.forEach(e => {
+        e.innerText = "";
+        e.style.pointerEvents = "none";
+    });
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+
+    // 啟動「你好」路線的流程
+    startHelloRoute(false); // false 代表第一次進入，還有「就不餵」的選項
+};
+
+// 💥 封裝成一個函式，因為「就不餵」會重來，這樣才可以重複呼叫！
+function startHelloRoute(isFromNoFeed = false) {
     dialogText.innerText = "";
-    typeText("那就好。", dialogText);
+    
+    // ① 很好
+    typeText("很好", dialogText, 120, () => {
+        setTimeout(() => {
+            // ② 朕餓了
+            typeText("很好<br>朕餓了", dialogText, 120, () => {
+                
+                // 亮出新的三個選項：？、餵牠吃仙丹、就不餵
+                // 先把原本 choiceExtra 的內容格式洗掉，填入我們要的字
+                choiceExtra[0].innerText = "•?";
+                choiceExtra[1].innerText = "•餵牠吃仙丹";
+                choiceExtra[2].innerText = "•就不餵!";
+                choiceExtra[3].innerText = ""; // 剩下的洗空
+                choiceExtra[4].innerText = "";
+                
+                // 顯示前三個選項
+                choiceExtra[0].style.display = "block";
+                choiceExtra[1].style.display = "block";
+                
+                // 💥 如果是從「就不餵」彈回來的，這次就沒有「就不餵」的選項！
+                if (isFromNoFeed) {
+                    choiceExtra[2].style.display = "none";
+                } else {
+                    choiceExtra[2].style.display = "block";
+                }
+                
+                // 打開點擊權限
+                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                choiceExtra.forEach(e => e.style.pointerEvents = "auto");
+            });
+        }, 1000);
+    });
+}
+
+// 💥 A. 點擊 "•?"
+choiceExtra[0].onclick = () => {
+    choiceExtra.forEach(e => e.style.display = "none");
+    dialogText.innerText = "";
+    typeText("？", dialogText, 120);
+};
+
+// 💥 B. 點擊 "•餵牠吃仙丹"
+choiceExtra[1].onclick = () => {
+    // 隱藏選項
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+    
+    // ① 你、
+    typeText("你、", dialogText, 120, () => {
+        setTimeout(() => {
+            // ② (嚼嚼嚼)
+            typeText("你、<br>(嚼嚼嚼)", dialogText, 120, () => {
+                setTimeout(() => {
+                    // ③ 要不要
+                    typeText("你、<br>(嚼嚼嚼)<br>要不要", dialogText, 120, () => {
+                        setTimeout(() => {
+                            // ④ (嚼嚼嚼)
+                            typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    // ⑤ 吃…
+                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            // ⑥ (嚼嚼嚼)
+                                            typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    // ⑦ ?
+                                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)<br>?", dialogText, 120, () => {
+                                                        
+                                                        // 💥 彈出新選項：你吃就好、我吃
+                                                        choiceExtra[0].innerText = "•你吃就好";
+                                                        choiceExtra[1].innerText = "•我吃";
+                                                        choiceExtra[0].style.display = "block";
+                                                        choiceExtra[1].style.display = "block";
+                                                        
+                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                    });
+                                                }, 500);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
+};
+
+// 💥 C. 點擊 "•就不餵!"
+choiceExtra[2].onclick = () => {
+    // 隱藏選項，並設定 isFromNoFeed = true 重新呼叫
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    
+    setTimeout(() => {
+        startHelloRoute(true); // 💥 重回很好，但這次沒有不餵的選項！
+    }, 500);
 };
 
 choiceMain[1].onclick = () => {
