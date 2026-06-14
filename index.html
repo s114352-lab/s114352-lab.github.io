@@ -338,19 +338,23 @@ setTimeout(()=>{
 
     setTimeout(()=>{
 
-       dialogText.style.transition = "opacity 0.3s";
-dialogText.style.opacity = 0;
-      
-            dialogText.style.opacity = 1;
+    dialogText.style.transition = "opacity 0.3s";
+    dialogText.style.opacity = 0;
 
-            typeText("你好。", dialogText, 120, ()=>{
+    setTimeout(()=>{
 
-                document.getElementById("choiceBox").style.display = "flex";
+        dialogText.style.opacity = 1;
 
-            });
+        typeText("你好。", dialogText, 120, ()=>{
 
-        },800);
+            document.getElementById("choiceBox").style.display = "flex";
 
+        });
+
+    },300);
+
+},1000);
+    
     },1000);
 
   });
