@@ -105,6 +105,16 @@ button{
     opacity:0;
   }
 }
+  
+  .choice2{
+  cursor:pointer;
+  margin:10px 0;
+  font-size:18px;
+}
+
+.choice2:hover{
+  opacity:0.6;
+}
 </style>
 
 </head>
@@ -165,7 +175,7 @@ const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
 
 const dialogText = document.getElementById("dialogText");
-const choices = document.querySelectorAll(".choice");
+const choices = document.querySelectorAll(".choice, .choice2");
 
 let throwCount = 0;
 
@@ -379,15 +389,6 @@ choices[1].onclick = ()=>{
   typeText("嗯……", dialogText);
 }
 
-  .choice2{
-  cursor:pointer;
-  margin:10px 0;
-  font-size:18px;
-}
-
-.choice2:hover{
-  opacity:0.6;
-}
                      
 </script>
 </body>
