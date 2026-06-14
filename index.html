@@ -134,6 +134,7 @@ const btn = document.getElementById("btn");
 const intro = document.getElementById("intro");
   const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
+ const dialogText = document.getElementById("dialogText");
 
 
 let throwCount = 0;
@@ -295,8 +296,6 @@ throwBtn.onclick=function(){
 
         document.getElementById("scene2").style.display = "block";
 
-        const dialogText = document.getElementById("dialogText");
-
         setTimeout(()=>{
 
             typeText("嘎。", dialogText, 150, ()=>{
@@ -315,13 +314,12 @@ throwBtn.onclick=function(){
 
         },800);
 
-    } // ← 關掉 showMessage 的 callback
-);    // ← 關掉 showMessage
-
-    } // ← 關掉 else
-
-} // ← 關掉 recoverBtn.onclick
-
+    } 
+);    
+            });            
+    } 
+}  
+  
                       document.querySelectorAll(".choice")[0].onclick = ()=>{
   typeText("那就好。", dialogText);
 }
