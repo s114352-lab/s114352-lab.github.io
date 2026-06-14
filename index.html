@@ -170,6 +170,7 @@ button{
   <p class="choice2">•想來點招牌一號</p>
 </div>
 <script>
+<script>
 let stage = 0;
   
 const text = document.getElementById("text");
@@ -186,245 +187,172 @@ const choiceExtra = document.querySelectorAll(".choice2");
 let throwCount = 0;
 
 function nextText(message,time,next){
-
     text.style.opacity=0;
-
     setTimeout(()=>{
-
         text.innerText=message;
         text.style.opacity=1;
-
         setTimeout(next,time);
-
     },1000);
 }
 
-  function showMessage(message,time,next){
-
+function showMessage(message,time,next){
     text.style.display = "block";
     text.innerText = message;
     text.style.opacity = 1;
-
     setTimeout(()=>{
-
         text.style.opacity = 0;
-
         setTimeout(()=>{
-
             text.style.display = "none";
-
             if(next){
                 next();
             }
-
         },1000);
-
     },time);
-
 }
 
-  function typeText(text, el, speed = 120, callback){
-
+function typeText(text, el, speed = 120, callback){
     el.innerHTML = "";
-
     let i = 0;
-
     function typing(){
-
         if(i < text.length){
-
             el.innerHTML =
                 text.substring(0, i+1)
                 + '<span class="cursor">|</span>';
-
             i++;
-
             setTimeout(typing, speed);
-
         }else{
-
             el.innerHTML = text;
-
             if(callback) callback();
         }
     }
-
     typing();
 }
+
 setTimeout(()=>{
-
     nextText("你遇見了一隻蝸牛。",1500,()=>{
-
         nextText("不。",1000,()=>{
-
             nextText("準確來說，牠是呱琉。",1500,()=>{
-
                 text.style.display="none";
-
                 gualiu.style.display="block";
                 btn.style.display="inline-block";
-
             });
-
         });
-
     });
-
 },2000);
 
-
 btn.onclick=function(){
-
     gualiu.style.display="none";
     btn.style.display="none";
-
     intro.style.display="block";
     throwBtn.style.display="block";
 }
-
  
 throwBtn.onclick=function(){
-
     throwCount++;
-
     intro.style.display="none";
     throwBtn.style.display="none";
 
     if(throwCount === 1){
-
         showMessage(
             "履歷已成功丟棄",
             1500,
             ()=>{
-
                 gualiu.style.display="block";
                 recoverBtn.style.display="block";
-
             }
         );
-
     }
-
     else{
-
         showMessage(
             "呱琉看起來有點受傷",
             1500,
             ()=>{
-
                 gualiu.style.display="block";
                 recoverBtn.style.display="block";
-
             }
         );
-
     }
-
 }
-  recoverBtn.onclick=function(){
 
+recoverBtn.onclick=function(){
     recoverBtn.style.display="none";
 
     if(throwCount < 2){
-
         gualiu.style.display="none";
-
         intro.style.display="block";
         throwBtn.style.display="block";
-
     }
-
     else{
-
         gualiu.style.display="none";
-
-showMessage(
-    "……",
-    1000,
-    ()=>{
-
         showMessage(
-            "別鬧了。",
-            1500,
+            "……",
+            1000,
             ()=>{
+                showMessage(
+                    "別鬧了。",
+                    1500,
+                    ()=>{
+                        document.getElementById("scene2").style.display = "block";
+                        dialogText.innerText = "";  
 
-              document.getElementById("scene2").style.display = "block";
-
-dialogText.innerText = "";  
-
-setTimeout(()=>{
-
-  typeText("嘎、", dialogText, 150, ()=>{
-    
-    setTimeout(()=>{
-      
-        typeText("你好。", dialogText, 120, ()=>{
-
-            document.getElementById("choiceBox").style.display = "flex";
-
-         });
-
-    }, 200);
-
-});
+                        setTimeout(()=>{
+                            typeText("嘎、", dialogText, 150, ()=>{
+                                setTimeout(()=>{
+                                    typeText("你好。", dialogText, 120, ()=>{
+                                        document.getElementById("choiceBox").style.display = "flex";
+                                    });
+                                }, 200);
+                            });
+                        },800);
+                    }
+                );  
             }
-        );  
-    }
-);         
+        );         
     }
 }  
   
-  choiceMain[0].onclick = () => {
-  dialogText.innerText = "";
-  typeText("那就好。", dialogText);
+choiceMain[0].onclick = () => {
+    dialogText.innerText = "";
+    typeText("那就好。", dialogText);
 };
 
 choiceMain[1].onclick = () => {
-  
-  document.getElementById("choiceBox").style.pointerEvents = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
 
-  typeText("嗯……", dialogText, 120, () => {
-
-    setTimeout(() => {
-      typeText("這樣啊……", dialogText, 120, () => {
-
+    typeText("嗯……", dialogText, 120, () => {
         setTimeout(() => {
-          typeText("等等ㄛ", dialogText, 120, () => {
-
-            setTimeout(() => {
-              typeText("讓我找找……", dialogText, 120, () => {
-
+            typeText("這樣啊……", dialogText, 120, () => {
                 setTimeout(() => {
-                  typeText("（翻殼）", dialogText, 120, () => {
+                    typeText("等等ㄛ", dialogText, 120, () => {
+                        setTimeout(() => {
+                            typeText("讓我找找……", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    typeText("（翻殼）", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            typeText("你平常都在做什麼？", dialogText, 120, () => {
+                                                
+                                                // 隱藏原本的「你好/我不好」
+                                                choiceMain.forEach(e => e.style.display = "none");
+                                                
+                                                // 顯示第二層新選項
+                                                choiceExtra.forEach(e => {
+                                                    e.style.display = "block";
+                                                });
 
-                    setTimeout(() => {
-                      typeText("你平常都在做什麼？", dialogText, 120, () => {
-
-                        choiceMain.forEach(e => e.style.display = "none");
-                        
-                        extraChoices.forEach(e => {
-                          e.style.display = "block";
-                        });
-
-                        document.getElementById("choiceBox").style.pointerEvents = "auto";
-
-                      });
-                    }, 500);
-
-                  });
+                                                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
                 }, 500);
-
-              });
-            }, 500);
-
-          });
+            });
         }, 500);
-
-      });
-    }, 500);
-
-  });
+    });
 };
+</script>
 </script>
 </body>
 </html>
