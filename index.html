@@ -4,10 +4,8 @@
     <meta charset = "utf-8">
     <title>呱琉</title>
     <link rel="icon" href="icon cat.jpg">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-
 body{
     margin:0;
     height:100vh;
@@ -15,7 +13,9 @@ body{
     justify-content:center;
     align-items:center;
     background:#f5f3ef;
-    font-family:sans-serif;}
+    font-family:sans-serif;
+    overflow: hidden;
+}
 
 #container{
     text-align:center;
@@ -45,43 +45,63 @@ button{
     opacity:0.6;
 }
 
-  #intro{
+#intro{
     width:min(90vw, 900px);
 }
 
+/* 💥 第二關場景：強制鋪滿，用 flex 分成左右兩邊 */
 #scene2{
   position:fixed;
   width:100%;
   height:100%;
   top:0;
   left:0;
+  display: flex;
 }
 
+/* 左半邊：放對話框跟呱琉 */
+.left-area {
+  position: relative;
+  width: 45%;
+  height: 100%;
+}
+
+/* 右半邊：專門放選項 */
+.right-area {
+  position: relative;
+  width: 55%;
+  height: 100%;
+}
+
+/* 呱琉定位在左下角 */
 #gualiuBox{
   position:absolute;
-  left:24%;
-  bottom:6%;
+  left: 10%;
+  bottom: 6%;
 }
   
 #gualiu2{
-  width:min(55vw, 520px);
+  width: min(45vw, 450px);
 }
   
+/* 對話框定位在左上角 */
 #dialogBox{
   position:absolute;
-  top:22%;
-  left:28%;
-  width:300px;
+  top: 20%;
+  left: 15%;
+  width: 350px;
 }
   
+/* 💥 選項盒子：固定在右半邊，限制最大寬度，字太長會自動換行，絕對不越界！ */
 #choiceBox{
   position:absolute;
-  right:28%;
-  top:42%;
+  left: 5%;
+  top: 30%;
+  width: 85%;
+  max-width: 550px; /* 限制寬度不讓它往左爆 */
   display:flex;
   flex-direction:column;
   gap:18px;
-  flex-wrap: wrap;
 }
   
 #dialogText{
@@ -91,13 +111,14 @@ button{
 .choice{
   cursor:pointer;
   font-size:20px;
+  margin: 0;
 }
 
 .choice:hover{
   opacity:0.6;
 }
 
-   .cursor{
+.cursor{
   animation: blink 0.8s infinite;
 }
 
@@ -107,68 +128,58 @@ button{
   }
 }
   
-  .choice2{
+.choice2{
   cursor:pointer;
-  margin:10px 0;
+  margin: 0;
   font-size:18px;
+  line-height: 1.4; /* 讓長文字換行時比較好看 */
 }
 
 .choice2:hover{
   opacity:0.6;
 }
-  .choice2{
+
+.choice2{
   display:none;
 }
 </style>
-
 </head>
 
 <body>
 
 <div id="container">
-
-<p id="text">噠噠噠，下雨天。</p>
-
-<img id="gualiu" src="gualiu.png" style="display:none;">
-
-<p id="btn" class="link" style="display:none;">
-• 查看呱琉遞過來的履歷
-</p>
-
-<img id="intro" src="intro.png" style="display:none;">
-
-<p id="throwBtn" class="link" style="display:none;">
-• 丟掉履歷
-</p>
-
-
-<p id="recoverBtn" class="link" style="display:none;">
-• 撿回來
-</p>
-
-
-  
+  <p id="text">噠噠噠，下雨天。</p>
+  <img id="gualiu" src="gualiu.png" style="display:none;">
+  <p id="btn" class="link" style="display:none;">• 查看呱琉遞過來的履歷</p>
+  <img id="intro" src="intro.png" style="display:none;">
+  <p id="throwBtn" class="link" style="display:none;">• 丟掉履歷</p>
+  <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
 </div>
+
 <div id="scene2" style="display:none;">
-
-  <div id="gualiuBox">
-    <img id="gualiu2" src="gualiu.png">
+  <div class="left-area">
+    <div id="gualiuBox">
+      <img id="gualiu2" src="gualiu.png">
+    </div>
+    <div id="dialogBox">
+      <p id="dialogText"></p>
+    </div>
   </div>
 
-  <div id="dialogBox">
-    <p id="dialogText"></p>
+  <div class="right-area">
+    <div id="choiceBox" style="display:none;">
+      <p class="choice">•你好</p>
+      <p class="choice">•我不好</p>
+
+      <p class="choice2">•我是書蟲，來點書吧</p>
+      <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
+      <p class="choice2">•我要聽歌!</p>
+      <p class="choice2">•劇荒了，拜託來點劇</p>
+      <p class="choice2">•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)</p>
+    </div>
   </div>
-
- <div id="choiceBox" style="display:none;">
-  <p class="choice">•你好</p>
-  <p class="choice">•我不好</p>
-
-  <p class="choice2">•我是書蟲，來點書吧</p>
-  <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
-  <p class="choice2">•我要聽歌!</p>
-  <p class="choice2">•劇荒了，拜託來點劇</p>
-  <p class="choice2">•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)</p>
 </div>
+
 <script>
 let stage = 0;
   
@@ -291,7 +302,7 @@ recoverBtn.onclick=function(){
                     "別鬧了。",
                     1500,
                     ()=>{
-                        document.getElementById("scene2").style.display = "block";
+                        document.getElementById("scene2").style.display = "flex"; // 💥 這裡改為 flex 佈局
                         dialogText.innerText = "";  
 
                         setTimeout(()=>{
@@ -316,8 +327,7 @@ choiceMain[0].onclick = () => {
 };
 
 choiceMain[1].onclick = () => {
-    // 💥 暴力修正排版：不隱藏元件，而是把第一層的文字直接洗掉，並關閉點擊！
-    // 這樣可以保留原本的空間高度，第二層的選項就「絕對不會」往上飄移去撞呱琉！
+    // 💥 把文字洗掉，不破壞排版
     choiceMain.forEach(e => {
         e.innerText = "";
         e.style.pointerEvents = "none";
@@ -371,7 +381,7 @@ choiceMain[1].onclick = () => {
                                                                     } else {
                                                                         dialogText.innerHTML = baseText + nextStr;
                                                                         
-                                                                        // 💥 所有的話說完後，光速把第二層新選項全部亮出來！
+                                                                        // 💥 展開第二層新選項
                                                                         choiceExtra.forEach(e => {
                                                                             e.style.display = "block";
                                                                         });
