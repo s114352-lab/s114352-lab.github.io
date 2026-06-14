@@ -81,6 +81,7 @@ button{
   display:flex;
   flex-direction:column;
   gap:18px;
+  flex-wrap: wrap;
 }
   
 #dialogText{
@@ -355,15 +356,10 @@ setTimeout(()=>{
 
   typeText("嘎、", dialogText, 150, ()=>{
 
+    dialogText.innerText = "";
+    
     setTimeout(()=>{
-
-    dialogText.style.transition = "opacity 0.3s";
-    dialogText.style.opacity = 0;
-
-    setTimeout(()=>{
-
-        dialogText.style.opacity = 1;
-
+      
         typeText("你好。", dialogText, 120, ()=>{
 
             document.getElementById("choiceBox").style.display = "flex";
@@ -413,8 +409,10 @@ document.querySelectorAll(".choice")[1].onclick = () => {
                       typeText("你平常都在做什麼？", dialogText, 120, () => {
 
                         
-                        document.querySelectorAll(".choice").forEach(e => e.style.display = "none");
-                        document.querySelectorAll(".choice2").forEach(e => e.style.display = "block");
+document.querySelectorAll(".choice").forEach(e => e.style.display = "none");
+document.querySelectorAll(".choice2").forEach(e => {
+    e.style.display = "block";
+});
 
                         document.getElementById("choiceBox").style.pointerEvents = "auto";
 
