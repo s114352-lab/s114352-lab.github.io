@@ -132,10 +132,11 @@ const text = document.getElementById("text");
 const gualiu = document.getElementById("gualiu");
 const btn = document.getElementById("btn");
 const intro = document.getElementById("intro");
-  const throwBtn = document.getElementById("throwBtn");
+const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
- const dialogText = document.getElementById("dialogText");
 
+const dialogText = document.getElementById("dialogText");
+const choices = document.querySelectorAll(".choice");
 
 let throwCount = 0;
 
@@ -319,15 +320,16 @@ throwBtn.onclick=function(){
             });            
     } 
 }  
-  
-                      document.querySelectorAll(".choice")[0].onclick = ()=>{
+  choices[0].onclick = ()=>{
+  dialogText.innerText = "";
   typeText("那就好。", dialogText);
 }
 
-document.querySelectorAll(".choice")[1].onclick = ()=>{
+choices[1].onclick = ()=>{
+  dialogText.innerText = "";
   typeText("嗯……", dialogText);
-}};
-
+}
+                     
 </script>
 <div id="scene2" style="display:none;">
 
