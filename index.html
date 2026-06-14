@@ -58,9 +58,8 @@ button{
 }
 
 #gualiuBox{
-  position:absolute;
-  left:10%;
-  bottom:10%;
+  left:20%;
+  bottom:12%;
 }
 
 #gualiu2{
@@ -75,12 +74,8 @@ button{
 }
 
 #choiceBox{
-  position:absolute;
-  right:10%;
-  top:35%;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+  right:20%;
+  top:40%;
 }
 
 .choice{
@@ -191,24 +186,32 @@ function nextText(message,time,next){
 
   function typeText(text, el, speed = 120, callback){
 
- if(el.innerText != ""){
-    el.innerText += "\n";
-}
-  let i = 0;
+    el.innerHTML = "";
 
-  function typing(){
-    if(i < text.length){
-      el.innerText += text[i];
-      i++;
-      setTimeout(typing, speed);
-    }else{
-      if(callback) callback();
+    let i = 0;
+
+    function typing(){
+
+        if(i < text.length){
+
+            el.innerHTML =
+                text.substring(0, i+1)
+                + '<span class="cursor">|</span>';
+
+            i++;
+
+            setTimeout(typing, speed);
+
+        }else{
+
+            el.innerHTML = text;
+
+            if(callback) callback();
+        }
     }
-  }
 
-  typing();
+    typing();
 }
-
 setTimeout(()=>{
 
     nextText("你遇見了一隻蝸牛。",1500,()=>{
@@ -312,12 +315,27 @@ dialogText.innerText = "";
 
 setTimeout(()=>{
 
-    typeText("嘎。", dialogText, 150, ()=>{
+  typeText("嘎。", dialogText, 150, ()=>{
+
+    setTimeout(()=>{
+
+        dialogText.style.opacity = 0;
 
         setTimeout(()=>{
 
+            dialogText.style.opacity = 1;
+
             typeText("你好。", dialogText, 120, ()=>{
 
+                document.getElementById("choiceBox").style.display = "flex";
+
+            });
+
+        },800);
+
+    },1000);
+
+});
                 document.getElementById("choiceBox").style.display = "flex";
 
             });
@@ -341,6 +359,15 @@ setTimeout(()=>{
 choices[1].onclick = ()=>{
   dialogText.innerText = "";
   typeText("嗯……", dialogText);
+}
+  .cursor{
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink{
+  50%{
+    opacity:0;
+  }
 }
                      
 </script>
