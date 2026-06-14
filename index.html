@@ -316,7 +316,10 @@ choiceMain[0].onclick = () => {
 };
 
 choiceMain[1].onclick = () => {
-    // 點擊後先鎖住點擊事件，避免重複按到
+    // 💥 暴力修正：一按下去，立刻把「你好/我不好」這兩個選項隱藏（display = "none"）！
+    choiceMain.forEach(e => e.style.display = "none");
+
+    // 鎖住點擊事件，避免背景干擾
     document.getElementById("choiceBox").style.pointerEvents = "none";
 
     // ① 這樣啊……
@@ -339,18 +342,15 @@ choiceMain[1].onclick = () => {
                                     typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
                                             
-                                            // 【刪除重打效果】模擬按 Backspace 刪掉「你……」
-                                            // 瞬間變回空白，然後改打 ⑥ 殼裡東西有點多==
+                                            // 擦掉「你……」
                                             dialogText.innerText = ""; 
                                             
+                                            // ⑥ 殼裡東西有點多==
                                             typeText("殼裡東西有點多==", dialogText, 120, () => {
                                                 setTimeout(() => {
                                                     
-                                                    // 【換行效果】保留 ⑥，在下面加上 <br> 換行並打出 ⑦ 你想要什麼？
-                                                    // 先把 ⑥ 的文字定死，後面加上換行標籤與打字動態
+                                                    // ⑦ 換行並打出：你想要什麼？
                                                     let currentText = "殼裡東西有點多==<br>";
-                                                    
-                                                    // 這裡用一個小技巧，讓 typeText 可以在保留前一行的狀況下，繼續打下一行
                                                     let i = 0;
                                                     let nextStr = "你想要什麼？";
                                                     
@@ -362,8 +362,7 @@ choiceMain[1].onclick = () => {
                                                         } else {
                                                             dialogText.innerHTML = currentText + nextStr;
                                                             
-                                                            // 全部講完了，把原本的選項隱藏，亮出第二層新選項
-                                                            choiceMain.forEach(e => e.style.display = "none");
+                                                            // 這裡原本有隱藏選項的 code，姊幫你移到最前面去了，所以這裡專心把第二層新選項亮出來就好！
                                                             choiceExtra.forEach(e => {
                                                                 e.style.display = "block";
                                                             });
