@@ -316,10 +316,8 @@ choiceMain[0].onclick = () => {
 };
 
 choiceMain[1].onclick = () => {
-    // 💥 暴力修正：一按下去，立刻把「你好/我不好」這兩個選項隱藏（display = "none"）！
+    // 💥 1. 隱藏原本的選項（維持原本的位置設定，不影響 choiceBox 架構）
     choiceMain.forEach(e => e.style.display = "none");
-
-    // 鎖住點擊事件，避免背景干擾
     document.getElementById("choiceBox").style.pointerEvents = "none";
 
     // ① 這樣啊……
@@ -342,39 +340,51 @@ choiceMain[1].onclick = () => {
                                     typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
                                             
-                                            // 擦掉「你……」
-                                            dialogText.innerText = ""; 
-                                            
-                                            // ⑥ 殼裡東西有點多==
-                                            typeText("殼裡東西有點多==", dialogText, 120, () => {
-                                                setTimeout(() => {
-                                                    
-                                                    // ⑦ 換行並打出：你想要什麼？
-                                                    let currentText = "殼裡東西有點多==<br>";
-                                                    let i = 0;
-                                                    let nextStr = "你想要什麼？";
-                                                    
-                                                    function typeLine2() {
-                                                        if (i < nextStr.length) {
-                                                            dialogText.innerHTML = currentText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
-                                                            i++;
-                                                            setTimeout(typeLine2, 120);
-                                                        } else {
-                                                            dialogText.innerHTML = currentText + nextStr;
-                                                            
-                                                            // 這裡原本有隱藏選項的 code，姊幫你移到最前面去了，所以這裡專心把第二層新選項亮出來就好！
-                                                            choiceExtra.forEach(e => {
-                                                                e.style.display = "block";
-                                                            });
-                                                            // 重新開啟點擊權限
-                                                            document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                                        }
-                                                    }
-                                                    typeLine2();
+                                            // 💥 2. 【真的刪回去（倒退嚕）效果】
+                                            let currentStr = "你……";
+                                            function deleteText() {
+                                                if (currentStr.length > 0) {
+                                                    currentStr = currentStr.substring(0, currentStr.length - 1);
+                                                    dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
+                                                    setTimeout(deleteText, 150); // 刪除的速度，150毫秒刪一個字
+                                                } else {
+                                                    // 刪完了，停頓一下再打 ⑥
+                                                    setTimeout(() => {
+                                                        
+                                                        // ⑥ 殼裡東西有點多==
+                                                        typeText("殼裡東西有點多==", dialogText, 120, () => {
+                                                            setTimeout(() => {
+                                                                
+                                                               
+                                                                let baseText = "殼裡東西有點多==<br>";
+                                                                let i = 0;
+                                                                let nextStr = "你想要什麼？";
+                                                                
+                                                                function typeLine2() {
+                                                                    if (i < nextStr.length) {
+                                                                        dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
+                                                                        i++;
+                                                                        setTimeout(typeLine2, 120);
+                                                                    } else {
+                                                                        dialogText.innerHTML = baseText + nextStr;
+                                                                        
+                                                                        
+                                                                        choiceExtra.forEach(e => {
+                                                                            e.style.display = "block";
+                                                                        });
+                                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                                    }
+                                                                }
+                                                                typeLine2();
 
-                                                }, 1000); // ⑥ 說完等一秒再跑 ⑦
-                                            });
-                                        }, 1000); // 「你……」停頓一秒後刪除
+                                                            }, 1000); // ⑥ 說完等一秒再跑 ⑦
+                                                        });
+                                                    }, 300);
+                                                }
+                                            }
+                                            deleteText(); // 啟動刪除
+
+                                        }, 1000); // 「你……」打完停頓一秒開始刪
                                     });
                                 }, 500);
                             });
