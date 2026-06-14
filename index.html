@@ -306,33 +306,32 @@ showMessage(
             1500,
             ()=>{
 
-                document.getElementById("scene2").style.display = "block";
+              document.getElementById("scene2").style.display = "block";
 
-                setTimeout(()=>{
+dialogText.innerText = "";  
 
-                    typeText("嘎。", dialogText, 150, ()=>{
+setTimeout(()=>{
 
-                        setTimeout(()=>{
+    typeText("嘎。", dialogText, 150, ()=>{
 
-                            typeText("你好。", dialogText, 120, ()=>{
+        setTimeout(()=>{
 
-                                document.getElementById("choiceBox").style.display = "flex";
+            typeText("你好。", dialogText, 120, ()=>{
 
-                            });
+                document.getElementById("choiceBox").style.display = "flex";
 
-                        },600);
+            });
 
-                    });
+        },600);
 
-                },800);
+    });
 
+},800);
             }
         );  
     }
 );         
     }
-}
-    } 
 }  
   choices[0].onclick = ()=>{
   dialogText.innerText = "";
