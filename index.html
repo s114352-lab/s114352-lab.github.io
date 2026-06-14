@@ -59,31 +59,35 @@ button{
 
 #gualiuBox{
   position:absolute;
-  left:18%;
-  bottom:8%;
+  left:24%;
+  bottom:6%;
 }
   
 #gualiu2{
-  width:min(45vw, 400px);
+  width:min(55vw, 520px);
 }
-
+  
 #dialogBox{
   position:absolute;
-  top:25%;
-  left:25%;
-  font-size:32px;
+  top:22%;
+  left:28%;
+  width:300px;
 }
-
+  
 #choiceBox{
   position:absolute;
-  right:22%;
-  top:40%;
+  right:28%;
+  top:42%;
+
+#dialogText{
+  color:#5f6d6d;
+}
 
   display:flex;
   flex-direction:column;
-  gap:15px;
+  gap:18px;
 }
-
+  
 .choice{
   cursor:pointer;
   font-size:20px;
@@ -335,10 +339,9 @@ setTimeout(()=>{
 
     setTimeout(()=>{
 
-        dialogText.style.opacity = 0;
-
-        setTimeout(()=>{
-
+       dialogText.style.transition = "opacity 0.3s";
+dialogText.style.opacity = 0;
+      
             dialogText.style.opacity = 1;
 
             typeText("你好。", dialogText, 120, ()=>{
