@@ -180,8 +180,8 @@ const throwBtn = document.getElementById("throwBtn");
 const recoverBtn = document.getElementById("recoverBtn");
 
 const dialogText = document.getElementById("dialogText");
-const choices = document.querySelectorAll(".choice");
-const extraChoices = document.querySelectorAll(".choice2");
+const choiceMain = document.querySelectorAll(".choice");
+const choiceExtra = document.querySelectorAll(".choice2");
   
 let throwCount = 0;
 
@@ -355,8 +355,6 @@ dialogText.innerText = "";
 setTimeout(()=>{
 
   typeText("嘎、", dialogText, 150, ()=>{
-
-    dialogText.innerText = "";
     
     setTimeout(()=>{
       
@@ -376,13 +374,13 @@ setTimeout(()=>{
     }
 }  
   
-  choices[0].onclick = () => {
+  choiceMain[0].onclick = () => {
   dialogText.innerText = "";
   typeText("那就好。", dialogText);
 };
 
-choices[1].onclick = () => {
-
+choiceMain[1].onclick = () => {
+  
   document.getElementById("choiceBox").style.pointerEvents = "none";
 
   typeText("嗯……", dialogText, 120, () => {
@@ -402,8 +400,8 @@ choices[1].onclick = () => {
                     setTimeout(() => {
                       typeText("你平常都在做什麼？", dialogText, 120, () => {
 
-                        choices.forEach(e => e.style.display = "none");
-
+                        choiceMain.forEach(e => e.style.display = "none");
+                        
                         extraChoices.forEach(e => {
                           e.style.display = "block";
                         });
