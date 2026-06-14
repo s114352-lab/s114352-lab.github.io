@@ -316,8 +316,12 @@ choiceMain[0].onclick = () => {
 };
 
 choiceMain[1].onclick = () => {
-    // 💥 1. 隱藏原本的選項（維持原本的位置設定，不影響 choiceBox 架構）
-    choiceMain.forEach(e => e.style.display = "none");
+    // 💥 暴力修正排版：不隱藏元件，而是把第一層的文字直接洗掉，並關閉點擊！
+    // 這樣可以保留原本的空間高度，第二層的選項就「絕對不會」往上飄移去撞呱琉！
+    choiceMain.forEach(e => {
+        e.innerText = "";
+        e.style.pointerEvents = "none";
+    });
     document.getElementById("choiceBox").style.pointerEvents = "none";
 
     // ① 這樣啊……
@@ -340,22 +344,21 @@ choiceMain[1].onclick = () => {
                                     typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
                                             
-                                            // 💥 2. 【真的刪回去（倒退嚕）效果】
+                                            // 真正的倒退嚕（打字機刪除效果）
                                             let currentStr = "你……";
                                             function deleteText() {
                                                 if (currentStr.length > 0) {
                                                     currentStr = currentStr.substring(0, currentStr.length - 1);
                                                     dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
-                                                    setTimeout(deleteText, 150); // 刪除的速度，150毫秒刪一個字
+                                                    setTimeout(deleteText, 150);
                                                 } else {
-                                                    // 刪完了，停頓一下再打 ⑥
                                                     setTimeout(() => {
                                                         
                                                         // ⑥ 殼裡東西有點多==
                                                         typeText("殼裡東西有點多==", dialogText, 120, () => {
                                                             setTimeout(() => {
                                                                 
-                                                               
+                                                                // ⑦ 換行並打出：你想要什麼？
                                                                 let baseText = "殼裡東西有點多==<br>";
                                                                 let i = 0;
                                                                 let nextStr = "你想要什麼？";
@@ -368,7 +371,7 @@ choiceMain[1].onclick = () => {
                                                                     } else {
                                                                         dialogText.innerHTML = baseText + nextStr;
                                                                         
-                                                                        
+                                                                        // 💥 所有的話說完後，光速把第二層新選項全部亮出來！
                                                                         choiceExtra.forEach(e => {
                                                                             e.style.display = "block";
                                                                         });
@@ -377,14 +380,14 @@ choiceMain[1].onclick = () => {
                                                                 }
                                                                 typeLine2();
 
-                                                            }, 1000); // ⑥ 說完等一秒再跑 ⑦
+                                                            }, 1000);
                                                         });
                                                     }, 300);
                                                 }
                                             }
-                                            deleteText(); // 啟動刪除
+                                            deleteText();
 
-                                        }, 1000); // 「你……」打完停頓一秒開始刪
+                                        }, 1000);
                                     });
                                 }, 500);
                             });
