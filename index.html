@@ -316,31 +316,66 @@ choiceMain[0].onclick = () => {
 };
 
 choiceMain[1].onclick = () => {
+    // 點擊後先鎖住點擊事件，避免重複按到
     document.getElementById("choiceBox").style.pointerEvents = "none";
 
-    typeText("嗯……", dialogText, 120, () => {
+    // ① 這樣啊……
+    typeText("這樣啊……", dialogText, 120, () => {
         setTimeout(() => {
-            typeText("這樣啊……", dialogText, 120, () => {
+            
+            // ② 等等ㄛ
+            typeText("等等ㄛ", dialogText, 120, () => {
                 setTimeout(() => {
-                    typeText("等等ㄛ", dialogText, 120, () => {
+                    
+                    // ③ 讓我找找……
+                    typeText("讓我找找……", dialogText, 120, () => {
                         setTimeout(() => {
-                            typeText("讓我找找……", dialogText, 120, () => {
+                            
+                            // ④ （翻殼）
+                            typeText("（翻殼）", dialogText, 120, () => {
                                 setTimeout(() => {
-                                    typeText("（翻殼）", dialogText, 120, () => {
+                                    
+                                    // ⑤ 先打出「你……」
+                                    typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
-                                            typeText("你平常都在做什麼？", dialogText, 120, () => {
-                                                
-                                                // 隱藏原本的「你好/我不好」
-                                                choiceMain.forEach(e => e.style.display = "none");
-                                                
-                                                // 顯示第二層新選項
-                                                choiceExtra.forEach(e => {
-                                                    e.style.display = "block";
-                                                });
+                                            
+                                            // 【刪除重打效果】模擬按 Backspace 刪掉「你……」
+                                            // 瞬間變回空白，然後改打 ⑥ 殼裡東西有點多==
+                                            dialogText.innerText = ""; 
+                                            
+                                            typeText("殼裡東西有點多==", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    
+                                                    // 【換行效果】保留 ⑥，在下面加上 <br> 換行並打出 ⑦ 你想要什麼？
+                                                    // 先把 ⑥ 的文字定死，後面加上換行標籤與打字動態
+                                                    let currentText = "殼裡東西有點多==<br>";
+                                                    
+                                                    // 這裡用一個小技巧，讓 typeText 可以在保留前一行的狀況下，繼續打下一行
+                                                    let i = 0;
+                                                    let nextStr = "你想要什麼？";
+                                                    
+                                                    function typeLine2() {
+                                                        if (i < nextStr.length) {
+                                                            dialogText.innerHTML = currentText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
+                                                            i++;
+                                                            setTimeout(typeLine2, 120);
+                                                        } else {
+                                                            dialogText.innerHTML = currentText + nextStr;
+                                                            
+                                                            // 全部講完了，把原本的選項隱藏，亮出第二層新選項
+                                                            choiceMain.forEach(e => e.style.display = "none");
+                                                            choiceExtra.forEach(e => {
+                                                                e.style.display = "block";
+                                                            });
+                                                            // 重新開啟點擊權限
+                                                            document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                        }
+                                                    }
+                                                    typeLine2();
 
-                                                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                }, 1000); // ⑥ 說完等一秒再跑 ⑦
                                             });
-                                        }, 500);
+                                        }, 1000); // 「你……」停頓一秒後刪除
                                     });
                                 }, 500);
                             });
