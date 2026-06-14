@@ -58,10 +58,11 @@ button{
 }
 
 #gualiuBox{
-  left:20%;
-  bottom:12%;
+  position:absolute;
+  left:18%;
+  bottom:8%;
 }
-
+  
 #gualiu2{
   width:min(45vw, 400px);
 }
@@ -74,8 +75,13 @@ button{
 }
 
 #choiceBox{
-  right:20%;
+  position:absolute;
+  right:22%;
   top:40%;
+
+  display:flex;
+  flex-direction:column;
+  gap:15px;
 }
 
 .choice{
@@ -85,6 +91,16 @@ button{
 
 .choice:hover{
   opacity:0.6;
+}
+
+   .cursor{
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink{
+  50%{
+    opacity:0;
+  }
 }
 </style>
 
@@ -336,15 +352,14 @@ setTimeout(()=>{
     },1000);
 
 });
-                document.getElementById("choiceBox").style.display = "flex";
 
             });
 
-        },600);
+        },800);
 
-    });
+    },1000);
 
-},800);
+});
             }
         );  
     }
@@ -360,15 +375,7 @@ choices[1].onclick = ()=>{
   dialogText.innerText = "";
   typeText("嗯……", dialogText);
 }
-  .cursor{
-  animation: blink 0.8s infinite;
-}
 
-@keyframes blink{
-  50%{
-    opacity:0;
-  }
-}
                      
 </script>
 </body>
