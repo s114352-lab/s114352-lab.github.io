@@ -164,8 +164,6 @@ const choiceExtra = document.querySelectorAll(".choice2");
 const btnAllNo = document.getElementById("btnAllNo");
 let throwCount = 0;
 let hasAllNoOption = false;
-
-// 關鍵：「我不要」的計數器
 let noCount = 0;
 
 function nextText(message,time,next){
@@ -426,7 +424,7 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500);
 }
 
-// 關鍵機制：「我不要」點擊處理器（累計達3次觸發陳雷大絕）
+// 已經成功替換成你給的最新 YouTube 連結！
 function handleNoCountClick() {
     noCount++;
     if (noCount >= 3) {
@@ -436,19 +434,15 @@ function handleNoCountClick() {
         document.getElementById("scene2").style.display = "none";
         dialogText.innerText = "";
         
-        // 1. 中間一行字「哼」淡入淡出
         showMessage("哼", 2000, () => {
-            // 2. 導出 YouTube 連結
-            window.open("https://www.youtube.com/watch?v=0wI62_Kby6U", "_blank");
+            window.open("https://youtu.be/GPoTmtykcGY?si=86vNFOQYVLoiHMXH", "_blank");
             
-            // 3. 看完網頁切回來時，直接拽回主線
             setTimeout(() => {
                 document.getElementById("scene2").style.display = "flex";
                 startHelloRoute(false);
             }, 1000);
         });
     } else {
-        // 未滿3次，正常回到五個選項選單
         hasAllNoOption = true;
         choiceExtra.forEach(e => e.style.display = "none");
         showFiveOptions();
@@ -559,7 +553,6 @@ function showFiveOptions() {
     document.getElementById("choiceBox").style.pointerEvents = "auto";
 }
 
-// ----------------─ 【我是書蟲】隨機發放處理 ----------------─
 function handleBookworm() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
@@ -585,7 +578,6 @@ function handleBookworm() {
     pool[randomIdx](() => { showPostBookOptions("•好看愛看"); });
 }
 
-// ----------------─ 【我不是書蟲】隨機發放處理 ----------------─
 function handleNotBookworm() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
@@ -646,18 +638,15 @@ function showPostBookOptions(positiveText) {
         choiceExtra.forEach(e => e.style.display = "none");
         dialogText.innerText = "";
     };
-    // 點擊我不要，交給計數器判斷
     choiceExtra[1].onclick = handleNoCountClick;
 }
 
-// ----------------─ 【我要聽歌】隨機發放處理 ----------------─
 function handleListenMusic() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
 
-    // 隨機歌單池：請隨時把你想放的歌丟進去
     const musicPool = [
         (cb) => { typeText("（這裡放你的第1首隨機歌曲）", dialogText, 120, cb); },
         (cb) => { typeText("（這裡放你的第2首隨機歌曲）", dialogText, 120, cb); }
@@ -677,18 +666,16 @@ function handleListenMusic() {
 
         choiceExtra[0].onclick = () => { choiceExtra.forEach(e => e.style.display = "none"); dialogText.innerText = ""; };
         choiceExtra[1].onclick = () => { choiceExtra.forEach(e => e.style.display = "none"); dialogText.innerText = ""; };
-        choiceExtra[2].onclick = handleNoCountClick; // 綁定大絕計數器
+        choiceExtra[2].onclick = handleNoCountClick; 
     });
 }
 
-// ----------------─ 【劇荒了】隨機發放處理 ----------------─
 function handleNoDramas() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
 
-    // 隨機劇單池：請隨時把你想放的劇丟進去
     const dramaPool = [
         (cb) => { typeText("（這裡放你的第1首隨機電視劇）", dialogText, 120, cb); },
         (cb) => { typeText("（這裡放你的第2首隨機電視劇）", dialogText, 120, cb); }
@@ -705,11 +692,10 @@ function handleNoDramas() {
         document.getElementById("choiceBox").style.pointerEvents = "auto";
 
         choiceExtra[0].onclick = () => { choiceExtra.forEach(e => e.style.display = "none"); dialogText.innerText = ""; };
-        choiceExtra[1].onclick = handleNoCountClick; // 綁定大絕計數器
+        choiceExtra[1].onclick = handleNoCountClick; 
     });
 }
 
-// ----------------─ 【招牌一號】處理 ----------------─
 function handleSignature() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
