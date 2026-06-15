@@ -73,13 +73,13 @@ img{
 #choiceBox{
   position:absolute;
   left: 12%;
-  top: 0;          /* 把它改成 0 配合上下置中 */
-  height: 100%;    /* 撐滿右邊高度 */
+  top: 0;          
+  height: 100%;    
   width: 85%;
   max-width: 480px; 
   display:flex;
   flex-direction:column;
-  justify-content: center; /* 讓裡面的選項自動垂直置中！ */
+  justify-content: center; 
   gap:12px;
 }
 #dialogText{
@@ -423,9 +423,9 @@ function triggerAscension() {
     dialogText.innerText = "";
     
     showMessage("你成仙了。", 2500, () => {
-        typeText("啊啊啊慢", dialogText, 120, () => { /* 這裡原先筆誤，修正為下方正常選項 */ });
         dialogText.innerText = "";
         typeText("啊啊啊啊", dialogText, 120, () => {
+            choiceExtra[0].innerText = "•啊啊壓慢？"; /* 筆誤修正 */
             choiceExtra[0].innerText = "•啊啊啊啊？";
             choiceExtra[1].innerText = "•啊啊！";
             choiceExtra[2].innerText = "•啊";
@@ -452,9 +452,7 @@ function triggerAscension() {
             choiceExtra[2].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
-                typeText("啊啊啊停停停！！！", dialogText, 120, () => { /* 筆誤修正 */ });
-                dialogText.innerText = "";
-                typeText("啊啊啊啊啊局！！！", dialogText, 120, () => { /* 修正回原本文本 */ });
+                typeText("啊啊啊啊啊局！！！", dialogText, 120, () => { /* 修正 */ });
                 dialogText.innerText = "";
                 typeText("啊啊啊啊啊啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
             };
@@ -519,7 +517,6 @@ function showFinalScene() {
     const oldBtn = document.getElementById("btn");
     if (oldBtn) oldBtn.remove();
     
-    // 檢查是否已有幕後花絮按鈕，避免重複生成
     if(!document.getElementById("behindBtn")){
         const btnBehind = document.createElement("p");
         btnBehind.className = "link";
@@ -632,8 +629,8 @@ function showFiveOptions() {
 
     choiceExtra[0].style.display = "block";
     choiceExtra[1].style.display = "block";
-    choiceExtra[2].style.display = "none"; // 隱藏原本的歌
-    choiceExtra[3].style.display = "none"; // 隱藏原本的劇
+    choiceExtra[2].style.display = "none"; 
+    choiceExtra[3].style.display = "none"; 
 
     if (hasAllNoOption) {
         btnAllNo.style.display = "block";
@@ -708,7 +705,6 @@ function handleNotBookworm() {
         (cb) => {
             typeText("《在魔王城說晚安》", dialogText, 120, () => {
                 setTimeout(() => {
-                    let line1Html = document.createElement("div"); // 修正代碼
                     let tempBox = document.createElement("div");
                     dialogText.appendChild(tempBox);
                     typeText("不知道啊，烏龜說好看那你就去看！", tempBox, 120, () => {
@@ -737,10 +733,33 @@ function showPostBookOptions(positiveText) {
     document.getElementById("choiceBox").style.pointerEvents = "auto";
     
     choiceExtra[0].onclick = () => {
+        // 點選正面選項：好看愛看 / 在看了
         choiceExtra.forEach(e => e.style.display = "none");
+        document.getElementById("choiceBox").style.pointerEvents = "none";
         dialogText.innerText = "";
+        
+        // 呱琉傲嬌關心
+        typeText("希望這樣你有好一點", dialogText, 120, () => {
+            choiceExtra[0].innerText = "•有";
+            choiceExtra[1].innerText = "•沒有（的相反）";
+            choiceExtra[0].style.display = "block";
+            choiceExtra[1].style.display = "block";
+            document.getElementById("choiceBox").style.pointerEvents = "auto";
+            
+            // 不管點哪一個，通通拽回朕餓了！
+            choiceExtra[0].onclick = () => { redirectToHelloRoute(); };
+            choiceExtra[1].onclick = () => { redirectToHelloRoute(); };
+        });
     };
     choiceExtra[1].onclick = handleNoCountClick;
+}
+
+function redirectToHelloRoute() {
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    setTimeout(() => {
+        startHelloRoute(false);
+    }, 500);
 }
 </script>
 </body>
