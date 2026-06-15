@@ -255,6 +255,7 @@ recoverBtn.onclick=function(){
         });  
     });         
 }
+
 choiceMain[0].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -329,34 +330,22 @@ function startChewingProcess() {
                 setTimeout(() => {
                     typeText("你、<br>(嚼嚼嚼)<br>要不要", dialogText, 120, () => {
                         setTimeout(() => {
-                            typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)", dialogText, 120, () => {
-                                setTimeout(() => {
-                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…", dialogText, 120, () => {
-                                        setTimeout(() => {
-                                            typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)", dialogText, 120, () => {
-                                                setTimeout(() => {
-                                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)<br>?", dialogText, 120, () => {
-                                                        choiceExtra[0].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            typeText("（看著你吃得津津有味，呱琉露出了欣慰的表情。）", dialogText, 120);
-                                                        };
-                                                        choiceExtra[1].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            typeText("（你張開嘴吃下了食物，感覺精神百倍！）", dialogText, 120);
-                                                        };
-                                                        choiceExtra[0].innerText = "•你吃就好";
-                                                        choiceExtra[1].innerText = "•我吃";
-                                                        choiceExtra[0].style.display = "block";
-                                                        choiceExtra[1].style.display = "block";
-                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                                    });
-                                                }, 500);
-                                            });
-                                        }, 500);
-                                    });
-                                }, 500);
+                            typeText("快吃下這個：（嚼嚼嚼）", dialogText, 120, () => {
+                                choiceExtra[0].onclick = () => { 
+                                    choiceExtra.forEach(e => e.style.display = "none");
+                                    dialogText.innerText = "";
+                                    typeText("（看著你吃得津津有味，呱琉露出了欣慰的表情。）", dialogText, 120);
+                                };
+                                choiceExtra[1].onclick = () => { 
+                                    choiceExtra.forEach(e => e.style.display = "none");
+                                    dialogText.innerText = "";
+                                    typeText("（你張開嘴吃下了食物，感覺精神百倍！）", dialogText, 120);
+                                };
+                                choiceExtra[0].innerText = "•你吃就好";
+                                choiceExtra[1].innerText = "•我吃";
+                                choiceExtra[0].style.display = "block";
+                                choiceExtra[1].style.display = "block";
+                                document.getElementById("choiceBox").style.pointerEvents = "auto";
                             });
                         }, 500);
                     });
