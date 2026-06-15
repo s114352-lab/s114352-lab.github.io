@@ -144,7 +144,6 @@ img{
       <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
       <p class="choice2">•我要聽歌!</p>
       <p class="choice2">•劇荒了，拜託來點劇</p>
-      <p class="choice2">•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)</p>
       <p class="choice2" id="btnAllNo">•我都不要</p>
     </div>
   </div>
@@ -420,9 +419,64 @@ function startChewingProcess() {
 }
 
 function triggerAscension() {
-    document.getElementById("scene2").style.display = "none";
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    showMessage("你成仙了。", 2500);
+    
+    // 顯示成仙提示
+    showMessage("你成仙了。", 2500, () => {
+        // 進入神仙對話主線
+        typeText("啊啊啊啊", dialogText, 120, () => {
+            choiceExtra[0].innerText = "•啊啊啊啊？";
+            choiceExtra[1].innerText = "•啊啊！";
+            choiceExtra[2].innerText = "•啊";
+            choiceExtra[3].innerText = "•啊啊啊啊啊啊啊";
+            choiceExtra[4].innerText = ""; 
+            
+            choiceExtra[0].style.display = "block";
+            choiceExtra[1].style.display = "block";
+            choiceExtra[2].style.display = "block";
+            choiceExtra[3].style.display = "block";
+            
+            document.getElementById("choiceBox").style.pointerEvents = "auto";
+            choiceExtra.forEach(e => e.style.pointerEvents = "auto");
+            
+            // 選項 1 的反應
+            choiceExtra[0].onclick = () => {
+                choiceExtra.forEach(e => e.style.display = "none");
+                dialogText.innerText = "";
+                typeText("啊？", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
+            };
+            // 選項 2 的反應
+            choiceExtra[1].onclick = () => {
+                choiceExtra.forEach(e => e.style.display = "none");
+                dialogText.innerText = "";
+                typeText("啊啊啊", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
+            };
+            // 選項 3 的反應
+            choiceExtra[2].onclick = () => {
+                choiceExtra.forEach(e => e.style.display = "none");
+                dialogText.innerText = "";
+                typeText("啊啊啊啊啊啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
+            };
+            // 選項 4 的反應
+            choiceExtra[3].onclick = () => {
+                choiceExtra.forEach(e => e.style.display = "none");
+                dialogText.innerText = "";
+                setTimeout(clearAllInHeaven, 500);
+            };
+        });
+    });
+}
+
+function clearAllInHeaven() {
+    document.getElementById("choiceBox").style.display = "none";
+    dialogText.innerText = "";
+    // 中間出現一行字
+    showMessage("（神仙對話）", 2500, () => {
+        // 然後又什麼都沒了，場景關閉
+        document.getElementById("scene2").style.display = "none";
+    });
 }
 
 function handleNoCountClick() {
@@ -521,18 +575,17 @@ function showFiveOptions() {
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerText = "•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)";
 
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
     choiceExtra[2].onclick = handleListenMusic;
     choiceExtra[3].onclick = handleNoDramas;
-    choiceExtra[4].onclick = handleSignature;
 
-    for(let j=0; j<5; j++) {
+    for(let j=0; j<4; j++) {
         choiceExtra[j].style.display = "block";
         choiceExtra[j].style.pointerEvents = "auto";
     }
+    choiceExtra[4].style.display = "none"; // 確保原本第五個按鈕隱藏
 
     if (hasAllNoOption) {
         btnAllNo.style.display = "block";
@@ -696,13 +749,6 @@ function handleNoDramas() {
         choiceExtra[0].onclick = () => { choiceExtra.forEach(e => e.style.display = "none"); dialogText.innerText = ""; };
         choiceExtra[1].onclick = handleNoCountClick; 
     });
-}
-
-function handleSignature() {
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.display = "none";
-    dialogText.innerText = "";
 }
 </script>
 </body>
