@@ -234,9 +234,27 @@ throwBtn.onclick=function(){
         });
     }
 }
-// ==========================================
-// 💥 路線 A：「•你好」主線流程
-// ==========================================
+
+recoverBtn.onclick=function(){
+    recoverBtn.style.display="none";
+    gualiu.style.display="none";
+    showMessage("……", 1000, ()=>{
+        showMessage("別鬧了。", 1500, ()=>{
+            document.getElementById("scene2").style.display = "flex"; 
+            dialogText.innerText = "";  
+            setTimeout(()=>{
+                typeText("嘎、", dialogText, 150, ()=>{
+                    setTimeout(()=>{
+                        dialogText.innerText = ""; 
+                        typeText("你好。", dialogText, 120, ()=>{
+                            document.getElementById("choiceBox").style.display = "flex";
+                        });
+                    }, 800);
+                });
+            },800);
+        });  
+    });         
+}
 choiceMain[0].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -347,9 +365,7 @@ function startChewingProcess() {
         }, 500);
     });
 }
-// ==========================================
-// 💥 路線 B：「•我不好」主線流程
-// ==========================================
+
 choiceMain[1].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
     document.getElementById("choiceBox").style.pointerEvents = "none";
