@@ -324,28 +324,48 @@ function startChewingProcess() {
     choiceExtra.forEach(e => e.style.display = "none");
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
+    
+    // 這裡徹底修改！每跳一句，上一句就會「消失清空」
     typeText("你、", dialogText, 120, () => {
         setTimeout(() => {
-            typeText("你、<br>(嚼嚼嚼)", dialogText, 120, () => {
+            dialogText.innerText = ""; // 清空
+            typeText("(嚼嚼嚼)", dialogText, 120, () => {
                 setTimeout(() => {
-                    typeText("你、<br>(嚼嚼嚼)<br>要不要", dialogText, 120, () => {
+                    dialogText.innerText = ""; // 清空
+                    typeText("要不要", dialogText, 120, () => {
                         setTimeout(() => {
-                            typeText("快吃下這個：（嚼嚼嚼）", dialogText, 120, () => {
-                                choiceExtra[0].onclick = () => { 
-                                    choiceExtra.forEach(e => e.style.display = "none");
-                                    dialogText.innerText = "";
-                                    typeText("（看著你吃得津津有味，呱琉露出了欣慰的表情。）", dialogText, 120);
-                                };
-                                choiceExtra[1].onclick = () => { 
-                                    choiceExtra.forEach(e => e.style.display = "none");
-                                    dialogText.innerText = "";
-                                    typeText("（你張開嘴吃下了食物，感覺精神百倍！）", dialogText, 120);
-                                };
-                                choiceExtra[0].innerText = "•你吃就好";
-                                choiceExtra[1].innerText = "•我吃";
-                                choiceExtra[0].style.display = "block";
-                                choiceExtra[1].style.display = "block";
-                                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                            dialogText.innerText = ""; // 清空
+                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    dialogText.innerText = ""; // 清空
+                                    typeText("吃…", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            dialogText.innerText = ""; // 清空
+                                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    dialogText.innerText = ""; // 清空
+                                                    typeText("?", dialogText, 120, () => {
+                                                        choiceExtra[0].onclick = () => { 
+                                                            choiceExtra.forEach(e => e.style.display = "none");
+                                                            dialogText.innerText = "";
+                                                            typeText("（看著你吃得津津有味，呱琉露出了欣慰的表情。）", dialogText, 120);
+                                                        };
+                                                        choiceExtra[1].onclick = () => { 
+                                                            choiceExtra.forEach(e => e.style.display = "none");
+                                                            dialogText.innerText = "";
+                                                            typeText("（你張開嘴吃下了食物，感覺精神百倍！）", dialogText, 120);
+                                                        };
+                                                        choiceExtra[0].innerText = "•你吃就好";
+                                                        choiceExtra[1].innerText = "•我吃";
+                                                        choiceExtra[0].style.display = "block";
+                                                        choiceExtra[1].style.display = "block";
+                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                    });
+                                                }, 500);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
                             });
                         }, 500);
                     });
