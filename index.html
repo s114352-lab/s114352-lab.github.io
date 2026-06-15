@@ -417,4 +417,48 @@ choiceMain[1].onclick = () => {
                                                                         
                                                                         choiceExtra[0].onclick = () => { showFinalChoiceText("（呱琉正在殼裡幫你打包幾本好書...）"); };
                                                                         choiceExtra[1].onclick = () => { showFinalChoiceText("（呱琉開始精心為你調製一杯文字特調...）"); };
-                                                                        choiceExtra[2].onclick = ()
+                                                                        choiceExtra[2].onclick = () => { showFinalChoiceText("（呱琉戴上耳機，正在為你點播一首神曲...）"); };
+                                                                        choiceExtra[3].onclick = () => { showFinalChoiceText("（呱琉拿出牠的私房劇單小卡交給你...）"); };
+                                                                        choiceExtra[4].onclick = () => { showFinalChoiceText("（呱琉神秘兮兮地為你準備招牌一號...）"); };
+
+                                                                        choiceExtra[0].innerText = "•我是書蟲，來點書吧";
+                                                                        choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
+                                                                        choiceExtra[2].innerText = "•我要聽歌!";
+                                                                        choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
+                                                                        choiceExtra[4].innerText = "•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)";
+
+                                                                        choiceExtra.forEach(e => {
+                                                                            e.style.display = "block";
+                                                                            e.style.pointerEvents = "auto";
+                                                                        });
+                                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                                    }
+                                                                }
+                                                                typeLine2();
+                                                            }, 1000);
+                                                        });
+                                                    }, 300);
+                                                }
+                                            }
+                                            deleteText();
+                                        }, 1000);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
+};
+
+function showFinalChoiceText(finalMessage) {
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.display = "none";
+    dialogText.innerText = "";
+    typeText(finalMessage, dialogText, 120);
+}
+</script>
+</body>
+</html>
