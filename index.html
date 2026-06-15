@@ -370,16 +370,37 @@ function startHelloRoute(isFromNoFeed = false) {
     });
 }
 
-// 💥 A. 點擊 "•?"
+// 💥 A. 點擊 "•?" 路線
 choiceExtra[0].onclick = () => {
     choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    typeText("？", dialogText, 120);
+    
+    // ① 先打出 ？
+    typeText("？", dialogText, 120, () => {
+        setTimeout(() => {
+            // ② 還在等什麼？
+            typeText("？<br>還在等什麼？", dialogText, 120, () => {
+                setTimeout(() => {
+                    // ③ 餵我啊！（沒錯就是這麼理所當然）
+                    typeText("？<br>還在等什麼？<br>餵我啊！（沒錯就是這麼理所當然）", dialogText, 120, () => {
+                        
+                        // 💥 彈出新選項：「•餵」
+                        choiceExtra[0].innerText = "•餵";
+                        choiceExtra[0].style.display = "block";
+                        
+                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                    });
+                }, 800);
+            });
+        }, 800);
+    });
 };
 
-// 💥 B. 點擊 "•餵牠吃仙丹"
-choiceExtra[1].onclick = () => {
-    // 隱藏選項
+// 💥 當使用者在問號路線點擊「•餵」時，直接觸發跟點擊「餵牠吃仙丹」一模一樣的嚼嚼嚼流程！
+// 姊街直接幫你把「•餵牠吃仙丹」跟「•餵」的功能綁定在一起，無縫歸流！
+
+function startChewingProcess() {
     choiceExtra.forEach(e => e.style.display = "none");
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
@@ -405,7 +426,7 @@ choiceExtra[1].onclick = () => {
                                                     // ⑦ ?
                                                     typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)<br>?", dialogText, 120, () => {
                                                         
-                                                        // 💥 彈出新選項：你吃就好、我吃
+                                                        // 💥 完美大歸流：彈出新選項「你吃就好」和「我吃」
                                                         choiceExtra[0].innerText = "•你吃就好";
                                                         choiceExtra[1].innerText = "•我吃";
                                                         choiceExtra[0].style.display = "block";
@@ -425,18 +446,21 @@ choiceExtra[1].onclick = () => {
             });
         }, 500);
     });
+}
+
+// 💥 B. 點擊 "•餵牠吃仙丹" ➔ 直接跑嚼嚼嚼
+choiceExtra[1].onclick = () => {
+    startChewingProcess();
 };
 
-// 💥 C. 點擊 "•就不餵!"
-choiceExtra[2].onclick = () => {
-    // 隱藏選項，並設定 isFromNoFeed = true 重新呼叫
-    choiceExtra.forEach(e => e.style.display = "none");
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    
-    setTimeout(() => {
-        startHelloRoute(true); // 💥 重回很好，但這次沒有不餵的選項！
-    }, 500);
-};
+// 💥 新增的事件：當按鈕被改成 "•餵" 的時候，點擊它也是跑同一個嚼嚼嚼！
+// 因為畫面上同時間只會出現其中一個按鈕，所以這樣寫完全不會衝突，超安全！
+choiceExtra[0].addEventListener('click', () => {
+    if (choiceExtra[0].innerText === "•餵") {
+        startChewingProcess();
+    }
+});
+
 
 choiceMain[1].onclick = () => {
     // 💥 把文字洗掉，不破壞排版
