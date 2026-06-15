@@ -113,6 +113,28 @@ img{
   font-size: 14px;
   color: #8e9e9e;
 }
+/* 幕後花絮專屬樣式 */
+#behindScene {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+#behindText {
+  font-size: 20px;
+  color: #5f6d6d;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+#behindImg {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 </style>
 </head>
 
@@ -125,6 +147,14 @@ img{
   <img id="intro" src="intro.png" style="display:none;">
   <p id="throwBtn" class="link" style="display:none;">• 丟掉履歷</p>
   <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
+  
+  <!-- 幕後花絮容器 -->
+  <div id="behindScene">
+    <p id="behindText">修Bug修到崩潰，一怒之下怒了一下，跑去找Gemini 講gpt的壞話hh</p>
+    <img id="behindImg" src="gemini_complain.png">
+    <!-- 新增的回去按鈕 -->
+    <p id="backBtn" class="link">• 返回</p>
+  </div>
 </div>
 
 <div id="scene2" style="display:none;">
@@ -425,7 +455,6 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500, () => {
         dialogText.innerText = "";
         typeText("啊啊啊啊", dialogText, 120, () => {
-            choiceExtra[0].innerText = "•啊啊壓慢？"; /* 筆誤修正 */
             choiceExtra[0].innerText = "•啊啊啊啊？";
             choiceExtra[1].innerText = "•啊啊！";
             choiceExtra[2].innerText = "•啊";
@@ -452,9 +481,7 @@ function triggerAscension() {
             choiceExtra[2].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
-                typeText("啊啊啊啊啊局！！！", dialogText, 120, () => { /* 修正 */ });
-                dialogText.innerText = "";
-                typeText("啊啊啊啊啊啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
+                typeText("啊啊啊停啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
             };
             choiceExtra[3].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
@@ -522,10 +549,30 @@ function showFinalScene() {
         btnBehind.className = "link";
         btnBehind.id = "behindBtn";
         btnBehind.innerText = "•幕後花絮";
+        
+        // 點擊花絮後的處理邏輯
         btnBehind.onclick = () => {
-            alert("敬請期待幕後花絮！");
+            finalGualiu.style.display = "none";
+            finalMsg.style.display = "none";
+            btnBehind.style.display = "none";
+            
+            // 秀出幕後花絮
+            const behindScene = document.getElementById("behindScene");
+            behindScene.style.display = "flex";
         };
         container.appendChild(btnBehind);
+        
+        // 設定「回去」按鈕的點擊邏輯
+        const backBtn = document.getElementById("backBtn");
+        backBtn.onclick = () => {
+            // 隱藏幕後花絮
+            document.getElementById("behindScene").style.display = "none";
+            
+            // 重新變回主線大結局的模樣
+            finalGualiu.style.display = "block";
+            finalMsg.style.display = "block";
+            btnBehind.style.display = "block";
+        };
     }
 }
 
@@ -733,12 +780,10 @@ function showPostBookOptions(positiveText) {
     document.getElementById("choiceBox").style.pointerEvents = "auto";
     
     choiceExtra[0].onclick = () => {
-        // 點選正面選項：好看愛看 / 在看了
         choiceExtra.forEach(e => e.style.display = "none");
         document.getElementById("choiceBox").style.pointerEvents = "none";
         dialogText.innerText = "";
         
-        // 呱琉傲嬌關心
         typeText("希望這樣你有好一點", dialogText, 120, () => {
             choiceExtra[0].innerText = "•有";
             choiceExtra[1].innerText = "•沒有（的相反）";
@@ -746,9 +791,8 @@ function showPostBookOptions(positiveText) {
             choiceExtra[1].style.display = "block";
             document.getElementById("choiceBox").style.pointerEvents = "auto";
             
-            // 不管點哪一個，通通拽回朕餓了！
             choiceExtra[0].onclick = () => { redirectToHelloRoute(); };
-            choiceExtra[1].onclick = () => { redirectToHelloRoute(); };
+            choiceExtra[1].onclick = () => { redirectToRoute(); };
         });
     };
     choiceExtra[1].onclick = handleNoCountClick;
