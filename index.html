@@ -423,15 +423,13 @@ function triggerAscension() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    // 顯示成仙提示
     showMessage("你成仙了。", 2500, () => {
-        // 進入神仙對話主線
         typeText("啊啊啊啊", dialogText, 120, () => {
+            choiceExtra[0].innerText = "•啊啊啊慢？";
             choiceExtra[0].innerText = "•啊啊啊啊？";
             choiceExtra[1].innerText = "•啊啊！";
             choiceExtra[2].innerText = "•啊";
             choiceExtra[3].innerText = "•啊啊啊啊啊啊啊";
-            choiceExtra[4].innerText = ""; 
             
             choiceExtra[0].style.display = "block";
             choiceExtra[1].style.display = "block";
@@ -441,25 +439,21 @@ function triggerAscension() {
             document.getElementById("choiceBox").style.pointerEvents = "auto";
             choiceExtra.forEach(e => e.style.pointerEvents = "auto");
             
-            // 選項 1 的反應
             choiceExtra[0].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
                 typeText("啊？", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
             };
-            // 選項 2 的反應
             choiceExtra[1].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
                 typeText("啊啊啊", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
             };
-            // 選項 3 的反應
             choiceExtra[2].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
                 typeText("啊啊啊啊啊啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
             };
-            // 選項 4 的反應
             choiceExtra[3].onclick = () => {
                 choiceExtra.forEach(e => e.style.display = "none");
                 dialogText.innerText = "";
@@ -472,11 +466,73 @@ function triggerAscension() {
 function clearAllInHeaven() {
     document.getElementById("choiceBox").style.display = "none";
     dialogText.innerText = "";
-    // 中間出現一行字
+    
+    // 1. （神仙對話）用最開頭的 showMessage 方式（淡入淡出）
     showMessage("（神仙對話）", 2500, () => {
-        // 然後又什麼都沒了，場景關閉
-        document.getElementById("scene2").style.display = "none";
+        
+        // 2. 打字機呈現經費不足的死線戰士
+        dialogText.style.display = "block";
+        dialogText.style.opacity = 1;
+        
+        typeText("經費不足的死線戰士<br>燃燒生命也只寫到這裡……", dialogText, 120, () => {
+            setTimeout(() => {
+                dialogText.style.opacity = 0;
+                setTimeout(() => {
+                    
+                    // 3. 顯示圖文手搓
+                    dialogText.style.opacity = 1;
+                    typeText("圖、文全手搓", dialogText, 120, () => {
+                        setTimeout(() => {
+                            dialogText.style.opacity = 0;
+                            setTimeout(() => {
+                                
+                                // 4. 給個好評
+                                dialogText.style.opacity = 1;
+                                typeText("給個五星好評吧=⩌⩊⩌=", dialogText, 120, () => {
+                                    setTimeout(() => {
+                                        dialogText.style.opacity = 0;
+                                        setTimeout(() => {
+                                            
+                                            // 5. 結束，呱琉回到最中間
+                                            showFinalScene();
+                                        }, 1000);
+                                    }, 2000);
+                                });
+                            }, 1000);
+                        }, 1000);
+                    });
+                }, 1000);
+            }, 2000);
+        });
     });
+}
+
+function showFinalScene() {
+    document.getElementById("scene2").style.display = "none";
+    const container = document.getElementById("container");
+    container.style.display = "block";
+    
+    const finalGualiu = document.getElementById("gualiu");
+    finalGualiu.style.display = "block";
+    finalGualiu.style.margin = "20px auto";
+    
+    const finalMsg = document.getElementById("text");
+    finalMsg.style.display = "block";
+    finalMsg.innerText = "嘎啦(Bye)嘎啦(Bye)";
+    finalMsg.style.opacity = 1;
+    
+    // 移除舊的按鈕（避免重複），並新增幕後花絮按鈕
+    const oldBtn = document.getElementById("btn");
+    if (oldBtn) oldBtn.remove();
+    
+    const btnBehind = document.createElement("p");
+    btnBehind.className = "link";
+    btnBehind.id = "behindBtn";
+    btnBehind.innerText = "•幕後花絮";
+    btnBehind.onclick = () => {
+        alert("敬請期待幕後花絮！");
+    };
+    container.appendChild(btnBehind);
 }
 
 function handleNoCountClick() {
@@ -527,6 +583,7 @@ function openSubMenu() {
                                     dialogText.innerText = ""; 
                                     typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
+                                            let currentStr = " তুমি……";
                                             let currentStr = "你……";
                                             function deleteText() {
                                                 if (currentStr.length > 0) {
@@ -585,7 +642,7 @@ function showFiveOptions() {
         choiceExtra[j].style.display = "block";
         choiceExtra[j].style.pointerEvents = "auto";
     }
-    choiceExtra[4].style.display = "none"; // 確保原本第五個按鈕隱藏
+    choiceExtra[4].style.display = "none";
 
     if (hasAllNoOption) {
         btnAllNo.style.display = "block";
@@ -667,7 +724,7 @@ function handleNotBookworm() {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜斯誰？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
