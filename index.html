@@ -325,7 +325,6 @@ function startChewingProcess() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    // 完美的逐字清空邏輯，絕不留殘影，台詞絕對正確
     typeText("你、", dialogText, 120, () => {
         setTimeout(() => {
             dialogText.innerText = ""; 
@@ -345,15 +344,14 @@ function startChewingProcess() {
                                                 setTimeout(() => {
                                                     dialogText.innerText = ""; 
                                                     typeText("?", dialogText, 120, () => {
+                                                        // 點擊後完全清空，絕不瞎編亂造台詞
                                                         choiceExtra[0].onclick = () => { 
                                                             choiceExtra.forEach(e => e.style.display = "none");
                                                             dialogText.innerText = "";
-                                                            typeText("（看著你吃得津津有味，呱琉露出了欣慰的表情。）", dialogText, 120);
                                                         };
                                                         choiceExtra[1].onclick = () => { 
                                                             choiceExtra.forEach(e => e.style.display = "none");
                                                             dialogText.innerText = "";
-                                                            typeText("（你張開嘴吃下了食物，感覺精神百倍！）", dialogText, 120);
                                                         };
                                                         choiceExtra[0].innerText = "•你吃就好";
                                                         choiceExtra[1].innerText = "•我吃";
@@ -415,11 +413,11 @@ choiceMain[1].onclick = () => {
                                                                     } else {
                                                                         dialogText.innerHTML = baseText + nextStr;
                                                                         
-                                                                        choiceExtra[0].onclick = () => { showFinalChoiceText("（呱琉正在殼裡幫你打包幾本好書...）"); };
-                                                                        choiceExtra[1].onclick = () => { showFinalChoiceText("（呱琉開始精心為你調製一杯文字特調...）"); };
-                                                                        choiceExtra[2].onclick = () => { showFinalChoiceText("（呱琉戴上耳機，正在為你點播一首神曲...）"); };
-                                                                        choiceExtra[3].onclick = () => { showFinalChoiceText("（呱琉拿出牠的私房劇單小卡交給你...）"); };
-                                                                        choiceExtra[4].onclick = () => { showFinalChoiceText("（呱琉神秘兮兮地為你準備招牌一號...）"); };
+                                                                        choiceExtra[0].onclick = () => { showFinalChoiceText(""); };
+                                                                        choiceExtra[1].onclick = () => { showFinalChoiceText(""); };
+                                                                        choiceExtra[2].onclick = () => { showFinalChoiceText(""); };
+                                                                        choiceExtra[3].onclick = () => { showFinalChoiceText(""); };
+                                                                        choiceExtra[4].onclick = () => { showFinalChoiceText(""); };
 
                                                                         choiceExtra[0].innerText = "•我是書蟲，來點書吧";
                                                                         choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
@@ -457,7 +455,9 @@ function showFinalChoiceText(finalMessage) {
     choiceExtra.forEach(e => e.style.display = "none");
     document.getElementById("choiceBox").style.display = "none";
     dialogText.innerText = "";
-    typeText(finalMessage, dialogText, 120);
+    if(finalMessage) {
+        typeText(finalMessage, dialogText, 120);
+    }
 }
 </script>
 </body>
