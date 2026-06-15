@@ -39,7 +39,7 @@ img{
   width:min(90vw, 900px);
 }
 
-/* ================= 重新調整後的 Scene2 排版 ================= */
+/* ================= 完美置中 Scene2 排版 ================= */
 #scene2{
   position:fixed;
   width:100%;
@@ -53,30 +53,30 @@ img{
   box-sizing: border-box;
   padding: 20px;
 }
-/* 讓呱琉與對話、選項全部垂直居中排列 */
 #gameContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
 }
 #gualiuBox{
   text-align: center;
 }
 #gualiu2{
-  width: min(40vw, 250px);
+  width: min(40vw, 220px);
 }
 #dialogBox{
   width: 100%;
   text-align: center;
-  min-height: 80px; /* 給對話留點空間，避免字數變動時畫面一直亂跳 */
+  min-height: 120px; 
 }
 #dialogText{
   color:#5f6d6d;
-  font-size: 28px;
+  font-size: 26px;
   margin: 0;
+  line-height: 1.5;
 }
 #choiceBox{
   display:flex;
@@ -115,29 +115,6 @@ img{
   font-size: 14px;
   color: #8e9e9e;
 }
-
-/* 幕後花絮專屬樣式 */
-#behindScene {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 700px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-#behindText {
-  font-size: 20px;
-  color: #5f6d6d;
-  margin-bottom: 20px;
-  line-height: 1.6;
-}
-#behindImg {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
 </style>
 </head>
 
@@ -150,16 +127,8 @@ img{
   <img id="intro" src="intro.png" style="display:none;">
   <p id="throwBtn" class="link" style="display:none;">• 丟掉履歷</p>
   <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
-  
-  <!-- 幕後花絮容器 -->
-  <div id="behindScene">
-    <p id="behindText">修Bug修到崩潰，一怒之下怒了一下，跑去找Gemini 講gpt的壞話hh</p>
-    <img id="behindImg" src="gemini_complain.png">
-    <p id="backBtn" class="link">• 返回</p>
-  </div>
 </div>
 
-<!-- 把左區右區打散，合併成一個乾淨的置中容器 -->
 <div id="scene2" style="display:none;">
   <div id="gameContent">
     <div id="dialogBox">
@@ -172,6 +141,9 @@ img{
 
       <p class="choice2">•我是書蟲，來點書吧</p>
       <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
+      <p class="choice2">•我要聽歌!</p>
+      <p class="choice2">•劇荒了，拜託來點劇</p>
+      <p class="choice2">•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)</p>
       <p class="choice2" id="btnAllNo">•我都不要</p>
     </div>
 
@@ -345,6 +317,7 @@ function startHelloRoute(isFromNoFeed = false) {
                 choiceExtra[0].innerText = "•?";
                 choiceExtra[1].innerText = "•餵牠吃仙丹";
                 choiceExtra[2].innerText = "•就不餵!";
+                choiceExtra[3].innerText = ""; choiceExtra[4].innerText = "";
                 choiceExtra[0].style.display = "block";
                 choiceExtra[1].style.display = "block";
                 if (isFromNoFeed) {
@@ -450,126 +423,9 @@ function startChewingProcess() {
 }
 
 function triggerAscension() {
-    choiceExtra.forEach(e => e.style.display = "none");
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    
-    showMessage("你成仙了。", 2500, () => {
-        dialogText.innerText = "";
-        typeText("啊啊啊啊", dialogText, 120, () => {
-            choiceExtra[0].innerText = "•啊啊啊啊？";
-            choiceExtra[1].innerText = "•啊啊！";
-            choiceExtra[2].innerText = "•啊";
-            choiceExtra[3].innerText = "•啊啊啊啊啊啊裝";
-            
-            choiceExtra[0].style.display = "block";
-            choiceExtra[1].style.display = "block";
-            choiceExtra[2].style.display = "block";
-            choiceExtra[3].style.display = "block";
-            
-            document.getElementById("choiceBox").style.pointerEvents = "auto";
-            choiceExtra.forEach(e => e.style.pointerEvents = "auto");
-            
-            choiceExtra[0].onclick = () => {
-                choiceExtra.forEach(e => e.style.display = "none");
-                dialogText.innerText = "";
-                typeText("啊？", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
-            };
-            choiceExtra[1].onclick = () => {
-                choiceExtra.forEach(e => e.style.display = "none");
-                dialogText.innerText = "";
-                typeText("啊啊啊", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
-            };
-            choiceExtra[2].onclick = () => {
-                choiceExtra.forEach(e => e.style.display = "none");
-                dialogText.innerText = "";
-                typeText("啊啊啊停啊！！！", dialogText, 120, () => { setTimeout(clearAllInHeaven, 1500); });
-            };
-            choiceExtra[3].onclick = () => {
-                choiceExtra.forEach(e => e.style.display = "none");
-                dialogText.innerText = "";
-                setTimeout(clearAllInHeaven, 500);
-            };
-        });
-    });
-}
-
-function clearAllInHeaven() {
-    document.getElementById("choiceBox").style.display = "none";
-    dialogText.innerText = "";
-    
-    showMessage("（神仙對話）", 2500, () => {
-        dialogText.style.display = "block";
-        dialogText.style.opacity = 1;
-        
-        typeText("經費不足的死線戰士<br>燃燒生命也只寫到這裡……", dialogText, 120, () => {
-            setTimeout(() => {
-                dialogText.style.opacity = 0;
-                setTimeout(() => {
-                    dialogText.style.opacity = 1;
-                    typeText("圖、文全手搓", dialogText, 120, () => {
-                        setTimeout(() => {
-                            dialogText.style.opacity = 0;
-                            setTimeout(() => {
-                                dialogText.style.opacity = 1;
-                                typeText("給個五星好評吧=⩌⩊⩌=", dialogText, 120, () => {
-                                    setTimeout(() => {
-                                        dialogText.style.opacity = 0;
-                                        setTimeout(() => {
-                                            showFinalScene();
-                                        }, 1000);
-                                    }, 2000);
-                                });
-                            }, 1000);
-                        }, 1000);
-                    });
-                }, 1000);
-            }, 2000);
-        });
-    });
-}
-
-function showFinalScene() {
     document.getElementById("scene2").style.display = "none";
-    const container = document.getElementById("container");
-    container.style.display = "block";
-    
-    const finalGualiu = document.getElementById("gualiu");
-    finalGualiu.style.display = "block";
-    finalGualiu.style.margin = "20px auto";
-    
-    const finalMsg = document.getElementById("text");
-    finalMsg.style.display = "block";
-    finalMsg.innerText = "嘎啦(Bye)嘎啦(Bye)";
-    finalMsg.style.opacity = 1;
-    
-    const oldBtn = document.getElementById("btn");
-    if (oldBtn) oldBtn.remove();
-    
-    if(!document.getElementById("behindBtn")){
-        const btnBehind = document.createElement("p");
-        btnBehind.className = "link";
-        btnBehind.id = "behindBtn";
-        btnBehind.innerText = "•幕後花絮";
-        
-        btnBehind.onclick = () => {
-            finalGualiu.style.display = "none";
-            finalMsg.style.display = "none";
-            btnBehind.style.display = "none";
-            
-            const behindScene = document.getElementById("behindScene");
-            behindScene.style.display = "flex";
-        };
-        container.appendChild(btnBehind);
-        
-        const backBtn = document.getElementById("backBtn");
-        backBtn.onclick = () => {
-            document.getElementById("behindScene").style.display = "none";
-            finalGualiu.style.display = "block";
-            finalMsg.style.display = "block";
-            btnBehind.style.display = "block";
-        };
-    }
+    dialogText.innerText = "";
+    showMessage("你成仙了。", 2500);
 }
 
 function handleNoCountClick() {
@@ -666,14 +522,20 @@ function openSubMenu() {
 function showFiveOptions() {
     choiceExtra[0].innerText = "•我是書蟲，來點書吧";
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
+    choiceExtra[2].innerText = "•我要聽歌!";
+    choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
+    choiceExtra[4].innerText = "•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)";
 
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
+    choiceExtra[2].onclick = handleListenMusic;
+    choiceExtra[3].onclick = handleNoDramas;
+    choiceExtra[4].onclick = handleSignature;
 
-    choiceExtra[0].style.display = "block";
-    choiceExtra[1].style.display = "block";
-    choiceExtra[2].style.display = "none"; 
-    choiceExtra[3].style.display = "none"; 
+    for(let j=0; j<5; j++) {
+        choiceExtra[j].style.display = "block";
+        choiceExtra[j].style.pointerEvents = "auto";
+    }
 
     if (hasAllNoOption) {
         btnAllNo.style.display = "block";
@@ -748,13 +610,14 @@ function handleNotBookworm() {
         (cb) => {
             typeText("《在魔王城說晚安》", dialogText, 120, () => {
                 setTimeout(() => {
+                    let line1Html = dialogText.innerHTML;
                     let tempBox = document.createElement("div");
                     dialogText.appendChild(tempBox);
                     typeText("不知道啊，烏龜說好看那你就去看！", tempBox, 120, () => {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜斯誰？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
@@ -770,6 +633,7 @@ function handleNotBookworm() {
 function showPostBookOptions(positiveText) {
     choiceExtra[0].innerText = positiveText;
     choiceExtra[1].innerText = "•我不要";
+    for(let j=2; j<5; j++) { choiceExtra[j].style.display = "none"; }
     
     choiceExtra[0].style.display = "block";
     choiceExtra[1].style.display = "block";
@@ -788,7 +652,7 @@ function showPostBookOptions(positiveText) {
             document.getElementById("choiceBox").style.pointerEvents = "auto";
             
             choiceExtra[0].onclick = () => { redirectToHelloRoute(); };
-            choiceExtra[1].onclick = () => { redirectToRoute(); };
+            choiceExtra[1].onclick = () => { redirectToHelloRoute(); };
         });
     };
     choiceExtra[1].onclick = handleNoCountClick;
@@ -800,6 +664,51 @@ function redirectToHelloRoute() {
     setTimeout(() => {
         startHelloRoute(false);
     }, 500);
+}
+
+function handleListenMusic() {
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const musicPool = [
+        (cb) => { typeText("（這裡放你的第1首隨機歌曲）", dialogText, 120, cb); },
+        (cb) => { typeText("（這裡放你的第2首隨機歌曲）", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * musicPool.length);
+    musicPool[randomIdx](() => { showPostBookOptions("•好聽愛聽"); });
+}
+
+function handleNoDramas() {
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const dramaPool = [
+        (cb) => { typeText("（這裡放你的第1首隨機電視劇）", dialogText, 120, cb); },
+        (cb) => { typeText("（這裡放你的第2首隨機電視劇）", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * dramaPool.length);
+    dramaPool[randomIdx](() => { showPostBookOptions("•會看的"); });
+}
+
+function handleSignature() {
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const signaturePool = [
+        (cb) => { typeText("（這裡放你的第1個招牌一號隨機內容）", dialogText, 120, cb); },
+        (cb) => { typeText("（這裡放你的第2個招牌一號隨機內容）", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * signaturePool.length);
+    signaturePool[randomIdx](() => { showPostBookOptions("•真有眼光"); });
 }
 </script>
 </body>
