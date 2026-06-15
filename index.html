@@ -84,6 +84,528 @@ button{
   width: min(45vw, 450px);
 }
   
+/* 对话框定位在左上角 */
+#dialogBox{
+  position:absolute;
+  top: 20%;
+  left: 15%;
+  width: 350px;
+}
+  
+/* 💥 選項盒子：固定在右半邊，限制最大寬度 */
+#choiceBox{
+  position:absolute;
+  left: 5%;
+  top: 30%;
+  width: 85%;
+  max-width: 550px; 
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+  
+#dialogText{
+  color:#5f6d6d;
+}
+  
+.choice{
+  cursor:pointer;
+  font-size:20px;
+  margin: 0;
+}
+
+.choice:hover{
+  opacity:0.6;
+}
+
+.cursor{
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink{
+  50%{
+    opacity:0;
+  }
+}
+  
+.choice2{
+  cursor:pointer;
+  margin: 0;
+  font-size:18px;
+  line-height: 1.4; 
+}
+
+.choice2:hover{
+  opacity:0.6;
+}
+
+.choice2{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+  <p id="text">噠噠噠，下雨天。</p>
+  <img id="gualiu" src="gualiu.png" style="display:none;">
+  <p id="btn" class="link" style="display:none;">• 查看呱琉遞過來的履歷</p>
+  <img id="intro" src="intro.png" style="display:none;">
+  <p id="throwBtn" class="link" style="display:none;">• 丟掉履歷</p>
+  <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
+</div>
+
+<div id="scene2" style="display:none;">
+  <div class="left-area">
+    <div id="gualiuBox">
+      <img id="gualiu2" src="gualiu.png">
+    </div>
+    <div id="dialogBox">
+      <p id="dialogText"></p>
+    </div>
+  </div>
+
+  <div class="right-area">
+    <div id="choiceBox" style="display:none;">
+      <p class="choice">•你好</p>
+      <p class="choice">•我不好</p>
+
+      <p class="choice2">•我是書蟲，來點書吧</p>
+      <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
+      <p class="choice2">•我要聽歌!</p>
+      <p class="choice2">•劇荒了，拜託來點劇</p>
+      <p class="choice2">•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)</p>
+    </div>
+  </div>
+</div>
+
+<script>
+let stage = 0;
+  
+const text = document.getElementById("text");
+const gualiu = document.getElementById("gualiu");
+const btn = document.getElementById("btn");
+const intro = document.getElementById("intro");
+const throwBtn = document.getElementById("throwBtn");
+const recoverBtn = document.getElementById("recoverBtn");
+
+const dialogText = document.getElementById("dialogText");
+const choiceMain = document.querySelectorAll(".choice");
+const choiceExtra = document.querySelectorAll(".choice2");
+  
+let throwCount = 0;
+
+function nextText(message,time,next){
+    text.style.opacity=0;
+    setTimeout(()=>{
+        text.innerText=message;
+        text.style.opacity=1;
+        setTimeout(next,time);
+    },1000);
+}
+
+function showMessage(message,time,next){
+    text.style.display = "block";
+    text.innerText = message;
+    text.style.opacity = 1;
+    setTimeout(()=>{
+        text.style.opacity = 0;
+        setTimeout(()=>{
+            text.style.display = "none";
+            if(next){
+                next();
+            }
+        },1000);
+    },time);
+}
+
+function typeText(text, el, speed = 120, callback){
+    el.innerHTML = "";
+    let i = 0;
+    function typing(){
+        if(i < text.length){
+            el.innerHTML =
+                text.substring(0, i+1)
+                + '<span class="cursor">|</span>';
+            i++;
+            setTimeout(typing, speed);
+        }else{
+            el.innerHTML = text;
+            if(callback) callback();
+        }
+    }
+    typing();
+}
+
+setTimeout(()=>{
+    nextText("你遇見了一隻蝸牛。",1500,()=>{
+        nextText("不。",1000,()=>{
+            nextText("準確來說，牠是呱琉。",1500,()=>{
+                text.style.display="none";
+                gualiu.style.display="block";
+                btn.style.display="inline-block";
+            });
+        });
+    });
+},2000);
+
+btn.onclick=function(){
+    gualiu.style.display="none";
+    btn.style.display="none";
+    intro.style.display="block";
+    throwBtn.style.display="block";
+}
+ 
+throwBtn.onclick=function(){
+    throwCount++;
+    intro.style.display="none";
+    throwBtn.style.display="none";
+
+    if(throwCount === 1){
+        showMessage(
+            "履歷已成功丟棄",
+            1500,
+            ()=>{
+                gualiu.style.display="block";
+                recoverBtn.style.display="block";
+            }
+        );
+    }
+    else{
+        showMessage(
+            "呱琉看起來有點受傷",
+            1500,
+            ()=>{
+                gualiu.style.display="block";
+                recoverBtn.style.display="block";
+            }
+        );
+    }
+}
+
+recoverBtn.onclick=function(){
+    recoverBtn.style.display="none";
+
+    if(throwCount < 2){
+        gualiu.style.display="none";
+        intro.style.display="block";
+        throwBtn.style.display="block";
+    }
+    else{
+        gualiu.style.display="none";
+        showMessage(
+            "……",
+            1000,
+            ()=>{
+                showMessage(
+                    "別鬧了。",
+                    1500,
+                    ()=>{
+                        document.getElementById("scene2").style.display = "flex"; 
+                        dialogText.innerText = "";  
+
+                        setTimeout(()=>{
+                            typeText("嘎、", dialogText, 150, ()=>{
+                                setTimeout(()=>{
+                                    typeText("你好。", dialogText, 120, ()=>{
+                                        document.getElementById("choiceBox").style.display = "flex";
+                                    });
+                                }, 200);
+                            });
+                        },800);
+                    }
+                );  
+            }
+        );         
+    }
+}  
+
+// ==========================================
+// 💥 路線 A：「•你好」主線流程
+// ==========================================
+choiceMain[0].onclick = () => {
+    choiceMain.forEach(e => {
+        e.innerText = "";
+        e.style.pointerEvents = "none";
+    });
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    startHelloRoute(false); 
+};
+
+function startHelloRoute(isFromNoFeed = false) {
+    dialogText.innerText = "";
+    
+    typeText("很好", dialogText, 120, () => {
+        setTimeout(() => {
+            typeText("很好<br>朕餓了", dialogText, 120, () => {
+                
+                // 💥 重新定義點擊事件，確保跟 B 路線完全分開
+                setupHelloClicks();
+
+                choiceExtra[0].innerText = "•?";
+                choiceExtra[1].innerText = "•餵牠吃仙丹";
+                choiceExtra[2].innerText = "•就不餵!";
+                choiceExtra[3].innerText = ""; 
+                choiceExtra[4].innerText = "";
+                
+                choiceExtra[0].style.display = "block";
+                choiceExtra[1].style.display = "block";
+                
+                if (isFromNoFeed) {
+                    choiceExtra[2].style.display = "none";
+                } else {
+                    choiceExtra[2].style.display = "block";
+                }
+                
+                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                choiceExtra.forEach(e => e.style.pointerEvents = "auto");
+            });
+        }, 1000);
+    });
+}
+
+// 動態綁定「你好」線專用的點擊事件，防範干擾！
+function setupHelloClicks() {
+    // 點擊第一個按鈕（可能是 ? 或 餵）
+    choiceExtra[0].onclick = () => {
+        if (choiceExtra[0].innerText === "•餵") {
+            startChewingProcess();
+            return;
+        }
+        
+        // 跑問號線
+        choiceExtra.forEach(e => e.style.display = "none");
+        document.getElementById("choiceBox").style.pointerEvents = "none";
+        dialogText.innerText = "";
+        
+        typeText("？", dialogText, 120, () => {
+            setTimeout(() => {
+                typeText("？<br>還在等什麼？", dialogText, 120, () => {
+                    setTimeout(() => {
+                        typeText("？<br>還在等什麼？<br>餵我啊！（沒錯就是這麼理所當然）", dialogText, 120, () => {
+                            choiceExtra[0].innerText = "•餵";
+                            choiceExtra[0].style.display = "block";
+                            document.getElementById("choiceBox").style.pointerEvents = "auto";
+                        });
+                    }, 800);
+                });
+            }, 800);
+        });
+    };
+
+    // 點擊「•餵牠吃仙丹」
+    choiceExtra[1].onclick = () => {
+        startChewingProcess();
+    };
+
+    // 點擊「•就不餵!」
+    choiceExtra[2].onclick = () => {
+        choiceExtra.forEach(e => e.style.display = "none");
+        document.getElementById("choiceBox").style.pointerEvents = "none";
+        setTimeout(() => {
+            startHelloRoute(true); 
+        }, 500);
+    };
+}
+
+// 仙丹連環嚼嚼嚼大歸流
+function startChewingProcess() {
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+    
+    typeText("你、", dialogText, 120, () => {
+        setTimeout(() => {
+            typeText("你、<br>(嚼嚼嚼)", dialogText, 120, () => {
+                setTimeout(() => {
+                    typeText("你、<br>(嚼嚼嚼)<br>要不要", dialogText, 120, () => {
+                        setTimeout(() => {
+                            typeText("幕、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    typeText("你、<br>(嚼嚼嚼)<br>要不要<br>(嚼嚼嚼)<br>吃…<br>(嚼嚼嚼)<br>?", dialogText, 120, () => {
+                                                        
+                                                        // 💥 這裡要重新給他們綁定接下來「你吃/我吃」的事件（下一題填空）
+                                                        choiceExtra[0].onclick = () => { alert("點擊了：你吃就好"); };
+                                                        choiceExtra[1].onclick = () => { alert("點擊了：我吃"); };
+
+                                                        choiceExtra[0].innerText = "•你吃就好";
+                                                        choiceExtra[1].innerText = "•我吃";
+                                                        choiceExtra[0].style.display = "block";
+                                                        choiceExtra[1].style.display = "block";
+                                                        
+                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                    });
+                                                }, 500);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
+}
+
+
+// ==========================================
+// 💥 路線 B：「•我不好」主線流程
+// ==========================================
+choiceMain[1].onclick = () => {
+    choiceMain.forEach(e => {
+        e.innerText = "";
+        e.style.pointerEvents = "none";
+    });
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+
+    // ① 這樣啊……
+    typeText("這樣啊……", dialogText, 120, () => {
+        setTimeout(() => {
+            
+            // ② 等等ㄛ
+            typeText("等等ㄛ", dialogText, 120, () => {
+                setTimeout(() => {
+                    
+                    // ③ 讓我找找……
+                    typeText("讓我找找……", dialogText, 120, () => {
+                        setTimeout(() => {
+                            
+                            // ④ （翻殼）
+                            typeText("（翻殼）", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    
+                                    // ⑤ 先打出「你……」
+                                    typeText("你……", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            
+                                            // 倒退嚕
+                                            let currentStr = "你……";
+                                            function deleteText() {
+                                                if (currentStr.length > 0) {
+                                                    currentStr = currentStr.substring(0, currentStr.length - 1);
+                                                    dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
+                                                    setTimeout(deleteText, 150);
+                                                } else {
+                                                    setTimeout(() => {
+                                                        
+                                                        // ⑥ 殼裡東西有點多==
+                                                        typeText("殼裡東西有點多==", dialogText, 120, () => {
+                                                            setTimeout(() => {
+                                                                
+                                                                // ⑦ 你想要什麼？
+                                                                let baseText = "殼裡東西有點多==<br>";
+                                                                let i = 0;
+                                                                let nextStr = "你想要什麼？";
+                                                                
+                                                                function typeLine2() {
+                                                                    if (i < nextStr.length) {
+                                                                        dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
+                                                                        i++;
+                                                                        setTimeout(typeLine2, 120);
+                                                                    } else {
+                                                                        dialogText.innerHTML = baseText + nextStr;
+                                                                        
+                                                                        // 💥💥 核心修正：還原長選項的文字，並重新綁定對應的點擊事件（待填空）
+                                                                        choiceExtra[0].onclick = () => { alert("點擊了：我是書蟲"); };
+                                                                        choiceExtra[1].onclick = () => { alert("點擊了：文字特調"); };
+                                                                        choiceExtra[2].onclick = () => { alert("點擊了：我要聽歌"); };
+                                                                        choiceExtra[3].onclick = () => { alert("點擊了：來點劇"); };
+                                                                        choiceExtra[4].onclick = () => { alert("點擊了：招牌一號"); };
+
+                                                                        choiceExtra[0].innerText = "•我是書蟲，來點書吧";
+                                                                        choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
+                                                                        choiceExtra[2].innerText = "•我要聽歌!";
+                                                                        choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
+                                                                        choiceExtra[4].innerText = "•想來點招牌一號(呱琉會看心情給你一些他在這個世界遇到的、一些他認為很棒的人類!)";
+
+                                                                        // 通通亮出來
+                                                                        choiceExtra.forEach(e => {
+                                                                            e.style.display = "block";
+                                                                            e.style.pointerEvents = "auto";
+                                                                        });
+                                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                                    }
+                                                                }
+                                                                typeLine2();
+
+                                                            }, 1000);
+                                                        });
+                                                    }, 300);
+                                                }
+                                            }
+                                            deleteText();
+
+                                        }, 1000);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
+};
+</script>
+</body>
+</html>
+}
+.link{
+    cursor:pointer;
+    margin-top:20px;
+    font-size:18px;
+}
+
+.link:hover{
+    opacity:0.6;
+}
+
+#intro{
+    width:min(90vw, 900px);
+}
+
+/* 💥 第二關場景：強制鋪滿，用 flex 分成左右兩邊 */
+#scene2{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  display: flex;
+}
+
+/* 左半邊：放對話框跟呱琉 */
+.left-area {
+  position: relative;
+  width: 45%;
+  height: 100%;
+}
+
+/* 右半邊：專門放選項 */
+.right-area {
+  position: relative;
+  width: 55%;
+  height: 100%;
+}
+
+/* 呱琉定位在左下角 */
+#gualiuBox{
+  position:absolute;
+  left: 10%;
+  bottom: 6%;
+}
+  
+#gualiu2{
+  width: min(45vw, 450px);
+}
+  
 /* 對話框定位在左上角 */
 #dialogBox{
   position:absolute;
