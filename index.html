@@ -65,7 +65,6 @@ p{
   position: absolute;
   top: 22%;
   left: 28%;
-  /* 💡 姊姊在這裡鎖定了不換行指令！ */
   white-space: nowrap; /* 確保呱琉講的話絕對不會自動換行 */
 }
 #dialogText{
@@ -88,7 +87,7 @@ p{
   display: block;
 }
 
-/* 👉 右下側：互動選項區（僅限這裡字多換行 + 點點完美對齊） */
+/* 👉 右下側：互動選項區 */
 #choiceBox{
   position: absolute;
   right: 28%;
@@ -98,10 +97,10 @@ p{
   gap: 18px;
   align-items: flex-start; /* 讓所有選項的 • 站成一條直線對齊 */
   
-  /* 💡 僅限選項區的換行與防撞機制 */
-  max-width: 320px;      /* 限制選項最大寬度 */
-  word-wrap: break-word; /* 允許長單字換行 */
-  white-space: normal;   /* 選項文字超過寬度時會自動換到下一行 */
+  /* 選項區的換行與防撞機制 */
+  max-width: 320px;      
+  word-wrap: break-word; 
+  white-space: normal;   
 }
 .choice{
   cursor:pointer;
@@ -109,7 +108,7 @@ p{
   margin: 0;
   color: #2c3e50;
   line-height: 1.4;
-  text-align: left; /* 換行時字從左邊開始排 */
+  text-align: left; 
 }
 .choice:hover{
   opacity:0.6;
@@ -121,7 +120,7 @@ p{
   line-height: 1.5; 
   display:none;
   color: #2c3e50;
-  text-align: left; /* 換行時字從左邊開始排 */
+  text-align: left; 
 }
 .choice2:hover{
   opacity:0.6;
@@ -156,7 +155,7 @@ p{
   #dialogBox {
     text-align: center;
     margin-top: 5vh;
-    white-space: normal; /* 手機版畫寬不夠，允許正常換行以免字切掉 */
+    white-space: normal; 
   }
   #gualiuBox {
     display: flex;
@@ -486,8 +485,10 @@ function startChewingProcess() {
 }
 
 function triggerAscension() {
+    // 💡 修正這裡：先把 Scene2 藏起來，再叫出初始場景的容器來播字，就不會打架了！
     document.getElementById("scene2").style.display = "none";
     dialogText.innerText = "";
+    document.getElementById("container").style.display = "block"; 
     showMessage("你成仙了。", 2500);
 }
 
@@ -499,11 +500,13 @@ function handleNoCountClick() {
         document.getElementById("choiceBox").style.display = "none";
         document.getElementById("scene2").style.display = "none";
         dialogText.innerText = "";
+        document.getElementById("container").style.display = "block"; 
         
         showMessage("哼", 2000, () => {
             window.open("https://youtu.be/GPoTmtykecGY?si=86vNFOQYVLoiHMXH", "_blank");
             
             setTimeout(() => {
+                document.getElementById("container").style.display = "none";
                 document.getElementById("scene2").style.display = "block";
                 document.getElementById("choiceBox").style.display = "flex";
                 choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
@@ -587,7 +590,7 @@ function showFiveOptions() {
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerText = "•想來點招牌一號(呱琉遇到的人類)";
+    choiceExtra[4].innerText = "•想來點招招牌一號(呱琉遇到的人類)";
 
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
