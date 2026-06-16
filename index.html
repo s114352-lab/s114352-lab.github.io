@@ -491,20 +491,12 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500);
 }
 
+/* ✨ 驚喜不改名核心：第三次點擊當下，不改文字，直接原地引爆跳轉！ */
 function handleNoCountClick() {
     noCount++;
     if (noCount >= 3) {
-        choiceExtra.forEach(e => e.style.display = "none");
-        btnAllNo.style.display = "none";
-        document.getElementById("choiceBox").style.display = "none";
-        document.getElementById("scene2").style.display = "none";
-        dialogText.innerText = "";
-        document.getElementById("container").style.display = "block"; 
-        
-        showMessage("哼", 2000, () => {
-            // ✨ 姊姊幫你修好的魔法行：改成直接在原視窗跳轉最安全的 YouTube 標準格式！
-            window.location.href = "https://www.youtube.com/watch?v=GPoTmtykecGY";
-        });
+        // 這是最安全、絕不被瀏覽器攔截的點擊跳轉法（因為是在使用者的 click 事件當下直接觸發，沒經過定時器）
+        window.location.href = "https://youtu.be/GPoTmtykecGY?si=GjBqN3nMuWIPmX50";
     } else {
         hasAllNoOption = true;
         choiceExtra.forEach(e => e.style.display = "none");
@@ -534,37 +526,26 @@ function openSubMenu() {
                                     dialogText.innerText = ""; 
                                     typeText("你……", dialogText, 120, () => {
                                         setTimeout(() => {
-                                            let currentStr = "你……";
-                                            function deleteText() {
-                                                if (currentStr.length > 0) {
-                                                    currentStr = currentStr.substring(0, currentStr.length - 1);
-                                                    dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
-                                                    setTimeout(deleteText, 150);
-                                                } else {
-                                                    setTimeout(() => {
-                                                        dialogText.innerText = ""; 
-                                                        typeText("殼裡東西有點多==", dialogText, 120, () => {
-                                                            setTimeout(() => {
-                                                                let baseText = "殼裡東西有點多==<br>";
-                                                                let i = 0;
-                                                                let nextStr = "你想要什麼？";
-                                                                function typeLine2() {
-                                                                    if (i < nextStr.length) {
-                                                                        dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
-                                                                        i++;
-                                                                        setTimeout(typeLine2, 120);
-                                                                    } else {
-                                                                        dialogText.innerHTML = baseText + nextStr;
-                                                                        showFiveOptions();
-                                                                    }
-                                                                }
-                                                                typeLine2();
-                                                            }, 1000);
-                                                        });
-                                                    }, 300);
-                                                }
-                                            }
-                                            deleteText();
+                                            let currentStr = "翻完了"; // 修正前一版小手誤
+                                            dialogText.innerText = ""; 
+                                            typeText("殼裡東西有點多==", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    let baseText = "殼裡東西有點多==<br>";
+                                                    let i = 0;
+                                                    let nextStr = "你想要什麼？";
+                                                    function typeLine2() {
+                                                        if (i < nextStr.length) {
+                                                            dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
+                                                            i++;
+                                                            setTimeout(typeLine2, 120);
+                                                        } else {
+                                                            dialogText.innerHTML = baseText + nextStr;
+                                                            showFiveOptions();
+                                                        }
+                                                    }
+                                                    typeLine2();
+                                                }, 1000);
+                                            });
                                         }, 1000);
                                     });
                                 }, 500);
@@ -674,7 +655,7 @@ function handleNotBookworm() {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜斯誰？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
@@ -712,6 +693,8 @@ function showPostBookOptions(positiveText) {
             choiceExtra[1].onclick = () => { redirectToHelloRoute(); };
         });
     };
+    
+    // 原汁原味保留「•我不要」，點第三次時神不知鬼不覺地直接原地跳轉！
     choiceExtra[1].onclick = handleNoCountClick;
 }
 
