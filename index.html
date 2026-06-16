@@ -60,12 +60,13 @@ p{
   box-sizing: border-box;
 }
 
-/* 👈 左上側：粗體字對話框 */
+/* 👈 左上側：粗體字對話框（呱琉講的話） */
 #dialogBox{
   position: absolute;
   top: 22%;
   left: 28%;
-  width: 300px;
+  /* 💡 姊姊在這裡鎖定了不換行指令！ */
+  white-space: nowrap; /* 確保呱琉講的話絕對不會自動換行 */
 }
 #dialogText{
   color:#5f6d6d;
@@ -87,7 +88,7 @@ p{
   display: block;
 }
 
-/* 👉 右下側：互動選項區（優化：點點精準對齊版） */
+/* 👉 右下側：互動選項區（僅限這裡字多換行 + 點點完美對齊） */
 #choiceBox{
   position: absolute;
   right: 28%;
@@ -95,14 +96,12 @@ p{
   display: flex;
   flex-direction: column;
   gap: 18px;
+  align-items: flex-start; /* 讓所有選項的 • 站成一條直線對齊 */
   
-  /* 💡 姊姊改了這裡：讓選項內容在左側對齊，這樣所有的 • 就會排成一條直線！ */
-  align-items: flex-start; 
-  
-  /* 字數爆開時的自動換行保護 */
-  max-width: 320px;      
-  word-wrap: break-word; 
-  white-space: normal;   
+  /* 💡 僅限選項區的換行與防撞機制 */
+  max-width: 320px;      /* 限制選項最大寬度 */
+  word-wrap: break-word; /* 允許長單字換行 */
+  white-space: normal;   /* 選項文字超過寬度時會自動換到下一行 */
 }
 .choice{
   cursor:pointer;
@@ -110,7 +109,7 @@ p{
   margin: 0;
   color: #2c3e50;
   line-height: 1.4;
-  text-align: left; /* 配合靠左對齊，文字換行時也會從左邊開始 */
+  text-align: left; /* 換行時字從左邊開始排 */
 }
 .choice:hover{
   opacity:0.6;
@@ -122,7 +121,7 @@ p{
   line-height: 1.5; 
   display:none;
   color: #2c3e50;
-  text-align: left; /* 配合靠左對齊，文字換行時也會從左邊開始 */
+  text-align: left; /* 換行時字從左邊開始排 */
 }
 .choice2:hover{
   opacity:0.6;
@@ -157,6 +156,7 @@ p{
   #dialogBox {
     text-align: center;
     margin-top: 5vh;
+    white-space: normal; /* 手機版畫寬不夠，允許正常換行以免字切掉 */
   }
   #gualiuBox {
     display: flex;
@@ -182,7 +182,6 @@ p{
 
 <body>
 
-<!-- 初始場景（噠噠噠：完全居中） -->
 <div id="container">
   <p id="text">噠噠噠，下雨天。</p>
   <img id="gualiu" src="gualiu.png">
@@ -192,20 +191,16 @@ p{
   <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
 </div>
 
-<!-- 第二場景：依據你的密碼完全絕對定位 -->
 <div id="scene2">
   
-  <!-- 👈 左側：粗體對話文字框 -->
   <div id="dialogBox">
     <p id="dialogText"></p>
   </div>
   
-  <!-- 🧍 中間偏左：呱琉本琉 -->
   <div id="gualiuBox">
     <img id="gualiu2" src="gualiu.png">
   </div>
 
-  <!-- 👉 右側：互動選項區 -->
   <div id="choiceBox" style="display:none;">
     <p class="choice">•你好</p>
     <p class="choice">•我不好</p>
@@ -733,7 +728,6 @@ function redirectToHelloRoute() {
     }, 500);
 }
 
-// 依貓貓要求，未交代的隨機內容皆保持不加功能狀態
 function handleListenMusic() {
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
