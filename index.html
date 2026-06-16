@@ -485,7 +485,6 @@ function startChewingProcess() {
 }
 
 function triggerAscension() {
-    // 💡 修正這裡：先把 Scene2 藏起來，再叫出初始場景的容器來播字，就不會打架了！
     document.getElementById("scene2").style.display = "none";
     dialogText.innerText = "";
     document.getElementById("container").style.display = "block"; 
@@ -503,15 +502,8 @@ function handleNoCountClick() {
         document.getElementById("container").style.display = "block"; 
         
         showMessage("哼", 2000, () => {
-            window.open("https://youtu.be/GPoTmtykecGY?si=86vNFOQYVLoiHMXH", "_blank");
-            
-            setTimeout(() => {
-                document.getElementById("container").style.display = "none";
-                document.getElementById("scene2").style.display = "block";
-                document.getElementById("choiceBox").style.display = "flex";
-                choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
-                startHelloRoute(false);
-            }, 1000);
+            // ✨ 姊姊幫你修好的魔法行：改成直接在原視窗跳轉最安全的 YouTube 標準格式！
+            window.location.href = "https://www.youtube.com/watch?v=GPoTmtykecGY";
         });
     } else {
         hasAllNoOption = true;
