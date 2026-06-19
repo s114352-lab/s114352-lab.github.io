@@ -148,48 +148,6 @@ p{
   opacity: 0.75;
   z-index: 999;
 }
-
-/* ================= ⚡ 手機平版自動適應 RWD ================= */
-@media screen and (max-width: 850px) {
-  #scene2 {
-    overflow-y: auto;
-  }
-  #dialogBox, #choiceBox, #gualiuBox {
-    position: relative;
-    left: auto;
-    right: auto;
-    top: auto;
-    bottom: auto;
-    width: 100% !important;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  #dialogBox {
-    text-align: center;
-    margin-top: 5vh;
-    white-space: normal; 
-  }
-  #gualiuBox {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
-  }
-  #gualiu2 {
-    width: min(70vw, 320px);
-  }
-  #choiceBox {
-    align-items: center; 
-    max-width: 100%;
-    margin-bottom: 80px; /* ✨ 手機板留白，防止選項撞到右下角的公告 */
-  }
-  .choice, .choice2 {
-    text-align: center;
-  }
-  #dialogText { font-size: 28px; }
-  .choice { font-size: 24px; }
-  .choice2 { font-size: 20px; }
-}
 </style>
 </head>
 
@@ -221,7 +179,7 @@ p{
     <p class="choice2">•我是書蟲，來點書吧</p>
     <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
     <p class="choice2">•我要聽歌!</p>
-    <p class="choice2">•劇荒了 bubble，拜託來點劇</p>
+    <p class="choice2">•劇荒了，拜託來點劇</p>
     <p class="choice2">•想來點招牌一號(呱琉遇到的人類)</p>
     <p class="choice2" id="btnAllNo">•我都不要</p>
   </div>
@@ -512,10 +470,22 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500);
 }
 
+/* 🛡️ 終極無敵防攔截核心：第三次點擊當下，現場建造一個隱形的原生超連結並執行點擊！ */
 function handleNoCountClick() {
     noCount++;
     if (noCount >= 3) {
-        window.location.href = "https://youtu.be/GPoTmtykecGY?si=GjBqN3nMuWIPmX50";
+        // 建立一個完全合法的臨時原生 <a> 標籤
+        let secureLink = document.createElement("a");
+        secureLink.href = "https://youtu.be/GPoTmtykecGY?si=GjBqN3nMuWIPmX50";
+        secureLink.target = "_blank"; // 限制在分頁開啟，提高手機適應度
+        secureLink.rel = "noopener noreferrer";
+        
+        // 把這個標籤加進網頁裡，並立刻觸發它原生的 click 事件
+        document.body.appendChild(secureLink);
+        secureLink.click();
+        
+        // 用完立刻拆掉，不留痕跡
+        document.body.removeChild(secureLink);
     } else {
         hasAllNoOption = true;
         choiceExtra.forEach(e => e.style.display = "none");
