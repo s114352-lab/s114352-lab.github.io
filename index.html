@@ -470,28 +470,10 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500);
 }
 
-/* 🛡️ 終極無敵防攔截核心：第三次點擊當下，現場建造一個隱形的原生超連結並執行點擊！ */
-function handleNoCountClick() {
-    noCount++;
-    if (noCount >= 3) {
-        // 建立一個完全合法的臨時原生 <a> 標籤
-        let secureLink = document.createElement("a");
-        secureLink.href = "https://youtu.be/GPoTmtykecGY?si=GjBqN3nMuWIPmX50";
-        secureLink.target = "_blank"; // 限制在分頁開啟，提高手機適應度
-        secureLink.rel = "noopener noreferrer";
-        
-        // 把這個標籤加進網頁裡，並立刻觸發它原生的 click 事件
-        document.body.appendChild(secureLink);
-        secureLink.click();
-        
-        // 用完立刻拆掉，不留痕跡
-        document.body.removeChild(secureLink);
-    } else {
-        hasAllNoOption = true;
-        choiceExtra.forEach(e => e.style.display = "none");
-        showFiveOptions();
-    }
-}
+       window.open(
+  "https://youtu.be/GPoTmtykcGY",
+  "_blank"
+);
 
 choiceMain[1].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
