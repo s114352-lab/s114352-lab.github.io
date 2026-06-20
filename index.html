@@ -188,7 +188,7 @@ p{
 ──────────────<br>
 本殼還在擴建中。<br><br>
 
-若發現 𝔹𝕦假，<br>
+若發現 𝔹𝕦𝕘，<br>
 請不要戳它。<br>
 ──────────────
 </div>
@@ -208,6 +208,7 @@ const btnAllNo = document.getElementById("btnAllNo");
 let throwCount = 0;
 let hasAllNoOption = false;
 let noCount = 0;
+let currentCategory = ""; // 新增：用來記錄當前是在看書、聽歌還是追劇分支
 
 function nextText(message,time,next){
     text.style.opacity=0;
@@ -563,6 +564,7 @@ function showFiveOptions() {
 }
 
 function handleBookworm() {
+    currentCategory = "book"; // 標記目前是看書
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -588,6 +590,7 @@ function handleBookworm() {
 }
 
 function handleNotBookworm() {
+    currentCategory = "book"; // 標記目前是看書（特調）
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -668,8 +671,20 @@ function handleNoCountClick() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
 
+    // 根據當前所在的分支，動態生成適合的排斥台詞，並移除 (? 符號
+    let punchline = "那就再挑一次";
+    if (currentCategory === "book") {
+        punchline = "那就再看一次";
+    } else if (currentCategory === "music") {
+        punchline = "那就再聽一次";
+    } else if (currentCategory === "drama") {
+        punchline = "那就再挑一次";
+    } else if (currentCategory === "signature") {
+        punchline = "那就再選一次";
+    }
+
     if (noCount === 1) {
-        typeText("那就再聽一次（？", dialogText, 120, () => {
+        typeText(punchline, dialogText, 120, () => {
             setTimeout(() => {
                 choiceExtra[0].innerText = "•喔";
                 choiceExtra[0].style.display = "block";
@@ -681,7 +696,7 @@ function handleNoCountClick() {
             }, 1000);
         });
     } else if (noCount === 2) {
-        hasAllNoOption = true; // 開啟解鎖「我都不要」隱藏按鈕的鑰匙
+        hasAllNoOption = true; // 解鎖「我都不要」
         typeText("好喔，隨便你==" + "<br><span class='small-text'>（給他機會回五選單，不計入我不要的3次）</span>", dialogText, 120, () => {
             setTimeout(() => {
                 choiceExtra[0].innerText = "•喔";
@@ -694,7 +709,6 @@ function handleNoCountClick() {
             }, 1000);
         });
     } else if (noCount >= 3) {
-        // 第 3 次：跳出隨興曲連結，並直接滑順導向「朕餓了」主線
         window.open("https://youtu.be/GPoTmtykcGY", "_blank");
         typeText("你心情不錯嘛", dialogText, 120, () => {
             setTimeout(() => {
@@ -713,6 +727,7 @@ function redirectToHelloRoute() {
 }
 
 function handleListenMusic() {
+    currentCategory = "music"; // 標記目前是聽歌
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -721,6 +736,7 @@ function handleListenMusic() {
 }
 
 function handleNoDramas() {
+    currentCategory = "drama"; // 標記目前是追劇
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -729,6 +745,7 @@ function handleNoDramas() {
 }
 
 function handleSignature() {
+    currentCategory = "signature"; // 標記目前是招牌一號
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
