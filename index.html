@@ -98,7 +98,7 @@ p{
   align-items: flex-start; /* 讓所有選項的 • 站成一條直線對齊 */
   
   /* 選項區的換行與防撞機制 */
-  max-width: 320px;      
+  max-width: 320px;       
   word-wrap: break-word; 
   white-space: normal;   
 }
@@ -188,7 +188,7 @@ p{
 ──────────────<br>
 本殼還在擴建中。<br><br>
 
-若發現 𝔹𝕦𝕘，<br>
+若發現 𝔹𝕦假，<br>
 請不要戳它。<br>
 ──────────────
 </div>
@@ -470,11 +470,6 @@ function triggerAscension() {
     showMessage("你成仙了。", 2500);
 }
 
-       window.open(
-  "https://youtu.be/GPoTmtykcGY",
-  "_blank"
-);
-
 choiceMain[1].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
     openSubMenu();
@@ -533,7 +528,7 @@ function showFiveOptions() {
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerText = "•想來點招招牌一號(呱琉遇到的人類)";
+    choiceExtra[4].innerText = "•想來點招牌一號(呱琉遇到的人類)";
 
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
@@ -625,7 +620,7 @@ function handleNotBookworm() {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜斯誰？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
@@ -665,6 +660,48 @@ function showPostBookOptions(positiveText) {
     };
     
     choiceExtra[1].onclick = handleNoCountClick;
+}
+
+function handleNoCountClick() {
+    noCount++;
+    choiceExtra.forEach(e => e.style.display = "none");
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    if (noCount === 1) {
+        typeText("那就再聽一次（？", dialogText, 120, () => {
+            setTimeout(() => {
+                choiceExtra[0].innerText = "•喔";
+                choiceExtra[0].style.display = "block";
+                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                choiceExtra[0].onclick = () => {
+                    choiceExtra.forEach(e => e.style.display = "none");
+                    showFiveOptions();
+                };
+            }, 1000);
+        });
+    } else if (noCount === 2) {
+        hasAllNoOption = true; // 開啟解鎖「我都不要」隱藏按鈕的鑰匙
+        typeText("好喔，隨便你==" + "<br><span class='small-text'>（給他機會回五選單，不計入我不要的3次）</span>", dialogText, 120, () => {
+            setTimeout(() => {
+                choiceExtra[0].innerText = "•喔";
+                choiceExtra[0].style.display = "block";
+                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                choiceExtra[0].onclick = () => {
+                    choiceExtra.forEach(e => e.style.display = "none");
+                    showFiveOptions();
+                };
+            }, 1000);
+        });
+    } else if (noCount >= 3) {
+        // 第 3 次：跳出隨興曲連結，並直接滑順導向「朕餓了」主線
+        window.open("https://youtu.be/GPoTmtykcGY", "_blank");
+        typeText("你心情不錯嘛", dialogText, 120, () => {
+            setTimeout(() => {
+                startHelloRoute(false);
+            }, 1500);
+        });
+    }
 }
 
 function redirectToHelloRoute() {
