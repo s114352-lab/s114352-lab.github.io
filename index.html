@@ -210,7 +210,7 @@ const btnAllNo = document.getElementById("btnAllNo");
 let throwCount = 0;
 let hasAllNoOption = false;
 let noCount = 0;
-let currentCategory = ""; // 新增：用來記錄當前是在看書、聽歌還是追劇分支
+let currentCategory = ""; 
 
 function nextText(message,time,next){
     text.style.opacity=0;
@@ -566,7 +566,7 @@ function showFiveOptions() {
 }
 
 function handleBookworm() {
-    currentCategory = "book"; // 標記目前是看書
+    currentCategory = "book"; 
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -592,7 +592,7 @@ function handleBookworm() {
 }
 
 function handleNotBookworm() {
-    currentCategory = "book"; // 標記目前是看書（特調）
+    currentCategory = "special"; 
     choiceExtra.forEach(e => e.style.display = "none");
     btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
@@ -638,6 +638,53 @@ function handleNotBookworm() {
     pool[randomIdx](() => { showPostBookOptions("•在看了"); });
 }
 
+function handleListenMusic() {
+    currentCategory = "music"; 
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const pool = [
+        (cb) => { typeText("聽點放鬆的吧！<br>本呱推薦去播浪漫電視劇的純音樂原聲帶，超級療癒。", dialogText, 120, cb); },
+        (cb) => { typeText("來首輕鬆有活力的純音樂！<br>讓大腦關機一下吧～", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * pool.length);
+    pool[randomIdx](() => { showPostBookOptions("•好聽愛聽"); });
+}
+
+function handleNoDramas() {
+    currentCategory = "drama"; 
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const pool = [
+        (cb) => { typeText("劇荒了嗎？<br>本呱強力推薦超甜校園劇《偷偷藏不住》，看完心情變超好！", dialogText, 120, cb); },
+        (cb) => { typeText("推薦你看治癒系、熱血的動畫片！<br>躲在殼裡看劇最舒服了。", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * pool.length);
+    pool[randomIdx](() => { showPostBookOptions("•會看的"); });
+}
+
+function handleSignature() {
+    currentCategory = "signature"; 
+    choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
+    document.getElementById("choiceBox").style.pointerEvents = "none";
+    dialogText.innerText = "";
+
+    const pool = [
+        (cb) => { typeText("招牌一號來了！<br>其實就是呱琉在路上遇到形形色色的人類小故事啦～", dialogText, 120, cb); }
+    ];
+
+    let randomIdx = Math.floor(Math.random() * pool.length);
+    pool[randomIdx](() => { showPostBookOptions("•想聽"); }); // ✨徹底拔除「真有眼光」，改成流暢自然的「•想聽」
+}
+
 function showPostBookOptions(positiveText) {
     choiceExtra[0].innerText = positiveText;
     choiceExtra[1].innerText = "•我不要";
@@ -673,9 +720,8 @@ function handleNoCountClick() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
 
-    // 根據當前所在的分支，動態生成適合的排斥台詞，並移除 (? 符號
     let punchline = "那就再挑一次";
-    if (currentCategory === "book") {
+    if (currentCategory === "book" || currentCategory === "special") {
         punchline = "那就再看一次";
     } else if (currentCategory === "music") {
         punchline = "那就再聽一次";
@@ -698,7 +744,7 @@ function handleNoCountClick() {
             }, 1000);
         });
     } else if (noCount === 2) {
-        hasAllNoOption = true; // 解鎖「我都不要」
+        hasAllNoOption = true; 
         typeText("好喔，隨便你==" + "<br><span class='small-text'>（給他機會回五選單，不計入我不要的3次）</span>", dialogText, 120, () => {
             setTimeout(() => {
                 choiceExtra[0].innerText = "•喔";
@@ -726,33 +772,6 @@ function redirectToHelloRoute() {
     setTimeout(() => {
         startHelloRoute(false);
     }, 500);
-}
-
-function handleListenMusic() {
-    currentCategory = "music"; // 標記目前是聽歌
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    showPostBookOptions("•好聽愛聽");
-}
-
-function handleNoDramas() {
-    currentCategory = "drama"; // 標記目前是追劇
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    showPostBookOptions("•會看的");
-}
-
-function handleSignature() {
-    currentCategory = "signature"; // 標記目前是招牌一號
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    showPostBookOptions("•真有眼光");
 }
 </script>
 </body>
