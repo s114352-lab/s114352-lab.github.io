@@ -222,7 +222,6 @@ p{
 
   <div id="modeBar">
   <span class="mode active" data-mode="auto">Auto</span>
-  <span class="mode" data-mode="manual">Manual</span>
   <span class="mode" data-mode="skip">Skip</span>
 </div>
   
@@ -324,7 +323,19 @@ function typeText(textHtml, el, speed = 120, callback){
     }
     typing();
 }
+  function gualiuSay(text, callback){
 
+    if(playMode === "skip"){
+
+        dialogText.innerHTML = text;
+
+        if(callback) callback();
+
+        return;
+    }
+
+    typeText(text, dialogText, 120, callback);
+}
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
         isPageVisible = false;
@@ -435,10 +446,10 @@ recoverBtn.onclick=function(){
             document.getElementById("scene2").style.display = "block"; 
             dialogText.innerText = "";  
             setTimeout(()=>{
-                typeText("嘎、", dialogText, 150, ()=>{
+                typeText("嘎、", ()=>{
                     setTimeout(()=>{
                         dialogText.innerText = ""; 
-                        typeText("你好。", dialogText, 120, ()=>{
+                        typeText("你好。", ()=>{
                             document.getElementById("choiceBox").style.display = "flex";
                         });
                     }, 800);
@@ -456,10 +467,10 @@ choiceMain[0].onclick = () => {
 
 function startHelloRoute(isFromNoFeed = false) {
     dialogText.innerText = ""; 
-    typeText("很好", dialogText, 120, () => {
+    typeText("很好", () => {
         setTimeout(() => {
             dialogText.innerText = ""; 
-            typeText("朕餓了", dialogText, 120, () => {
+            typeText("朕餓了", () => {
                 document.getElementById("choiceBox").style.display = "flex";
                 setupHelloClicks();
                 choiceExtra[0].innerText = "•?";
@@ -493,10 +504,10 @@ function setupHelloClicks() {
         typeText("？", dialogText, 120, () => {
             setTimeout(() => {
                 dialogText.innerText = ""; 
-                typeText("還在等什麼？", dialogText, 120, () => {
+                typeText("還在等什麼？", () => {
                     setTimeout(() => {
                         dialogText.innerText = ""; 
-                        typeText("餵我啊！（沒錯就是這麼理所當然）", dialogText, 120, () => {
+                        typeText("餵我啊！（沒錯就是這麼理所當然）", () => {
                             choiceExtra[0].innerText = "•餵";
                             choiceExtra[0].style.display = "block";
                             document.getElementById("choiceBox").style.pointerEvents = "auto";
@@ -519,29 +530,29 @@ function startChewingProcess() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    typeText("你、", dialogText, 120, () => {
+    typeText("你、", () => {
         setTimeout(() => {
             dialogText.innerText = ""; 
-            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+            typeText("(嚼嚼嚼)", () => {
                 setTimeout(() => {
                     dialogText.innerText = ""; 
-                    typeText("要不要", dialogText, 120, () => {
+                    typeText("要不要", () => {
                         setTimeout(() => {
                             dialogText.innerText = ""; 
-                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                            typeText("(嚼嚼嚼)", () => {
                                 setTimeout(() => {
                                     dialogText.innerText = ""; 
-                                    typeText("吃…", dialogText, 120, () => {
+                                    typeText("吃…", () => {
                                         setTimeout(() => {
                                             dialogText.innerText = ""; 
-                                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                            typeText("(嚼嚼嚼)", () => {
                                                 setTimeout(() => {
                                                     dialogText.innerText = ""; 
-                                                    typeText("?", dialogText, 120, () => {
+                                                    typeText("?", () => {
                                                         choiceExtra[0].onclick = () => { 
                                                             choiceExtra.forEach(e => e.style.display = "none");
                                                             dialogText.innerText = "";
-                                                            typeText("不行，你得吃（塞", dialogText, 120, () => {
+                                                            typeText("不行，你得吃（塞", () => {
                                                                 setTimeout(triggerAscension, 1500);
                                                             });
                                                         };
@@ -585,22 +596,21 @@ choiceMain[1].onclick = () => {
 function openSubMenu() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    typeText("這樣啊……", dialogText, 120, () => {
-        setTimeout(() => {
+    typeText("這樣啊……", ()=> {
             dialogText.innerText = ""; 
-            typeText("等等ㄛ", dialogText, 120, () => {
+            typeText("等等ㄛ", () => {
                 setTimeout(() => {
                     dialogText.innerText = ""; 
-                    typeText("讓我找找……", dialogText, 120, () => {
+                    typeText("讓我找找……", () => {
                         setTimeout(() => {
                             dialogText.innerText = ""; 
-                            typeText("（翻殼）", dialogText, 120, () => {
+                            typeText("（翻殼）", () => {
                                 setTimeout(() => {
                                     dialogText.innerText = ""; 
-                                    typeText("你……", dialogText, 120, () => {
+                                    typeText("你……", () => {
                                         setTimeout(() => {
                                             dialogText.innerText = ""; 
-                                            typeText("殼裡東西有點多==", dialogText, 120, () => {
+                                            typeText("殼裡東西有點多==", () => {
                                                 setTimeout(() => {
                                                     let baseText = "殼裡東西有點多==<br>";
                                                     let i = 0;
@@ -661,7 +671,7 @@ function showFiveOptions() {
             document.getElementById("choiceBox").style.pointerEvents = "none";
             
             dialogText.innerText = "";
-            typeText("你心情不錯嘛", dialogText, 120, () => {
+            typeText("你心情不錯嘛", () => {
                 setTimeout(() => {
                     startHelloRoute(false);
                 }, 1500);
