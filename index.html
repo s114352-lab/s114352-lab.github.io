@@ -428,7 +428,7 @@ function startHelloRoute(isFromNoFeed = false) {
             typeText("朕餓了", dialogText, 120, () => {
                 document.getElementById("choiceBox").style.display = "flex";
                 
-                // ─── 修正：點擊「•?」後的完整四部曲連擊 ───
+                // ─── 修正：保留最後一句話的理所當然路線 ───
                 choiceExtra[0].onclick = () => {
                     clearMenuAndPrepareBox();
                     // 1. 先回一個 "?"
@@ -439,18 +439,20 @@ function startHelloRoute(isFromNoFeed = false) {
                             typeText("還在等什麼?", dialogText, 120, () => {
                                 setTimeout(() => {
                                     dialogText.innerText = "";
-                                    // 3. 最後理所當然
-                                    typeText("餵我啊(沒錯就是這麼理所當然)", dialogText, 120, () => {
+                                    // 3. 最後理所當然 (注意驚嘆號修正)
+                                    typeText("餵我啊!(沒錯就是這麼理所當然)", dialogText, 120, () => {
                                         setTimeout(() => {
-                                            // 4. 清空按鈕，只露出強制的「•餵」
-                                            clearMenuAndPrepareBox();
+                                            // 4. 這裡只隱藏其他按鈕，【絕對不清空】dialogText！
+                                            for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+                                            btnAllNo.style.display = "none";
                                             
+                                            // 只露出強制的「•餵」
                                             choiceExtra[0].innerText = "•餵";
                                             choiceExtra[0].style.display = "block";
                                             choiceExtra[0].style.pointerEvents = "auto";
                                             
                                             choiceExtra[0].onclick = () => {
-                                                clearMenuAndPrepareBox();
+                                                clearMenuAndPrepareBox(); // 點擊餵之後才清空
                                                 startChewingProcess();
                                             };
                                             
