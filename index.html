@@ -485,57 +485,76 @@ function startChewingProcess() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    typeText("你、", dialogText, 120, () => {
+    // 1. 先顯示「你……」，速度放慢一點 (speed 改為 250)
+    typeText("你……", dialogText, 250, () => {
+        // 停留 1.2 秒，讓玩家看清楚
         setTimeout(() => {
-            dialogText.innerText = ""; 
-            typeText("(嚼嚼嚼)", dialogText, 120, () => {
-                setTimeout(() => {
-                    dialogText.innerText = ""; 
-                    typeText("要不要", dialogText, 120, () => {
-                        setTimeout(() => {
-                            dialogText.innerText = ""; 
-                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
-                                setTimeout(() => {
-                                    dialogText.innerText = ""; 
-                                    typeText("吃…", dialogText, 120, () => {
-                                        setTimeout(() => {
-                                            dialogText.innerText = ""; 
-                                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
-                                                setTimeout(() => {
-                                                    dialogText.innerText = ""; 
-                                                    typeText("?", dialogText, 120, () => {
-                                                        choiceExtra[0].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            typeText("不行，你得吃（塞", dialogText, 120, () => {
-                                                                setTimeout(triggerAscension, 1500);
-                                                            });
-                                                        };
-                                                        choiceExtra[1].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            triggerAscension();
-                                                        };
-                                                        choiceExtra[0].innerText = "•你吃就好";
-                                                        choiceExtra[1].innerText = "•我吃";
-                                                        choiceExtra[0].style.display = "block";
-                                                        choiceExtra[1].style.display = "block";
-                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                                    });
-                                                }, 500);
-                                            });
-                                        }, 500);
-                                    });
-                                }, 500);
-                            });
-                        }, 500);
-                    });
-                }, 500);
-            });
-        }, 500);
+            let str = "你……";
+            // 2. 實作倒退嚕效果：一字一字刪除
+            function deleteText() {
+                if (str.length > 0) {
+                    str = str.substring(0, str.length - 1);
+                    dialogText.innerHTML = str + '<span class="cursor">|</span>';
+                    setTimeout(deleteText, 180); // 倒退嚕的速度，數字越大越慢
+                } else {
+                    // 3. 刪完之後，接續後面的嚼嚼嚼
+                    setTimeout(nextChew1, 600);
+                }
+            }
+            deleteText();
+        }, 1200);
     });
-}
 
+    function nextChew1() {
+        dialogText.innerText = ""; 
+        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+            setTimeout(() => {
+                dialogText.innerText = ""; 
+                typeText("要不要", dialogText, 150, () => {
+                    setTimeout(() => {
+                        dialogText.innerText = ""; 
+                        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+                            setTimeout(() => {
+                                dialogText.innerText = ""; 
+                                typeText("吃…", dialogText, 150, () => {
+                                    setTimeout(() => {
+                                        dialogText.innerText = ""; 
+                                        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+                                            setTimeout(() => {
+                                                dialogText.innerText = ""; 
+                                                typeText("?", dialogText, 150, () => {
+                                                    // 出現選項
+                                                    choiceExtra[0].onclick = () => { 
+                                                        choiceExtra.forEach(e => e.style.display = "none");
+                                                        dialogText.innerText = "";
+                                                        typeText("不行，你得吃（塞", dialogText, 130, () => {
+                                                            setTimeout(triggerAscension, 1500);
+                                                        });
+                                                    };
+                                                    choiceExtra[1].onclick = () => { 
+                                                        choiceExtra.forEach(e => e.style.display = "none");
+                                                        dialogText.innerText = "";
+                                                        triggerAscension();
+                                                    };
+                                                    choiceExtra[0].innerText = "•你吃就好";
+                                                    choiceExtra[1].innerText = "•我吃";
+                                                    choiceExtra[0].style.display = "block";
+                                                    choiceExtra[1].style.display = "block";
+                                                    document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                });
+                                            }, 600);
+                                        });
+                                    }, 600);
+                                });
+                            }, 600);
+                        });
+                    }, 600);
+                });
+            }, 600);
+        });
+    }
+}
+  
 function triggerAscension() {
     document.getElementById("scene2").style.display = "none";
     dialogText.innerText = "";
