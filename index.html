@@ -747,9 +747,12 @@ function handleNoDramas() {
     currentCategory = "drama"; 
     clearMenuAndPrepareBox();
 
+    // 💡 這裡已經幫你把「偷偷藏不住」完全換成你指定的新劇池囉！
     const pool = [
-        (cb) => { typeText("劇荒了嗎？<br>本呱強力推薦超甜校園劇《偷偷藏不住》，看完心情變超好！", dialogText, 120, cb); },
-        (cb) => { typeText("推薦你看治癒系、熱血的動畫片！<br>躲在殼裡看劇最舒服了。", dialogText, 120, cb); }
+        (cb) => { typeText("《機智醫師生活》", dialogText, 120, cb); },
+        (cb) => { typeText("《大力女子都奉順》", dialogText, 120, cb); },
+        (cb) => { typeText("《法醫女王》", dialogText, 120, cb); },
+        (cb) => { typeText("《成何體統》-丞磊王楚然", dialogText, 120, cb); }
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
