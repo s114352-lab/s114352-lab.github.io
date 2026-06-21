@@ -446,10 +446,10 @@ recoverBtn.onclick=function(){
             document.getElementById("scene2").style.display = "block"; 
             dialogText.innerText = "";  
             setTimeout(()=>{
-                typeText("嘎、", ()=>{
+                gualiuSay("嘎、", ()=>{
                     setTimeout(()=>{
                         dialogText.innerText = ""; 
-                        typeText("你好。", ()=>{
+                        gualiuSay("你好。", ()=>{
                             document.getElementById("choiceBox").style.display = "flex";
                         });
                     }, 800);
@@ -467,10 +467,10 @@ choiceMain[0].onclick = () => {
 
 function startHelloRoute(isFromNoFeed = false) {
     dialogText.innerText = ""; 
-    typeText("很好", () => {
+    gualiuSay("很好", () => {
         setTimeout(() => {
             dialogText.innerText = ""; 
-            typeText("朕餓了", () => {
+            gualiuSay("朕餓了", () => {
                 document.getElementById("choiceBox").style.display = "flex";
                 setupHelloClicks();
                 choiceExtra[0].innerText = "•?";
@@ -501,13 +501,13 @@ function setupHelloClicks() {
         choiceExtra.forEach(e => e.style.display = "none");
         document.getElementById("choiceBox").style.pointerEvents = "none";
         dialogText.innerText = "";
-        typeText("？", dialogText, 120, () => {
+        gualiuSay("？", () => {
             setTimeout(() => {
                 dialogText.innerText = ""; 
-                typeText("還在等什麼？", () => {
+                gualiuSay("還在等什麼？", () => {
                     setTimeout(() => {
                         dialogText.innerText = ""; 
-                        typeText("餵我啊！（沒錯就是這麼理所當然）", () => {
+                        gualiuSay("餵我啊！（沒錯就是這麼理所當然）", () => {
                             choiceExtra[0].innerText = "•餵";
                             choiceExtra[0].style.display = "block";
                             document.getElementById("choiceBox").style.pointerEvents = "auto";
@@ -530,29 +530,29 @@ function startChewingProcess() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    typeText("你、", () => {
+    gualiuSay("你、", () => {
         setTimeout(() => {
             dialogText.innerText = ""; 
-            typeText("(嚼嚼嚼)", () => {
+            gualiuSay("(嚼嚼嚼)", () => {
                 setTimeout(() => {
                     dialogText.innerText = ""; 
-                    typeText("要不要", () => {
+                    gualiuSay("要不要", () => {
                         setTimeout(() => {
                             dialogText.innerText = ""; 
-                            typeText("(嚼嚼嚼)", () => {
+                            gualiuSay("(嚼嚼嚼)", () => {
                                 setTimeout(() => {
                                     dialogText.innerText = ""; 
-                                    typeText("吃…", () => {
+                                    gualiuSay("吃…", () => {
                                         setTimeout(() => {
                                             dialogText.innerText = ""; 
-                                            typeText("(嚼嚼嚼)", () => {
+                                            gualiuSay("(嚼嚼嚼)", () => {
                                                 setTimeout(() => {
                                                     dialogText.innerText = ""; 
-                                                    typeText("?", () => {
+                                                    gualiuSay("?", () => {
                                                         choiceExtra[0].onclick = () => { 
                                                             choiceExtra.forEach(e => e.style.display = "none");
                                                             dialogText.innerText = "";
-                                                            typeText("不行，你得吃（塞", () => {
+                                                            gualiuSay("不行，你得吃（塞", () => {
                                                                 setTimeout(triggerAscension, 1500);
                                                             });
                                                         };
@@ -596,21 +596,21 @@ choiceMain[1].onclick = () => {
 function openSubMenu() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    typeText("這樣啊……", ()=> {
+    gualiuSay("這樣啊……", ()=> {
             dialogText.innerText = ""; 
-            typeText("等等ㄛ", () => {
+            gualiuSay("等等ㄛ", () => {
                 setTimeout(() => {
                     dialogText.innerText = ""; 
-                    typeText("讓我找找……", () => {
+                    gualiuSay("讓我找找……", () => {
                         setTimeout(() => {
                             dialogText.innerText = ""; 
-                            typeText("（翻殼）", () => {
+                            gualiuSay("（翻殼）", () => {
                                 setTimeout(() => {
                                     dialogText.innerText = ""; 
-                                    typeText("你……", () => {
+                                    gualiuSay("你……", () => {
                                         setTimeout(() => {
                                             dialogText.innerText = ""; 
-                                            typeText("殼裡東西有點多==", () => {
+                                            gualiuSay("殼裡東西有點多==", () => {
                                                 setTimeout(() => {
                                                     let baseText = "殼裡東西有點多==<br>";
                                                     let i = 0;
@@ -649,7 +649,7 @@ function showFiveOptions() {
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerHTML = "•想來點招牌一號<span class='indent-text'>(呱琉遇到的人類)</span>";
+    choiceExtra[4].innerHTML = "•想來點招牌一號<span class='indent-text'>(呱琉會看心情分享一些牠遇到的人類)</span>";
 
     for(let j=0; j<5; j++) {
         choiceExtra[j].style.display = "block";
@@ -671,7 +671,7 @@ function showFiveOptions() {
             document.getElementById("choiceBox").style.pointerEvents = "none";
             
             dialogText.innerText = "";
-            typeText("你心情不錯嘛", () => {
+            gualiuSay("你心情不錯嘛", () => {
                 setTimeout(() => {
                     startHelloRoute(false);
                 }, 1500);
@@ -759,7 +759,7 @@ function handleListenMusic() {
     let randomIdx = Math.floor(Math.random() * musicPool.length);
     let chosenMusic = musicPool[randomIdx];
 
-    typeText("我推薦這首：<br>" + chosenMusic, dialogText, 120, () => { 
+    gualiuSay("我推薦這首：<br>" + chosenMusic, () => { 
         showPostBranchOptions(["•聽過了", "•好聽愛聽", "•我不要"]); 
     });
 }
@@ -824,7 +824,7 @@ function showPostBranchOptions(btnLabels) {
                 window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
                     
                     dialogText.innerText = "";
-                    typeText("你心情不錯嘛", dialogText, 120, () => {
+                    gualiuSay("你心情不錯嘛", () => {
                         setTimeout(() => {
                             startHelloRoute(false); 
                         }, 1500);
