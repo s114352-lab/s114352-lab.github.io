@@ -194,15 +194,44 @@ const choiceExtra = document.querySelectorAll(".choice2");
 const btnAllNo = document.getElementById("btnAllNo");
 let throwCount = 0;
 
-// 狀態計數
 let hasPressedNo = false; 
-let noCount = 0; // 精準追蹤「我不要」被點擊的次數
+let noCount = 0; 
 let currentCategory = ""; 
 
-// 支援切換分頁暫停的打字機全域變數
 let typingTimeout = null;
 let isPageVisible = true;
 let currentTypingParams = null; 
+
+const musicPool = [
+    "〈鬼ノ宴〉——cover.穆恩佐",
+    "〈愛情的騙子我問你〉——cover.瓦西瓦瓦",
+    "〈舞女〉——陳小雲",
+    "〈Doll〉——i-dle",
+    "〈아로하 Aloha〉——조정석 CHO JUNG SEOK",
+    "〈Fate〉——idle",
+    "〈Love Story 〉——Taylor Swift",
+    "〈It's My Lfe (Drama Version)〉——Mido and Falasol",
+    "〈HER〉——MINNIE",
+    "〈휘파람(whistle)〉——BLACKPINK",
+    "〈文学講義/水槽-Cover〉——涅爾菲 Nyrfier",
+    "〈FREAK〉——YUQI",
+    "〈Radio〉——YUQI",
+    "〈Mono〉——i-dle",
+    "〈ガランド/ピコン-(Cover)〉——Eve",
+    "〈雲中月圓〉——王識賢和孫淑媚",
+    "〈新男性的復仇〉——董事長樂團",
+    "〈愛拚才會贏〉——葉啟田",
+    "〈大海〉——張雨生",
+    "〈Older〉——薩莎•斯隆",
+    "〈Titanium〉——Madilyn Bailey",
+    "〈Big Big World〉——艾米麗亞",
+    "〈Teeth〉— 5 seconds of summer",
+    "〈Always Remember Us This Way〉——Lady Gaga",
+    "〈The Joker And Queen (合作演出：Taylor Swift)〉——Ed Sheeran",
+    "〈Shallow〉—— Lady Gaga",
+    "〈Stars Align〉——蔡依林",
+    "〈童話〉——光良"
+];
 
 function nextText(message,time,next){
     text.style.opacity=0;
@@ -226,7 +255,6 @@ function showMessage(message,time,next){
     },time);
 }
 
-// 支援暫停與恢復的智慧型打字機
 function typeText(textHtml, el, speed = 120, callback){
     clearTimeout(typingTimeout);
     let doc = new Bureaucrat(textHtml);
@@ -235,7 +263,7 @@ function typeText(textHtml, el, speed = 120, callback){
     currentTypingParams = { textHtml, el, speed, callback, doc, currentIndex: i };
 
     function typing(){
-        if (!isPageVisible) return; // 如果玩家切到別的分頁，先卡住不往下跑
+        if (!isPageVisible) return; 
         
         i = currentTypingParams.currentIndex;
         if(i < doc.length){
@@ -251,14 +279,12 @@ function typeText(textHtml, el, speed = 120, callback){
     typing();
 }
 
-// 監聽網頁可見度變化（玩家離開或回來）
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
         isPageVisible = false;
-        clearTimeout(typingTimeout); // 玩家離開了，立刻凍結定時器
+        clearTimeout(typingTimeout); 
     } else {
         isPageVisible = true;
-        // 玩家回來了，若剛才字還沒打完，從斷點處無縫繼續打字
         if (currentTypingParams) {
             let doc = currentTypingParams.doc;
             let el = currentTypingParams.el;
@@ -382,7 +408,6 @@ choiceMain[0].onclick = () => {
     startHelloRoute(); 
 };
 
-// 拽回主線必定從「很好」開始播放
 function startHelloRoute(isFromNoFeed = false) {
     dialogText.innerText = ""; 
     typeText("很好", dialogText, 120, () => {
@@ -585,7 +610,6 @@ function showFiveOptions() {
             btnAllNo.style.display = "none";
             document.getElementById("choiceBox").style.pointerEvents = "none";
             
-            // ✨ 點「我都不要」不開連結，直接顯示你心情不錯嘛 ➡️ 拽回主線「很好」
             dialogText.innerText = "";
             typeText("你心情不錯嘛", dialogText, 120, () => {
                 setTimeout(() => {
@@ -672,13 +696,12 @@ function handleListenMusic() {
     currentCategory = "music"; 
     clearMenuAndPrepareBox();
 
-    const pool = [
-        (cb) => { typeText("聽點放鬆的吧！<br>本呱推薦去播浪漫電視劇的純音樂原聲帶，超級療癒。", dialogText, 120, cb); },
-        (cb) => { typeText("來首輕鬆有活力的純音樂！<br>讓大腦關機一下吧～", dialogText, 120, cb); }
-    ];
+    let randomIdx = Math.floor(Math.random() * musicPool.length);
+    let chosenMusic = musicPool[randomIdx];
 
-    let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBranchOptions(["•聽過了", "•好聽愛聽", "•我不要"]); });
+    typeText("我推薦這首：<br>" + chosenMusic, dialogText, 120, () => { 
+        showPostBranchOptions(["•聽過了", "•好聽愛聽", "•我不要"]); 
+    });
 }
 
 function handleNoDramas() {
@@ -725,48 +748,29 @@ function showPostBranchOptions(btnLabels) {
         choiceExtra[index].style.display = "block";
         choiceExtra[index].style.pointerEvents = "auto";
         
-        if (label === "•看過了") {
+        // ✨ 按下「看過了」或「聽過了」，直接清乾淨、退回五選一菜單（完全不廢話）
+        if (label === "•看過了" || label === "•聽過了") {
             choiceExtra[index].onclick = () => { showFiveOptions(); };
-        } else if (label === "•聽過了") {
-            choiceExtra[index].onclick = () => {
-                choiceExtra.forEach(e => e.style.display = "none");
-                document.getElementById("choiceBox").style.pointerEvents = "none";
-                dialogText.innerText = "";
-                typeText("那就再聽一次", dialogText, 120, () => {
-                    setTimeout(() => {
-                        choiceExtra[0].innerText = "•喔";
-                        choiceExtra[0].style.display = "block";
-                        document.getElementById("choiceBox").style.pointerEvents = "auto";
-                        choiceExtra[0].onclick = () => {
-                            choiceExtra.forEach(e => e.style.display = "none");
-                            startHelloRoute(false); // 拽回主線「很好」
-                        };
-                    }, 1000);
-                });
-            };
         } else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
-            choiceExtra[index].onclick = () => { startHelloRoute(false); }; // 拽回主線「很好」
+            choiceExtra[index].onclick = () => { startHelloRoute(false); }; 
         } else if (label === "•我不要") {
             choiceExtra[index].onclick = () => {
                 hasPressedNo = true; 
-                noCount++; // 每次點「我不要」計數器加 1
+                noCount++; 
                 
-                // ✨ 點到第 3 次，立刻觸發 YouTube 懲罰
                 if (noCount >= 3) {
                     choiceExtra.forEach(e => e.style.display = "none");
                     document.getElementById("choiceBox").style.pointerEvents = "none";
                     
-                    // 用新分頁打開陳雷 YT，不覆蓋當前網頁
                     window.open("https://youtu.be/GPoTmtykecGY", "_blank");
                     
                     dialogText.innerText = "";
                     typeText("你心情不錯嘛", dialogText, 120, () => {
                         setTimeout(() => {
-                            startHelloRoute(false); // 拽回主線「很好」
+                            startHelloRoute(false); 
                         }, 1500);
                     });
                 } else {
-                    // 未滿 3 次，單純回五選單
                     showFiveOptions();
                 }
             };
