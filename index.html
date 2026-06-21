@@ -912,9 +912,12 @@ function startHelloRoute(isFromNoFeed = false) {
         }, 1000);
     });
 }
-  function showPostBranchOptions(btnLabels) {
-    // ─── 修正：這裡絕對不要無差別隱藏所有按鈕！ ───
-    // 讓原本傳進來的 btnLabels 可以順利顯示
+function showPostBranchOptions(btnLabels) {
+    // 確保按鈕的外層容器被打開（如果它被 clearMenuAndPrepareBox 隱藏了）
+    const choiceBox = document.getElementById("choiceBox");
+    if (choiceBox) {
+        choiceBox.style.display = "flex"; // 確保容器可見
+    }
 
     btnLabels.forEach((label, index) => {
         choiceExtra[index].innerText = label;
@@ -928,7 +931,7 @@ function startHelloRoute(isFromNoFeed = false) {
                 
                 typeText("那就再聽一次", dialogText, 120, () => {
                     setTimeout(() => {
-                        // ─── 只有當點擊發生後，才精準隱藏其他按鈕 ───
+                        // 精準隱藏其他按鈕
                         for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
                         btnAllNo.style.display = "none";
                         
@@ -937,12 +940,15 @@ function startHelloRoute(isFromNoFeed = false) {
                         choiceExtra[0].style.display = "block";
                         choiceExtra[0].style.pointerEvents = "auto";
                         
+                        // 重新把容器拉出來（以防 clearMenuAndPrepareBox 又把它關掉了）
+                        if (choiceBox) choiceBox.style.display = "flex";
+                        
                         choiceExtra[0].onclick = () => {
                             clearMenuAndPrepareBox();
                             showFiveOptions();
                         };
                         
-                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                        if (choiceBox) choiceBox.style.pointerEvents = "auto";
                     }, 500);
                 });
             };
@@ -966,7 +972,7 @@ function startHelloRoute(isFromNoFeed = false) {
                 
                 if (noCount >= 3) {
                     choiceExtra.forEach(e => e.style.display = "none");
-                    document.getElementById("choiceBox").style.pointerEvents = "none";
+                    if (choiceBox) choiceBox.style.pointerEvents = "none";
                     
                     window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
                     
@@ -983,7 +989,7 @@ function startHelloRoute(isFromNoFeed = false) {
         }
     });
 
-    document.getElementById("choiceBox").style.pointerEvents = "auto";
+    if (choiceBox) choiceBox.style.pointerEvents = "auto";
 }
 </script>
 </body>
