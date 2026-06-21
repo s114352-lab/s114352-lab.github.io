@@ -484,23 +484,21 @@ function startChewingProcess() {
     choiceExtra.forEach(e => e.style.display = "none");
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    
-    // 1. 先正常打出「你……」
+
     typeText("你……", dialogText, 120, () => {
-        // 2. 打完後稍微停一下下（800毫秒），開始倒退嚕
         setTimeout(() => {
-            let str = "你……";
-            
-            function deleteEffect() {
-                if (str.length > 0) {
-                    str = str.substring(0, str.length - 1);
-                    dialogText.innerHTML = str + '<span class="cursor">|</span>';
-                    setTimeout(deleteEffect, 150); 
-                } else {
-                    setTimeout(nextChew1, 500);
-                }
-            }
-            deleteEffect();
+            dialogText.innerText = "";
+            typeText("你…", dialogText, 120, () => {
+                setTimeout(() => {
+                    dialogText.innerText = "";
+                    typeText("你", dialogText, 120, () => {
+                        setTimeout(() => {
+                            dialogText.innerText = "";
+                            setTimeout(nextChew1, 500);
+                        }, 200);
+                    });
+                }, 200);
+            });
         }, 800);
     });
 
