@@ -485,49 +485,48 @@ function startChewingProcess() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
     
-    // 1. 先顯示「你……」，速度放慢一點 (speed 改為 250)
-    typeText("你……", dialogText, 250, () => {
-        // 停留 1.2 秒，讓玩家看清楚
+    // 1. 先正常打出「你……」
+    typeText("你……", dialogText, 120, () => {
+        // 2. 打完後稍微停一下下（800毫秒），開始倒退嚕
         setTimeout(() => {
             let str = "你……";
-            // 2. 實作倒退嚕效果：一字一字刪除
-            function deleteText() {
+            
+            function deleteEffect() {
                 if (str.length > 0) {
                     str = str.substring(0, str.length - 1);
                     dialogText.innerHTML = str + '<span class="cursor">|</span>';
-                    setTimeout(deleteText, 180); // 倒退嚕的速度，數字越大越慢
+                    setTimeout(deleteEffect, 150); 
                 } else {
-                    // 3. 刪完之後，接續後面的嚼嚼嚼
-                    setTimeout(nextChew1, 600);
+                    setTimeout(nextChew1, 500);
                 }
             }
-            deleteText();
-        }, 1200);
+            deleteEffect();
+        }, 800);
     });
 
     function nextChew1() {
         dialogText.innerText = ""; 
-        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+        typeText("(嚼嚼嚼)", dialogText, 120, () => {
             setTimeout(() => {
                 dialogText.innerText = ""; 
-                typeText("要不要", dialogText, 150, () => {
+                typeText("要不要", dialogText, 120, () => {
                     setTimeout(() => {
                         dialogText.innerText = ""; 
-                        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+                        typeText("(嚼嚼嚼)", dialogText, 120, () => {
                             setTimeout(() => {
                                 dialogText.innerText = ""; 
-                                typeText("吃…", dialogText, 150, () => {
+                                typeText("吃…", dialogText, 120, () => {
                                     setTimeout(() => {
                                         dialogText.innerText = ""; 
-                                        typeText("(嚼嚼嚼)", dialogText, 150, () => {
+                                        typeText("(嚼嚼嚼)", dialogText, 120, () => {
                                             setTimeout(() => {
                                                 dialogText.innerText = ""; 
-                                                typeText("?", dialogText, 150, () => {
+                                                typeText("?", dialogText, 120, () => {
                                                     // 出現選項
                                                     choiceExtra[0].onclick = () => { 
                                                         choiceExtra.forEach(e => e.style.display = "none");
                                                         dialogText.innerText = "";
-                                                        typeText("不行，你得吃（塞", dialogText, 130, () => {
+                                                        typeText("不行，你得吃（塞", dialogText, 120, () => {
                                                             setTimeout(triggerAscension, 1500);
                                                         });
                                                     };
@@ -542,15 +541,15 @@ function startChewingProcess() {
                                                     choiceExtra[1].style.display = "block";
                                                     document.getElementById("choiceBox").style.pointerEvents = "auto";
                                                 });
-                                            }, 600);
+                                            }, 500);
                                         });
-                                    }, 600);
+                                    }, 500);
                                 });
-                            }, 600);
+                            }, 500);
                         });
-                    }, 600);
+                    }, 500);
                 });
-            }, 600);
+            }, 500);
         });
     }
 }
