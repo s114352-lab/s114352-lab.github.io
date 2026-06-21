@@ -403,7 +403,8 @@ recoverBtn.onclick=function(){
             setTimeout(()=>{
                 typeText("嘎、", dialogText, 150, ()=>{
                     setTimeout(()=>{
-                        dialogText.innerText = ""; 
+                        dialogText.innerText = "";
+                      
                         typeText("你好。", dialogText, 120, ()=>{
                             document.getElementById("choiceBox").style.display = "flex";
                         });
@@ -448,7 +449,7 @@ function startHelloRoute(isFromNoFeed = false) {
                                             };
                                             
                                             document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                        }, 1500);
+                                        }, 200);
                                     });
                                 }, 1000);
                             });
