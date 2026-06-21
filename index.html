@@ -912,7 +912,79 @@ function startHelloRoute(isFromNoFeed = false) {
         }, 1000);
     });
 }
-  
+  function showPostBranchOptions(btnLabels) {
+    // ─── 修正：這裡絕對不要無差別隱藏所有按鈕！ ───
+    // 讓原本傳進來的 btnLabels 可以順利顯示
+
+    btnLabels.forEach((label, index) => {
+        choiceExtra[index].innerText = label;
+        choiceExtra[index].style.display = "block";
+        choiceExtra[index].style.pointerEvents = "auto";
+        
+        // 點擊「•聽過了」
+        if (label === "•聽過了") {
+            choiceExtra[index].onclick = () => {
+                clearMenuAndPrepareBox();
+                
+                typeText("那就再聽一次", dialogText, 120, () => {
+                    setTimeout(() => {
+                        // ─── 只有當點擊發生後，才精準隱藏其他按鈕 ───
+                        for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+                        btnAllNo.style.display = "none";
+                        
+                        // 顯示強迫選項「•喔」
+                        choiceExtra[0].innerText = "•喔";
+                        choiceExtra[0].style.display = "block";
+                        choiceExtra[0].style.pointerEvents = "auto";
+                        
+                        choiceExtra[0].onclick = () => {
+                            clearMenuAndPrepareBox();
+                            showFiveOptions();
+                        };
+                        
+                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                    }, 500);
+                });
+            };
+        } 
+        // 點擊「•看過了」
+        else if (label === "•看過了") {
+            choiceExtra[index].onclick = () => { showFiveOptions(); };
+        } 
+        // 點擊「•好看愛看」等 Comfort 路線
+        else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
+            choiceExtra[index].onclick = () => {
+                clearMenuAndPrepareBox();
+                startComfortRoute(); 
+            };
+        } 
+        // 點擊「•我不要」
+        else if (label === "•我不要") {
+            choiceExtra[index].onclick = () => {
+                hasPressedNo = true; 
+                noCount++; 
+                
+                if (noCount >= 3) {
+                    choiceExtra.forEach(e => e.style.display = "none");
+                    document.getElementById("choiceBox").style.pointerEvents = "none";
+                    
+                    window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
+                    
+                    dialogText.innerText = "";
+                    typeText("你心情不錯嘛", dialogText, 120, () => {
+                        setTimeout(() => {
+                            startHelloRoute(false); 
+                        }, 1500);
+                    });
+                } else {
+                    showFiveOptions();
+                }
+            };
+        }
+    });
+
+    document.getElementById("choiceBox").style.pointerEvents = "auto";
+}
 </script>
 </body>
 </html>
