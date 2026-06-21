@@ -77,20 +77,23 @@ p{
   width: min(55vw, 520px); 
   display: block;
 }
-/* 1. 根據 螢幕擷取畫面 2026-06-21 155628.png 重新校正到右半邊中間 */
-#choiceBox{
+
+#choiceBox {
   position: absolute;
-  right: 15%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;                      
+  left: 24%;                   
+  transform: translateX(-100%);
+  margin-left: -20px;          
+  
   display: flex;
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
-  max-width: 380px;       
-  word-wrap: break-word; 
-  white-space: normal;   
+  max-width: 380px;        
+  word-wrap: break-word;  
+  white-space: normal;    
 }
+  
 .choice{
   cursor:pointer;
   font-size: 28px; 
