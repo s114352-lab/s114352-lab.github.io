@@ -773,6 +773,41 @@ function clearMenuAndPrepareBox() {
     dialogText.innerText = "";
 }
 
+function startComfortRoute() {
+    dialogText.innerText = "";
+    typeText("希望這樣你有好一點", dialogText, 120, () => {
+        setTimeout(() => {
+            for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+            btnAllNo.style.display = "none";
+
+            choiceExtra[0].innerText = "•有";
+            choiceExtra[1].innerText = "•沒有(的相反";
+            
+            choiceExtra[0].style.display = "block";
+            choiceExtra[1].style.display = "block";
+            choiceExtra[0].style.pointerEvents = "auto";
+            choiceExtra[1].style.pointerEvents = "auto";
+
+            choiceExtra[0].onclick = () => {
+                clearMenuAndPrepareBox();
+                startHelloRoute(false);
+            };
+
+            choiceExtra[1].onclick = () => {
+                clearMenuAndPrepareBox();
+                // 點擊沒有時，呱琉碎碎念一句再強制塞「朕餓了」主線
+                typeText("嘖，真難伺候……", dialogText, 120, () => {
+                    setTimeout(() => {
+                        startHelloRoute(false);
+                    }, 1200);
+                });
+            };
+
+            document.getElementById("choiceBox").style.pointerEvents = "auto";
+        }, 500);
+    });
+}
+
 function showPostBranchOptions(btnLabels) {
     for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
     btnAllNo.style.display = "none";
@@ -785,7 +820,11 @@ function showPostBranchOptions(btnLabels) {
         if (label === "•看過了" || label === "•聽過了") {
             choiceExtra[index].onclick = () => { showFiveOptions(); };
         } else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
-            choiceExtra[index].onclick = () => { startHelloRoute(false); }; 
+            // ─── 這裡改為走向 Comfort 路線 ───
+            choiceExtra[index].onclick = () => {
+                clearMenuAndPrepareBox();
+                startComfortRoute(); 
+            };
         } else if (label === "•我不要") {
             choiceExtra[index].onclick = () => {
                 hasPressedNo = true; 
@@ -795,7 +834,7 @@ function showPostBranchOptions(btnLabels) {
                     choiceExtra.forEach(e => e.style.display = "none");
                     document.getElementById("choiceBox").style.pointerEvents = "none";
                     
-                window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
+                    window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
                     
                     dialogText.innerText = "";
                     typeText("你心情不錯嘛", dialogText, 120, () => {
