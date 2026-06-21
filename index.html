@@ -144,6 +144,26 @@ p{
   opacity: 0.75;
   z-index: 999;
 }
+  #modeBar{
+  position:fixed;
+  top:15px;
+  right:20px;
+
+  display:flex;
+  gap:18px;
+
+  font-size:15px;
+  z-index:9999;
+}
+
+.mode{
+  cursor:pointer;
+  color:#999;
+}
+
+.mode.active{
+  color:#c9a227;
+}
 </style>
 </head>
 
@@ -191,6 +211,12 @@ p{
 ──────────────
 </div>
 
+  <div id="modeBar">
+  <span class="mode active" data-mode="auto">Auto</span>
+  <span class="mode" data-mode="manual">Manual</span>
+  <span class="mode" data-mode="skip">Skip</span>
+</div>
+  
 <script>
 let stage = 0;
 const text = document.getElementById("text");
@@ -793,6 +819,22 @@ function showPostBranchOptions(btnLabels) {
 
     document.getElementById("choiceBox").style.pointerEvents = "auto";
 }
+  let playMode = "auto";
+
+document.querySelectorAll(".mode").forEach(btn=>{
+
+    btn.onclick = ()=>{
+
+        document
+        .querySelectorAll(".mode")
+        .forEach(e=>e.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        playMode = btn.dataset.mode;
+    };
+
+});
 </script>
 </body>
 </html>
