@@ -591,16 +591,18 @@ function showFiveOptions() {
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
     choiceExtra[4].innerText = "•想來點招牌一號(呱琉遇到的人類)";
 
+    // ✨ 修正重點：先跑迴圈把按鈕屬性初始化
+    for(let j=0; j<5; j++) {
+        choiceExtra[j].style.display = "block";
+        choiceExtra[j].style.pointerEvents = "auto";
+    }
+
+    // ✨ 初始化後，再精準綁定 onclick 事件，絕不打架
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
     choiceExtra[2].onclick = handleListenMusic;
     choiceExtra[3].onclick = handleNoDramas;
     choiceExtra[4].onclick = handleSignature;
-
-    for(let j=0; j<5; j++) {
-        choiceExtra[j].style.display = "block";
-        choiceExtra[j].style.pointerEvents = "auto";
-    }
 
     if (hasPressedNo) {
         btnAllNo.style.display = "block";
@@ -679,7 +681,7 @@ function handleNotBookworm() {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜上哪去了？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
@@ -748,7 +750,6 @@ function showPostBranchOptions(btnLabels) {
         choiceExtra[index].style.display = "block";
         choiceExtra[index].style.pointerEvents = "auto";
         
-        // ✨ 按下「看過了」或「聽過了」，直接清乾淨、退回五選一菜單（完全不廢話）
         if (label === "•看過了" || label === "•聽過了") {
             choiceExtra[index].onclick = () => { showFiveOptions(); };
         } else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
