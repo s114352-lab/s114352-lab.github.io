@@ -781,26 +781,23 @@ function startComfortRoute() {
             btnAllNo.style.display = "none";
 
             choiceExtra[0].innerText = "•有";
-            choiceExtra[1].innerText = "•沒有(的相反";
+            choiceExtra[1].innerText = "•沒有";
             
             choiceExtra[0].style.display = "block";
             choiceExtra[1].style.display = "block";
             choiceExtra[0].style.pointerEvents = "auto";
             choiceExtra[1].style.pointerEvents = "auto";
 
+            // 「•有」：清空、直接回主線
             choiceExtra[0].onclick = () => {
                 clearMenuAndPrepareBox();
                 startHelloRoute(false);
             };
 
+            // 「•沒有」：同樣清空、直接安靜地回主線
             choiceExtra[1].onclick = () => {
                 clearMenuAndPrepareBox();
-                // 點擊沒有時，呱琉碎碎念一句再強制塞「朕餓了」主線
-                typeText("嘖，真難伺候……", dialogText, 120, () => {
-                    setTimeout(() => {
-                        startHelloRoute(false);
-                    }, 1200);
-                });
+                startHelloRoute(false);
             };
 
             document.getElementById("choiceBox").style.pointerEvents = "auto";
