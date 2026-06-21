@@ -638,10 +638,7 @@ function showFiveOptions() {
     choiceExtra[2].onclick = handleListenMusic;
     choiceExtra[3].onclick = handleNoDramas;
  
-}
-
-    
-    if (hasPressedNo) {
+ if (hasPressedNo) {
         btnAllNo.style.display = "block";
         btnAllNo.style.pointerEvents = "auto";
         btnAllNo.onclick = () => {
@@ -659,10 +656,13 @@ function showFiveOptions() {
     } else {
         btnAllNo.style.display = "none";
     }
+}
+
+    
+   
     
     document.getElementById("choiceBox").style.display = "flex";
     document.getElementById("choiceBox").style.pointerEvents = "auto";
-}
 
 function handleBookworm() {
     currentCategory = "book"; 
