@@ -5,6 +5,7 @@
   <title>呱琉</title>
   <link rel="icon" href="icon cat.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
   margin:0;
@@ -14,6 +15,7 @@ body{
   font-family:sans-serif;
   overflow: hidden;
 }
+
 #container{
   text-align:center;
   position: absolute;
@@ -23,28 +25,32 @@ body{
   width: 90vw;
   max-width: 900px;
 }
+
 p{
   font-size:36px;
   transition:opacity 1s;
   margin: 15px 0;
 }
+
 #gualiu{
   width:min(85vw, 400px); 
   margin: 20px auto;
   display: none;
 }
+
 .link{
   cursor:pointer;
   margin-top:25px;
   font-size:22px;
 }
-.link:hover{
-  opacity:0.6;
-}
+
+.link:hover{ opacity:0.6; }
+
 #intro{
   width:min(95vw, 900px);
   margin: 0 auto;
 }
+
 #scene2{
   display: none; 
   position: fixed;
@@ -52,127 +58,52 @@ p{
   height: 100vh;
   top: 0;
   left: 0;
-  box-sizing: border-box;
 }
+
 #dialogBox{
   position: absolute;
   top: 22%;
   left: 28%;
-  white-space: nowrap;
 }
-#dialogText{
-  font-family:
-    "Consolas",
-    "Courier New",
-    monospace;
 
+#dialogText{
+  font-family: "Consolas","Courier New", monospace;
   letter-spacing: 1px;
   color:#5f6d6d;
   font-size:36px;
 }
+
 #gualiuBox{
   position: absolute;
-  left: 24%;   
-  bottom: 6%;  
-  z-index: 5;  
-}
-#gualiu2{
-  width: min(55vw, 520px); 
-  display: block;
+  left: 24%;
+  bottom: 6%;
 }
 
 #choiceBox{
   position:absolute;
   right:28%;
   top:42%;
-
   display:flex;
   flex-direction:column;
   gap:18px;
   align-items:flex-start;
-
-  max-width:320px;
 }
-  
+
 .choice{
   cursor:pointer;
-  font-size: 28px; 
-  margin: 0;
-  color: #2c3e50;
-  line-height: 1.4;
-  text-align: left; 
+  font-size:28px;
+  color:#2c3e50;
 }
-.choice:hover{
-  opacity:0.6;
-}
+
 .choice2{
   cursor:pointer;
-  margin: 0;
-  font-size: 23px; 
-  line-height: 1.5; 
+  font-size:23px;
   display:none;
-  color: #2c3e50;
-  text-align: left; 
-}
-.choice2:hover{
-  opacity:0.6;
 }
 
-.indent-text {
-  display: block;
-  padding-left: 1.2em;
-  font-size: 20px;
-  color: #556666;
-}
-.cursor{
-  animation: blink 0.8s infinite;
-}
-@keyframes blink{
-  50%{ opacity:0; }
-}
-.small-text {
-  font-size: 16px;
-  color: #8e9e9e;
-}
-#footerNote{
-  position: fixed;
-  right: 18px;
-  bottom: 12px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #8e9e9e;
-  text-align: right;
-  opacity: 0.75;
-  z-index: 999;
-}
-  #modeBar{
-  position:fixed;
+.cursor{ animation: blink 0.8s infinite; }
+@keyframes blink{50%{opacity:0;}}
 
-  top:15px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  display:flex;
-  gap:18px;
-
-  font-size:15px;
-  z-index:9999;
-
-  font-family:
-    "Consolas",
-    "Courier New",
-    monospace;
-}
-
-.mode{
-  cursor:pointer;
-  color:#999;
-}
-
-.mode.active{
-  color:#c9a227;
-}
 </style>
 </head>
 
@@ -182,16 +113,14 @@ p{
   <p id="text">噠噠噠，下雨天。</p>
   <img id="gualiu" src="gualiu.png">
   <p id="btn" class="link" style="display:none;">• 查看呱琉遞過來的履歷</p>
-  <img id="intro" src="intro.png" style="display:none;">
+  <img id="intro" style="display:none;" src="intro.png">
   <p id="throwBtn" class="link" style="display:none;">• 丟掉履歷</p>
   <p id="recoverBtn" class="link" style="display:none;">• 撿回來</p>
 </div>
 
 <div id="scene2">
-  <div id="dialogBox">
-    <p id="dialogText"></p>
-  </div>
-  
+  <div id="dialogBox"><p id="dialogText"></p></div>
+
   <div id="gualiuBox">
     <img id="gualiu2" src="gualiu.png">
   </div>
@@ -205,655 +134,91 @@ p{
     <p class="choice2"></p>
     <p class="choice2"></p>
     <p class="choice2"></p>
-    <p class="choice2" id="btnAllNo" style="display:none;">•我都不要</p>
   </div>
 </div>
 
-<div id="footerNote">
-──────────────<br>
-本殼還在擴建中。<br><br>
-
-若發現 𝔹𝕦𝕘，<br>
-請不要戳它。<br><br>
-
-因為牠可能是住民。<br>
-──────────────
-</div>
-
-  <div id="modeBar">
-  <span class="mode active" data-mode="auto">Auto</span>
-  <span class="mode" data-mode="skip">Skip</span>
-</div>
-  
 <script>
-let stage = 0;
-const text = document.getElementById("text");
-const gualiu = document.getElementById("gualiu");
-const btn = document.getElementById("btn");
-const intro = document.getElementById("intro");
-const throwBtn = document.getElementById("throwBtn");
-const recoverBtn = document.getElementById("recoverBtn");
-const dialogText = document.getElementById("dialogText");
-const choiceMain = document.querySelectorAll(".choice");
-const choiceExtra = document.querySelectorAll(".choice2");
-const btnAllNo = document.getElementById("btnAllNo");
-let throwCount = 0;
+let text = document.getElementById("text");
+let gualiu = document.getElementById("gualiu");
+let btn = document.getElementById("btn");
+let intro = document.getElementById("intro");
+let throwBtn = document.getElementById("throwBtn");
+let recoverBtn = document.getElementById("recoverBtn");
+let dialogText = document.getElementById("dialogText");
+let choiceMain = document.querySelectorAll(".choice");
+let choiceExtra = document.querySelectorAll(".choice2");
 
-let hasPressedNo = false; 
-let noCount = 0; 
-let currentCategory = ""; 
-
-let typingTimeout = null;
-let isPageVisible = true;
-let currentTypingParams = null; 
-
-const musicPool = [
-    "〈鬼ノ宴〉——cover.穆恩佐",
-    "〈愛情的騙子我問你〉——cover.瓦西瓦瓦",
-    "〈舞女〉——陳小雲",
-    "〈Doll〉——i-dle",
-    "〈아로하 Aloha〉——조정석 CHO JUNG SEOK",
-    "〈Fate〉——idle",
-    "〈Love Story 〉——Taylor Swift",
-    "〈It's My Lfe (Drama Version)〉——Mido and Falasol",
-    "〈HER〉——MINNIE",
-    "〈휘파람(whistle)〉——BLACKPINK",
-    "〈文学講義/水槽-Cover〉——涅爾菲 Nyrfier",
-    "〈FREAK〉——YUQI",
-    "〈Radio〉——YUQI",
-    "〈Mono〉——i-dle",
-    "〈ガランド/ピコン-(Cover)〉——Eve",
-    "〈雲中月圓〉——王識賢和孫淑媚",
-    "〈新男性的復仇〉——董事長樂團",
-    "〈愛拚才會贏〉——葉啟田",
-    "〈大海〉——張雨生",
-    "〈Older〉——薩莎•斯隆",
-    "〈Titanium〉——Madilyn Bailey",
-    "〈Big Big World〉——艾米麗亞",
-    "〈Teeth〉— 5 seconds of summer",
-    "〈Always Remember Us This Way〉——Lady Gaga",
-    "〈The Joker And Queen (合作演出：Taylor Swift)〉——Ed Sheeran",
-    "〈Shallow〉—— Lady Gaga",
-    "〈Stars Align〉——蔡依林",
-    "〈童話〉——光良"
-];
-
-function nextText(message,time,next){
-    text.style.opacity=0;
-    setTimeout(()=>{
-        text.innerText=message;
-        text.style.opacity=1;
-        setTimeout(next,time);
-    },1000);
-}
-
-function showMessage(message,time,next){
-    text.style.display = "block";
-    text.innerText = message;
-    text.style.opacity = 1;
-    setTimeout(()=>{
-        text.style.opacity = 0;
-        setTimeout(()=>{
-            text.style.display = "none";
-            if(next){ next(); }
-        },1000);
-    },time);
-}
-
-function typeText(textHtml, el, speed = 120, callback){
-    clearTimeout(typingTimeout);
-    let doc = new Bureaucrat(textHtml);
-    let i = 0;
-    
-    currentTypingParams = { textHtml, el, speed, callback, doc, currentIndex: i };
-
-    function typing(){
-        if (!isPageVisible) return; 
-        
-        i = currentTypingParams.currentIndex;
-        if(i < doc.length){
-            el.innerHTML = doc.substring(0, i+1) + '<span class="cursor">|</span>';
-            currentTypingParams.currentIndex++;
-            typingTimeout = setTimeout(typing, speed);
-        }else{
-            el.innerHTML = textHtml;
-            currentTypingParams = null; 
-            if(callback) callback();
-        }
+function typeText(str, el, speed=120, cb){
+  let i=0;
+  function run(){
+    if(i<str.length){
+      el.innerHTML = str.slice(0,i+1) + '<span class="cursor">|</span>';
+      i++;
+      setTimeout(run,speed);
+    }else{
+      el.innerHTML = str;
+      if(cb) cb();
     }
-    typing();
-}
-  function gualiuSay(text, callback){
-
-    if(playMode === "skip"){
-
-        dialogText.innerHTML = text;
-
-        if(callback) callback();
-
-        return;
-    }
-
-    typeText(text, dialogText, 120, callback);
-}
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        isPageVisible = false;
-        clearTimeout(typingTimeout); 
-    } else {
-        isPageVisible = true;
-        if (currentTypingParams) {
-            let doc = currentTypingParams.doc;
-            let el = currentTypingParams.el;
-            let speed = currentTypingParams.speed;
-            let textHtml = currentTypingParams.textHtml;
-            let callback = currentTypingParams.callback;
-            
-            function resumeTyping(){
-                if (!isPageVisible) return;
-                let i = currentTypingParams.currentIndex;
-                if(i < doc.length){
-                    el.innerHTML = doc.substring(0, i+1) + '<span class="cursor">|</span>';
-                    currentTypingParams.currentIndex++;
-                    typingTimeout = setTimeout(resumeTyping, speed);
-                }else{
-                    el.innerHTML = textHtml;
-                    currentTypingParams = null;
-                    if(callback) callback();
-                }
-            }
-            resumeTyping();
-        }
-    }
-});
-
-function Bureaucrat(html) {
-    let arr = [];
-    let i = 0;
-    while(i < html.length) {
-        if(html[i] === '<') {
-            let end = html.indexOf('>', i);
-            let tag = html.substring(i, end + 1);
-            arr.push({type: 'tag', val: tag});
-            i = end + 1;
-        } else {
-            arr.push({type: 'text', val: html[i]});
-            i++;
-        }
-    }
-    this.length = arr.filter(e => e.type === 'text').length;
-    this.substring = function(start, endLen) {
-        let res = "";
-        let textCount = 0;
-        for(let j=0; j<arr.length; j++) {
-            if(arr[j].type === 'tag') {
-                res += arr[j].val;
-            } else {
-                if(textCount < endLen) {
-                    res += arr[j].val;
-                    textCount++;
-                } else {
-                    break;
-                }
-            }
-        }
-        return res;
-    };
+  }
+  run();
 }
 
 setTimeout(()=>{
-    nextText("你遇見了一隻蝸牛。",1500,()=>{
-        nextText("不。",1000,()=>{
-            nextText("準確來說，牠是呱琉。",1500,()=>{
-                text.style.display="none";
-                gualiu.style.display="block";
-                btn.style.display="inline-block";
-            });
-        });
+  typeText("你遇見了一隻蝸牛。",text,80,()=>{
+    typeText("不。",text,80,()=>{
+      typeText("準確來說，牠是呱琉。",text,80,()=>{
+        text.style.display="none";
+        gualiu.style.display="block";
+        btn.style.display="block";
+      });
     });
-},2000);
+  });
+},1000);
 
-btn.onclick=function(){
-    gualiu.style.display="none";
-    btn.style.display="none";
-    intro.style.display="block";
-    throwBtn.style.display="block";
+btn.onclick=()=>{
+  gualiu.style.display="none";
+  btn.style.display="none";
+  intro.style.display="block";
+  throwBtn.style.display="block";
 }
- 
-throwBtn.onclick=function(){
-    throwCount++;
-    intro.style.display="none";
-    throwBtn.style.display="none";
-    if(throwCount === 1){
-        showMessage("履歷已成功丟棄", 1500, ()=>{
-            gualiu.style.display="block";
-            recoverBtn.style.display="block";
-        });
-    }else{
-        showMessage("呱琉看起來有點受傷", 1500, ()=>{
-            gualiu.style.display="block";
-            recoverBtn.style.display="block";
-        });
+
+let throwCount=0;
+
+throwBtn.onclick=()=>{
+  throwCount++;
+  intro.style.display="none";
+  throwBtn.style.display="none";
+
+  typeText(
+    throwCount===1 ? "履歷已成功丟棄" : "呱琉看起來有點受傷",
+    text,80,()=>{
+      gualiu.style.display="block";
+      recoverBtn.style.display="block";
     }
+  );
 }
 
-recoverBtn.onclick=function(){
-    recoverBtn.style.display="none";
-    gualiu.style.display="none";
-    showMessage("……", 1000, ()=>{
-        showMessage("別鬧了。", 1500, ()=>{
-            document.getElementById("container").style.display = "none";
-            document.getElementById("scene2").style.display = "block"; 
-            dialogText.innerText = "";  
-            setTimeout(()=>{
-                gualiuSay("嘎、", ()=>{
-                    setTimeout(()=>{
-                        dialogText.innerText = ""; 
-                        gualiuSay("你好。", ()=>{
-                            document.getElementById("choiceBox").style.display = "flex";
-                        });
-                    }, 800);
-                });
-            },800);
-        });  
-    });         
-}
+recoverBtn.onclick=()=>{
+  recoverBtn.style.display="none";
+  gualiu.style.display="none";
 
-choiceMain[0].onclick = () => {
-    choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    startHelloRoute(); 
-};
+  typeText("……",text,80,()=>{
+    typeText("別鬧了。",text,80,()=>{
+      document.getElementById("container").style.display="none";
+      document.getElementById("scene2").style.display="block";
 
-function startHelloRoute(isFromNoFeed = false) {
-    dialogText.innerText = ""; 
-    gualiuSay("很好", () => {
-        setTimeout(() => {
-            dialogText.innerText = ""; 
-            gualiuSay("朕餓了", () => {
-                document.getElementById("choiceBox").style.display = "flex";
-                setupHelloClicks();
-                choiceExtra[0].innerText = "•?";
-                choiceExtra[1].innerText = "•餵牠吃仙丹";
-                choiceExtra[2].innerText = "•就不餵!";
-                choiceExtra[3].innerText = ""; choiceExtra[4].innerText = "";
-                choiceExtra[0].style.display = "block";
-                choiceExtra[1].style.display = "block";
-                if (isFromNoFeed) {
-                    choiceExtra[2].style.display = "none";
-                } else {
-                    choiceExtra[2].style.display = "block";
-                }
-                btnAllNo.style.display = "none";
-                document.getElementById("choiceBox").style.pointerEvents = "auto";
-                choiceExtra.forEach(e => e.style.pointerEvents = "auto");
-            });
-        }, 1000);
+      typeText("嘎、",dialogText,100,()=>{
+        setTimeout(()=>{
+          typeText("你好。",dialogText,100,()=>{
+            document.getElementById("choiceBox").style.display="flex";
+          });
+        },500);
+      });
+
     });
+  });
 }
-
-function setupHelloClicks() {
-    choiceExtra[0].onclick = () => {
-        if (choiceExtra[0].innerText === "•餵") {
-            startChewingProcess();
-            return;
-        }
-        choiceExtra.forEach(e => e.style.display = "none");
-        document.getElementById("choiceBox").style.pointerEvents = "none";
-        dialogText.innerText = "";
-        gualiuSay("？", () => {
-            setTimeout(() => {
-                dialogText.innerText = ""; 
-                gualiuSay("還在等什麼？", () => {
-                    setTimeout(() => {
-                        dialogText.innerText = ""; 
-                        gualiuSay("餵我啊！（沒錯就是這麼理所當然）", () => {
-                            choiceExtra[0].innerText = "•餵";
-                            choiceExtra[0].style.display = "block";
-                            document.getElementById("choiceBox").style.pointerEvents = "auto";
-                        });
-                    }, 800);
-                });
-            }, 800);
-        });
-    };
-    choiceExtra[1].onclick = () => { startChewingProcess(); };
-    choiceExtra[2].onclick = () => {
-        choiceExtra.forEach(e => e.style.display = "none");
-        document.getElementById("choiceBox").style.pointerEvents = "none";
-        setTimeout(() => { startHelloRoute(true); }, 500);
-    };
-}
-
-function startChewingProcess() {
-    choiceExtra.forEach(e => e.style.display = "none");
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    
-    gualiuSay("你、", () => {
-        setTimeout(() => {
-            dialogText.innerText = ""; 
-            gualiuSay("(嚼嚼嚼)", () => {
-                setTimeout(() => {
-                    dialogText.innerText = ""; 
-                    gualiuSay("要不要", () => {
-                        setTimeout(() => {
-                            dialogText.innerText = ""; 
-                            gualiuSay("(嚼嚼嚼)", () => {
-                                setTimeout(() => {
-                                    dialogText.innerText = ""; 
-                                    gualiuSay("吃…", () => {
-                                        setTimeout(() => {
-                                            dialogText.innerText = ""; 
-                                            gualiuSay("(嚼嚼嚼)", () => {
-                                                setTimeout(() => {
-                                                    dialogText.innerText = ""; 
-                                                    gualiuSay("?", () => {
-                                                        choiceExtra[0].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            gualiuSay("不行，你得吃（塞", () => {
-                                                                setTimeout(triggerAscension, 1500);
-                                                            });
-                                                        };
-                                                        choiceExtra[1].onclick = () => { 
-                                                            choiceExtra.forEach(e => e.style.display = "none");
-                                                            dialogText.innerText = "";
-                                                            triggerAscension();
-                                                        };
-                                                        choiceExtra[0].innerText = "•你吃就好";
-                                                        choiceExtra[1].innerText = "•我吃";
-                                                        choiceExtra[0].style.display = "block";
-                                                        choiceExtra[1].style.display = "block";
-                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                                    });
-                                                }, 500);
-                                            });
-                                        }, 500);
-                                    });
-                                }, 500);
-                            });
-                        }, 500);
-                    });
-                }, 500);
-            });
-        }, 500);
-    });
-}
-
-function triggerAscension() {
-    document.getElementById("scene2").style.display = "none";
-    dialogText.innerText = "";
-    document.getElementById("container").style.display = "block"; 
-    showMessage("你成仙了。", 2500);
-}
-
-choiceMain[1].onclick = () => {
-    choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
-    openSubMenu();
-};
-
-function openSubMenu() {
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    gualiuSay("這樣啊……", ()=> {
-            dialogText.innerText = ""; 
-            gualiuSay("等等ㄛ", () => {
-                setTimeout(() => {
-                    dialogText.innerText = ""; 
-                    gualiuSay("讓我找找……", () => {
-                        setTimeout(() => {
-                            dialogText.innerText = ""; 
-                            gualiuSay("（翻殼）", () => {
-                                setTimeout(() => {
-                                    dialogText.innerText = ""; 
-                                    gualiuSay("你……", () => {
-                                        setTimeout(() => {
-                                            dialogText.innerText = ""; 
-                                            gualiuSay("殼裡東西有點多==", () => {
-                                                setTimeout(() => {
-                                                    let baseText = "殼裡東西有點多==<br>";
-                                                    let i = 0;
-                                                    let nextStr = "你想要什麼？";
-                                                    function typeLine2() {
-                                                        if (i < nextStr.length) {
-                                                            dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
-                                                            i++;
-                                                            setTimeout(typeLine2, 120);
-                                                        } else {
-                                                            dialogText.innerHTML = baseText + nextStr;
-                                                            showFiveOptions();
-                                                        }
-                                                    }
-                                                    typeLine2();
-                                                }, 1000);
-                                            });
-                                        }, 1000);
-                                    });
-                                }, 500);
-                            });
-                        }, 500);
-                    });
-                }, 500);
-            });
-        }, 500);
-    });
-}
-
-function showFiveOptions() {
-
-    document.getElementById("choiceBox").style.top = "35%";
-    document.getElementById("choiceBox").style.right = "22%";
-  
-    choiceExtra[0].innerText = "•我是書蟲，來點書吧";
-    choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
-    choiceExtra[2].innerText = "•我要聽歌!";
-    choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerHTML = "•想來點招牌一號<span class='indent-text'>(呱琉會看心情分享一些牠遇到的人類)</span>";
-
-    for(let j=0; j<5; j++) {
-        choiceExtra[j].style.display = "block";
-        choiceExtra[j].style.pointerEvents = "auto";
-    }
-
-    choiceExtra[0].onclick = handleBookworm;
-    choiceExtra[1].onclick = handleNotBookworm;
-    choiceExtra[2].onclick = handleListenMusic;
-    choiceExtra[3].onclick = handleNoDramas;
-    choiceExtra[4].onclick = handleSignature;
-
-    if (hasPressedNo) {
-        btnAllNo.style.display = "block";
-        btnAllNo.style.pointerEvents = "auto";
-        btnAllNo.onclick = () => {
-            choiceExtra.forEach(e => e.style.display = "none");
-            btnAllNo.style.display = "none";
-            document.getElementById("choiceBox").style.pointerEvents = "none";
-            
-            dialogText.innerText = "";
-            gualiuSay("你心情不錯嘛", () => {
-                setTimeout(() => {
-                    startHelloRoute(false);
-                }, 1500);
-            });
-        };
-    } else {
-        btnAllNo.style.display = "none";
-    }
-    
-    document.getElementById("choiceBox").style.display = "flex";
-    document.getElementById("choiceBox").style.pointerEvents = "auto";
-}
-
-function handleBookworm() {
-    currentCategory = "book"; 
-    clearMenuAndPrepareBox();
-
-    const pool = [
-        (cb) => { typeText("貓戰士《Warriors》!<br>溫馨提示：本系列為大胃王套餐<br>如果你不像呱琉一樣這麼閒這麼能吃，建議不要", dialogText, 120, cb); },
-        (cb) => { typeText("《特殊傳說》——by護玄大大<br>本呱也還在看ing", dialogText, 120, cb); },
-        (cb) => { typeText("《兔俠》——by護玄", dialogText, 120, cb); },
-        (cb) => {
-            typeText("《紅樓夢》<br>四大名著，必須看一下吧。", dialogText, 120, () => {
-                setTimeout(() => {
-                    let currentHtml = dialogText.innerHTML;
-                    dialogText.innerHTML = currentHtml + "<br><span class='small-text'>雖然本呱也才看五回（小聲</span>";
-                    if(cb) cb();
-                }, 800);
-            });
-        }
-    ];
-
-    let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•好看愛看", "•會看的", "•我不要"]); });
-}
-
-function handleNotBookworm() {
-    currentCategory = "special"; 
-    clearMenuAndPrepareBox();
-
-    const pool = [
-        (cb) => { typeText("我推薦、<br>《世界上最透明的故事》！", dialogText, 120, cb); },
-        (cb) => { typeText("《戀家的人》——井田千秋老師<br>痾……誰說彩漫不行了？<br>也有文字阿（嘴硬", dialogText, 120, cb); },
-        (cb) => {
-            typeText("羅德•達爾系列童書（？", dialogText, 120, () => {
-                setTimeout(() => {
-                    let baseHtml = dialogText.innerHTML;
-                    typeText("很好看啦！<br>真的！", dialogText, 120, () => {
-                        setTimeout(() => {
-                            dialogText.innerHTML = baseHtml; 
-                            setTimeout(() => {
-                                typeText("我不會放棄繼續推薦你童書的！", dialogText, 120, cb);
-                            }, 500);
-                        }, 1200);
-                    });
-                }, 800);
-            });
-        },
-        (cb) => {
-            typeText("《在魔王城說晚安》", dialogText, 120, () => {
-                setTimeout(() => {
-                    let tempBox = document.createElement("div");
-                    dialogText.appendChild(tempBox);
-                    typeText("不知道啊，烏龜說好看那你就去看！", tempBox, 120, () => {
-                        setTimeout(() => {
-                            tempBox.innerHTML = ""; 
-                            setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
-                            }, 500);
-                        }, 1200);
-                    });
-                }, 800);
-            });
-        }
-    ];
-
-    let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•好看愛看", "•會看的", "•我不要"]); });
-}
-
-function handleListenMusic() {
-    currentCategory = "music"; 
-    clearMenuAndPrepareBox();
-
-    let randomIdx = Math.floor(Math.random() * musicPool.length);
-    let chosenMusic = musicPool[randomIdx];
-
-    gualiuSay("我推薦這首：<br>" + chosenMusic, () => { 
-        showPostBranchOptions(["•聽過了", "•好聽愛聽", "•我不要"]); 
-    });
-}
-
-function handleNoDramas() {
-    currentCategory = "drama"; 
-    clearMenuAndPrepareBox();
-
-    const pool = [
-        (cb) => { typeText("劇荒了嗎？<br>本呱強力推薦超甜校園劇《偷偷藏不住》，看完心情變超好！", dialogText, 120, cb); },
-        (cb) => { typeText("推薦你看治癒系、熱血的動畫片！<br>躲在殼裡看劇最舒服了。", dialogText, 120, cb); }
-    ];
-
-    let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•會看的", "•我不要"]); });
-}
-
-function handleSignature() {
-    currentCategory = "signature"; 
-    clearMenuAndPrepareBox();
-
-    const pool = [
-        (cb) => { typeText("招牌一號來了！<br>其實就是呱琉在路上遇到形形色色的人類小故事啦～", dialogText, 120, cb); }
-    ];
-
-    let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { 
-        for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
-        btnAllNo.style.display = "none";
-    }); 
-}
-
-function clearMenuAndPrepareBox() {
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-}
-
-function showPostBranchOptions(btnLabels) {
-    for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
-    btnAllNo.style.display = "none";
-
-    btnLabels.forEach((label, index) => {
-        choiceExtra[index].innerText = label;
-        choiceExtra[index].style.display = "block";
-        choiceExtra[index].style.pointerEvents = "auto";
-        
-        if (label === "•看過了" || label === "•聽過了") {
-            choiceExtra[index].onclick = () => { showFiveOptions(); };
-        } else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
-            choiceExtra[index].onclick = () => { startHelloRoute(false); }; 
-        } else if (label === "•我不要") {
-            choiceExtra[index].onclick = () => {
-                hasPressedNo = true; 
-                noCount++; 
-                
-                if (noCount >= 3) {
-                    choiceExtra.forEach(e => e.style.display = "none");
-                    document.getElementById("choiceBox").style.pointerEvents = "none";
-                    
-                window.open("https://youtu.be/GPoTmtykcGY?si=wCudsn9CWbVUN8ib", "_blank");
-                    
-                    dialogText.innerText = "";
-                    gualiuSay("你心情不錯嘛", () => {
-                        setTimeout(() => {
-                            startHelloRoute(false); 
-                        }, 1500);
-                    });
-                } else {
-                    showFiveOptions();
-                }
-            };
-        }
-    });
-
-    document.getElementById("choiceBox").style.pointerEvents = "auto";
-}
-  let playMode = "auto";
-
-document.querySelectorAll(".mode").forEach(btn=>{
-
-    btn.onclick = ()=>{
-
-        document
-        .querySelectorAll(".mode")
-        .forEach(e=>e.classList.remove("active"));
-
-        btn.classList.add("active");
-
-        playMode = btn.dataset.mode;
-    };
-
-});
 </script>
+
 </body>
 </html>
