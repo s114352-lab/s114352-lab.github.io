@@ -77,15 +77,17 @@ p{
   width: min(55vw, 520px); 
   display: block;
 }
+/* 1. 根據 螢幕擷取畫面 2026-06-21 155628.png 重新校正到右半邊中間 */
 #choiceBox{
   position: absolute;
-  right: 28%;
-  top: 42%;
+  right: 15%;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
-  max-width: 320px;       
+  max-width: 380px;       
   word-wrap: break-word; 
   white-space: normal;   
 }
@@ -111,6 +113,13 @@ p{
 }
 .choice2:hover{
   opacity:0.6;
+}
+/* 讓換行後的文字產生乾淨的左側縮進 */
+.indent-text {
+  display: block;
+  padding-left: 1.2em;
+  font-size: 20px;
+  color: #556666;
 }
 .cursor{
   animation: blink 0.8s infinite;
@@ -589,15 +598,14 @@ function showFiveOptions() {
     choiceExtra[1].innerText = "•我不是書蟲...但、老闆，來杯文字特調!";
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
-    choiceExtra[4].innerText = "•想來點招牌一號(呱琉遇到的人類)";
+    // 2. 根據 螢幕擷取畫面 2026-06-21 155628.png 修改：換行並套用縮進 class
+    choiceExtra[4].innerHTML = "•想來點招牌一號<span class='indent-text'>(呱琉遇到的人類)</span>";
 
-    // ✨ 修正重點：先跑迴圈把按鈕屬性初始化
     for(let j=0; j<5; j++) {
         choiceExtra[j].style.display = "block";
         choiceExtra[j].style.pointerEvents = "auto";
     }
 
-    // ✨ 初始化後，再精準綁定 onclick 事件，絕不打架
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
     choiceExtra[2].onclick = handleListenMusic;
@@ -681,7 +689,7 @@ function handleNotBookworm() {
                         setTimeout(() => {
                             tempBox.innerHTML = ""; 
                             setTimeout(() => {
-                                typeText("什麼？<br>你說烏龜上哪去了？<br>罰你重看履歷！", tempBox, 120, cb);
+                                typeText("什麼？<br>你說烏龜是誰？<br>罰你重看履歷！", tempBox, 120, cb);
                             }, 500);
                         }, 1200);
                     });
