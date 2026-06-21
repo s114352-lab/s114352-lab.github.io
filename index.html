@@ -428,19 +428,41 @@ function startHelloRoute(isFromNoFeed = false) {
             typeText("朕餓了", dialogText, 120, () => {
                 document.getElementById("choiceBox").style.display = "flex";
                 
-                // ─── 選項1：點擊「•?」（絕對靜音，直接繞回朕餓了） ───
+                // ─── 修正：點擊「•?」後的正確理所當然路線 ───
                 choiceExtra[0].onclick = () => {
                     clearMenuAndPrepareBox();
-                    startHelloRoute(isFromNoFeed); 
+                    typeText("還在等什麼?", dialogText, 120, () => {
+                        setTimeout(() => {
+                            dialogText.innerText = "";
+                            typeText("餵我啊(沒錯就是這麼理所當然)", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    // 講完之後，清空所有按鈕，只露出唯一強制的「•餵」
+                                    clearMenuAndPrepareBox();
+                                    
+                                    choiceExtra[0].innerText = "•餵";
+                                    choiceExtra[0].style.display = "block";
+                                    choiceExtra[0].style.pointerEvents = "auto";
+                                    
+                                    // 點擊「•餵」直接去吃仙丹
+                                    choiceExtra[0].onclick = () => {
+                                        clearMenuAndPrepareBox();
+                                        startChewingProcess();
+                                    };
+                                    
+                                    document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                }, 1500);
+                            });
+                        }, 1000);
+                    });
                 };
 
-                // ─── 選項2：點擊「•餵牠吃仙丹」（推進到原本的嚼嚼嚼） ───
+                // 選項2：點擊「•餵牠吃仙丹」
                 choiceExtra[1].onclick = () => {
                     clearMenuAndPrepareBox();
                     startChewingProcess(); 
                 };
 
-                // ─── 選項3：點擊「•就不餵!」（絕對靜音，隱藏自己並繞回朕餓了） ───
+                // 選項3：點擊「•就不餵!」
                 choiceExtra[2].onclick = () => {
                     clearMenuAndPrepareBox();
                     startHelloRoute(true); 
@@ -466,7 +488,6 @@ function startHelloRoute(isFromNoFeed = false) {
         }, 1000);
     });
 }
-
 function startChewingProcess() {
     dialogText.innerText = "";
     typeText("你、", dialogText, 120, () => {
