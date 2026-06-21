@@ -469,40 +469,45 @@ function startHelloRoute(isFromNoFeed = false) {
 
 function startChewingProcess() {
     dialogText.innerText = "";
-    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+    typeText("你、", dialogText, 120, () => {
         setTimeout(() => {
             dialogText.innerText = "";
-            typeText("要不要", dialogText, 120, () => {
+            typeText("(嚼嚼嚼)", dialogText, 120, () => {
                 setTimeout(() => {
-                    dialogText.innerText = ""; 
-                    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                    dialogText.innerText = "";
+                    typeText("要不要", dialogText, 120, () => {
                         setTimeout(() => {
                             dialogText.innerText = ""; 
-                            typeText("吃…", dialogText, 120, () => {
+                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
                                 setTimeout(() => {
                                     dialogText.innerText = ""; 
-                                    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                    typeText("吃…", dialogText, 120, () => {
                                         setTimeout(() => {
                                             dialogText.innerText = ""; 
-                                            typeText("?", dialogText, 120, () => {
-                                                
-                                                // 嚼嚼嚼完畢，跳出最後分歧選項
-                                                choiceExtra[0].onclick = () => { 
-                                                    clearMenuAndPrepareBox();
-                                                    typeText("不行，你得吃（塞", dialogText, 120, () => {
-                                                        setTimeout(triggerAscension, 1500);
+                                            typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                                setTimeout(() => {
+                                                    dialogText.innerText = ""; 
+                                                    typeText("?", dialogText, 120, () => {
+                                                        
+                                                        // 嚼嚼嚼完畢，跳出最後分歧選項
+                                                        choiceExtra[0].onclick = () => { 
+                                                            clearMenuAndPrepareBox();
+                                                            typeText("不行，你得吃（塞", dialogText, 120, () => {
+                                                                setTimeout(triggerAscension, 1500);
+                                                            });
+                                                        };
+                                                        choiceExtra[1].onclick = () => { 
+                                                            clearMenuAndPrepareBox();
+                                                            triggerAscension();
+                                                        };
+                                                        
+                                                        choiceExtra[0].innerText = "•你吃就好";
+                                                        choiceExtra[1].innerText = "•我吃";
+                                                        choiceExtra[0].style.display = "block";
+                                                        choiceExtra[1].style.display = "block";
+                                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
                                                     });
-                                                };
-                                                choiceExtra[1].onclick = () => { 
-                                                    clearMenuAndPrepareBox();
-                                                    triggerAscension();
-                                                };
-                                                
-                                                choiceExtra[0].innerText = "•你吃就好";
-                                                choiceExtra[1].innerText = "•我吃";
-                                                choiceExtra[0].style.display = "block";
-                                                choiceExtra[1].style.display = "block";
-                                                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                                }, 500);
                                             });
                                         }, 500);
                                     });
