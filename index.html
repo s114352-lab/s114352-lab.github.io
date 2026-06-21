@@ -6,17 +6,14 @@
   <link rel="icon" href="icon cat.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* 全域基礎樣式 */
 body{
   margin:0;
   height:100vh;
   display:block;
   background:#f5f3ef;
   font-family:sans-serif;
-  overflow: hidden; /* 防止出現討厭的滾動條 */
+  overflow: hidden;
 }
-
-/* ================= 居中：初始場景（噠噠噠、履歷） ================= */
 #container{
   text-align:center;
   position: absolute;
@@ -48,8 +45,6 @@ p{
   width:min(95vw, 900px);
   margin: 0 auto;
 }
-
-/* ================= 🎮 Scene2 終極絕對定位排版 ================= */
 #scene2{
   display: none; 
   position: fixed;
@@ -59,13 +54,11 @@ p{
   left: 0;
   box-sizing: border-box;
 }
-
-/* 👈 左上側：粗體字對話框（呱琉講的話） */
 #dialogBox{
   position: absolute;
   top: 22%;
   left: 28%;
-  white-space: nowrap; /* 確保呱琉講的話絕對不會自動換行 */
+  white-space: nowrap;
 }
 #dialogText{
   color:#5f6d6d;
@@ -74,8 +67,6 @@ p{
   line-height: 1.6;
   font-weight: bold; 
 }
-
-/* 🧍 中間偏左：呱琉本琉的家 */
 #gualiuBox{
   position: absolute;
   left: 24%;   
@@ -86,8 +77,6 @@ p{
   width: min(55vw, 520px); 
   display: block;
 }
-
-/* 👉 右下側：互動選項區 */
 #choiceBox{
   position: absolute;
   right: 28%;
@@ -95,9 +84,7 @@ p{
   display: flex;
   flex-direction: column;
   gap: 18px;
-  align-items: flex-start; /* 讓所有選項的 • 站成一條直線對齊 */
-  
-  /* 選項區的換行與防撞機制 */
+  align-items: flex-start;
   max-width: 320px;       
   word-wrap: break-word; 
   white-space: normal;   
@@ -135,8 +122,6 @@ p{
   font-size: 16px;
   color: #8e9e9e;
 }
-
-/* ✨ 擴建中公告特殊樣式 */
 #footerNote{
   position: fixed;
   right: 18px;
@@ -163,7 +148,6 @@ p{
 </div>
 
 <div id="scene2">
-  
   <div id="dialogBox">
     <p id="dialogText"></p>
   </div>
@@ -176,13 +160,14 @@ p{
     <p class="choice">•你好</p>
     <p class="choice">•我不好</p>
 
-    <p class="choice2">•我是書蟲，來點書吧</p>
-    <p class="choice2">•我不是書蟲...但、老闆，來杯文字特調!</p>
-    <p class="choice2">•我要聽歌!</p>
-    <p class="choice2">•劇荒了，拜託來點劇</p>
-    <p class="choice2">•想來點招牌一號(呱琉遇到的人類)</p>
-    <p class="choice2" id="btnAllNo">•我都不要</p>
+    <p class="choice2"></p>
+    <p class="choice2"></p>
+    <p class="choice2"></p>
+    <p class="choice2"></p>
+    <p class="choice2"></p>
+    <p class="choice2" id="btnAllNo" style="display:none;">•我都不要</p>
   </div>
+</div>
 
 <div id="footerNote">
 ──────────────<br>
@@ -208,9 +193,16 @@ const choiceMain = document.querySelectorAll(".choice");
 const choiceExtra = document.querySelectorAll(".choice2");
 const btnAllNo = document.getElementById("btnAllNo");
 let throwCount = 0;
-let hasAllNoOption = false;
-let noCount = 0;
+
+// 狀態計數
+let hasPressedNo = false; 
+let noCount = 0; // 精準追蹤「我不要」被點擊的次數
 let currentCategory = ""; 
+
+// 支援切換分頁暫停的打字機全域變數
+let typingTimeout = null;
+let isPageVisible = true;
+let currentTypingParams = null; 
 
 function nextText(message,time,next){
     text.style.opacity=0;
@@ -234,23 +226,63 @@ function showMessage(message,time,next){
     },time);
 }
 
+// 支援暫停與恢復的智慧型打字機
 function typeText(textHtml, el, speed = 120, callback){
-    el.innerHTML = "";
-    let i = 0;
+    clearTimeout(typingTimeout);
     let doc = new Bureaucrat(textHtml);
+    let i = 0;
     
+    currentTypingParams = { textHtml, el, speed, callback, doc, currentIndex: i };
+
     function typing(){
+        if (!isPageVisible) return; // 如果玩家切到別的分頁，先卡住不往下跑
+        
+        i = currentTypingParams.currentIndex;
         if(i < doc.length){
             el.innerHTML = doc.substring(0, i+1) + '<span class="cursor">|</span>';
-            i++;
-            setTimeout(typing, speed);
+            currentTypingParams.currentIndex++;
+            typingTimeout = setTimeout(typing, speed);
         }else{
             el.innerHTML = textHtml;
+            currentTypingParams = null; 
             if(callback) callback();
         }
     }
     typing();
 }
+
+// 監聽網頁可見度變化（玩家離開或回來）
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        isPageVisible = false;
+        clearTimeout(typingTimeout); // 玩家離開了，立刻凍結定時器
+    } else {
+        isPageVisible = true;
+        // 玩家回來了，若剛才字還沒打完，從斷點處無縫繼續打字
+        if (currentTypingParams) {
+            let doc = currentTypingParams.doc;
+            let el = currentTypingParams.el;
+            let speed = currentTypingParams.speed;
+            let textHtml = currentTypingParams.textHtml;
+            let callback = currentTypingParams.callback;
+            
+            function resumeTyping(){
+                if (!isPageVisible) return;
+                let i = currentTypingParams.currentIndex;
+                if(i < doc.length){
+                    el.innerHTML = doc.substring(0, i+1) + '<span class="cursor">|</span>';
+                    currentTypingParams.currentIndex++;
+                    typingTimeout = setTimeout(resumeTyping, speed);
+                }else{
+                    el.innerHTML = textHtml;
+                    currentTypingParams = null;
+                    if(callback) callback();
+                }
+            }
+            resumeTyping();
+        }
+    }
+});
 
 function Bureaucrat(html) {
     let arr = [];
@@ -347,9 +379,10 @@ recoverBtn.onclick=function(){
 choiceMain[0].onclick = () => {
     choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
     document.getElementById("choiceBox").style.pointerEvents = "none";
-    startHelloRoute(false); 
+    startHelloRoute(); 
 };
 
+// 拽回主線必定從「很好」開始播放
 function startHelloRoute(isFromNoFeed = false) {
     dialogText.innerText = ""; 
     typeText("很好", dialogText, 120, () => {
@@ -544,17 +577,20 @@ function showFiveOptions() {
         choiceExtra[j].style.pointerEvents = "auto";
     }
 
-    if (hasAllNoOption) {
+    if (hasPressedNo) {
         btnAllNo.style.display = "block";
         btnAllNo.style.pointerEvents = "auto";
         btnAllNo.onclick = () => {
             choiceExtra.forEach(e => e.style.display = "none");
             btnAllNo.style.display = "none";
+            document.getElementById("choiceBox").style.pointerEvents = "none";
+            
+            // ✨ 點「我都不要」不開連結，直接顯示你心情不錯嘛 ➡️ 拽回主線「很好」
             dialogText.innerText = "";
             typeText("你心情不錯嘛", dialogText, 120, () => {
                 setTimeout(() => {
                     startHelloRoute(false);
-                }, 1200);
+                }, 1500);
             });
         };
     } else {
@@ -567,10 +603,7 @@ function showFiveOptions() {
 
 function handleBookworm() {
     currentCategory = "book"; 
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
+    clearMenuAndPrepareBox();
 
     const pool = [
         (cb) => { typeText("貓戰士《Warriors》!<br>溫馨提示：本系列為大胃王套餐<br>如果你不像呱琉一樣這麼閒這麼能吃，建議不要", dialogText, 120, cb); },
@@ -588,15 +621,12 @@ function handleBookworm() {
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBookOptions("•好看愛看"); });
+    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•好看愛看", "•會看的", "•我不要"]); });
 }
 
 function handleNotBookworm() {
     currentCategory = "special"; 
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
+    clearMenuAndPrepareBox();
 
     const pool = [
         (cb) => { typeText("我推薦、<br>《世界上最透明的故事》！", dialogText, 120, cb); },
@@ -635,15 +665,12 @@ function handleNotBookworm() {
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBookOptions("•在看了"); });
+    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•好看愛看", "•會看的", "•我不要"]); });
 }
 
 function handleListenMusic() {
     currentCategory = "music"; 
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
+    clearMenuAndPrepareBox();
 
     const pool = [
         (cb) => { typeText("聽點放鬆的吧！<br>本呱推薦去播浪漫電視劇的純音樂原聲帶，超級療癒。", dialogText, 120, cb); },
@@ -651,15 +678,12 @@ function handleListenMusic() {
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBookOptions("•好聽愛聽"); });
+    pool[randomIdx](() => { showPostBranchOptions(["•聽過了", "•好聽愛聽", "•我不要"]); });
 }
 
 function handleNoDramas() {
     currentCategory = "drama"; 
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
+    clearMenuAndPrepareBox();
 
     const pool = [
         (cb) => { typeText("劇荒了嗎？<br>本呱強力推薦超甜校園劇《偷偷藏不住》，看完心情變超好！", dialogText, 120, cb); },
@@ -667,111 +691,89 @@ function handleNoDramas() {
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBookOptions("•會看的"); });
+    pool[randomIdx](() => { showPostBranchOptions(["•看過了", "•會看的", "•我不要"]); });
 }
 
 function handleSignature() {
     currentCategory = "signature"; 
-    choiceExtra.forEach(e => e.style.display = "none");
-    btnAllNo.style.display = "none";
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
+    clearMenuAndPrepareBox();
 
     const pool = [
         (cb) => { typeText("招牌一號來了！<br>其實就是呱琉在路上遇到形形色色的人類小故事啦～", dialogText, 120, cb); }
     ];
 
     let randomIdx = Math.floor(Math.random() * pool.length);
-    pool[randomIdx](() => { showPostBookOptions("•想聽"); }); // ✨徹底拔除「真有眼光」，改成流暢自然的「•想聽」
+    pool[randomIdx](() => { 
+        for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+        btnAllNo.style.display = "none";
+    }); 
 }
 
-function showPostBookOptions(positiveText) {
-    choiceExtra[0].innerText = positiveText;
-    choiceExtra[1].innerText = "•我不要";
-    for(let j=2; j<5; j++) { choiceExtra[j].style.display = "none"; }
-    
-    choiceExtra[0].style.display = "block";
-    choiceExtra[1].style.display = "block";
-    document.getElementById("choiceBox").style.pointerEvents = "auto";
-    
-    choiceExtra[0].onclick = () => {
-        choiceExtra.forEach(e => e.style.display = "none");
-        document.getElementById("choiceBox").style.pointerEvents = "none";
-        dialogText.innerText = "";
-        
-        typeText("希望這樣你有好一點", dialogText, 120, () => {
-            choiceExtra[0].innerText = "•有";
-            choiceExtra[1].innerText = "•沒有（的相反）";
-            choiceExtra[0].style.display = "block";
-            choiceExtra[1].style.display = "block";
-            document.getElementById("choiceBox").style.pointerEvents = "auto";
-            
-            choiceExtra[0].onclick = () => { redirectToHelloRoute(); };
-            choiceExtra[1].onclick = () => { redirectToHelloRoute(); };
-        });
-    };
-    
-    choiceExtra[1].onclick = handleNoCountClick;
-}
-
-function handleNoCountClick() {
-    noCount++;
+function clearMenuAndPrepareBox() {
     choiceExtra.forEach(e => e.style.display = "none");
+    btnAllNo.style.display = "none";
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-
-    let punchline = "那就再挑一次";
-    if (currentCategory === "book" || currentCategory === "special") {
-        punchline = "那就再看一次";
-    } else if (currentCategory === "music") {
-        punchline = "那就再聽一次";
-    } else if (currentCategory === "drama") {
-        punchline = "那就再挑一次";
-    } else if (currentCategory === "signature") {
-        punchline = "那就再選一次";
-    }
-
-    if (noCount === 1) {
-        typeText(punchline, dialogText, 120, () => {
-            setTimeout(() => {
-                choiceExtra[0].innerText = "•喔";
-                choiceExtra[0].style.display = "block";
-                document.getElementById("choiceBox").style.pointerEvents = "auto";
-                choiceExtra[0].onclick = () => {
-                    choiceExtra.forEach(e => e.style.display = "none");
-                    showFiveOptions();
-                };
-            }, 1000);
-        });
-    } else if (noCount === 2) {
-        hasAllNoOption = true; 
-        typeText("好喔，隨便你==" + "<br><span class='small-text'>（給他機會回五選單，不計入我不要的3次）</span>", dialogText, 120, () => {
-            setTimeout(() => {
-                choiceExtra[0].innerText = "•喔";
-                choiceExtra[0].style.display = "block";
-                document.getElementById("choiceBox").style.pointerEvents = "auto";
-                choiceExtra[0].onclick = () => {
-                    choiceExtra.forEach(e => e.style.display = "none");
-                    showFiveOptions();
-                };
-            }, 1000);
-        });
-    } else if (noCount >= 3) {
-        window.open("https://youtu.be/GPoTmtykcGY", "_blank");
-        typeText("你心情不錯嘛", dialogText, 120, () => {
-            setTimeout(() => {
-                startHelloRoute(false);
-            }, 1500);
-        });
-    }
 }
 
-function redirectToHelloRoute() {
-    choiceExtra.forEach(e => e.style.display = "none");
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    setTimeout(() => {
-        startHelloRoute(false);
-    }, 500);
+function showPostBranchOptions(btnLabels) {
+    for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+    btnAllNo.style.display = "none";
+
+    btnLabels.forEach((label, index) => {
+        choiceExtra[index].innerText = label;
+        choiceExtra[index].style.display = "block";
+        choiceExtra[index].style.pointerEvents = "auto";
+        
+        if (label === "•看過了") {
+            choiceExtra[index].onclick = () => { showFiveOptions(); };
+        } else if (label === "•聽過了") {
+            choiceExtra[index].onclick = () => {
+                choiceExtra.forEach(e => e.style.display = "none");
+                document.getElementById("choiceBox").style.pointerEvents = "none";
+                dialogText.innerText = "";
+                typeText("那就再聽一次", dialogText, 120, () => {
+                    setTimeout(() => {
+                        choiceExtra[0].innerText = "•喔";
+                        choiceExtra[0].style.display = "block";
+                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                        choiceExtra[0].onclick = () => {
+                            choiceExtra.forEach(e => e.style.display = "none");
+                            startHelloRoute(false); // 拽回主線「很好」
+                        };
+                    }, 1000);
+                });
+            };
+        } else if (label === "•好看愛看" || label === "•會看的" || label === "•好聽愛聽") {
+            choiceExtra[index].onclick = () => { startHelloRoute(false); }; // 拽回主線「很好」
+        } else if (label === "•我不要") {
+            choiceExtra[index].onclick = () => {
+                hasPressedNo = true; 
+                noCount++; // 每次點「我不要」計數器加 1
+                
+                // ✨ 點到第 3 次，立刻觸發 YouTube 懲罰
+                if (noCount >= 3) {
+                    choiceExtra.forEach(e => e.style.display = "none");
+                    document.getElementById("choiceBox").style.pointerEvents = "none";
+                    
+                    // 用新分頁打開陳雷 YT，不覆蓋當前網頁
+                    window.open("https://youtu.be/GPoTmtykecGY", "_blank");
+                    
+                    dialogText.innerText = "";
+                    typeText("你心情不錯嘛", dialogText, 120, () => {
+                        setTimeout(() => {
+                            startHelloRoute(false); // 拽回主線「很好」
+                        }, 1500);
+                    });
+                } else {
+                    // 未滿 3 次，單純回五選單
+                    showFiveOptions();
+                }
+            };
+        }
+    });
+
+    document.getElementById("choiceBox").style.pointerEvents = "auto";
 }
 </script>
 </body>
