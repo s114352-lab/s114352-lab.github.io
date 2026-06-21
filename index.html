@@ -428,26 +428,22 @@ function startHelloRoute(isFromNoFeed = false) {
             typeText("朕餓了", dialogText, 120, () => {
                 document.getElementById("choiceBox").style.display = "flex";
                 
-                // ─── 選項1：點擊「•?」（保留你原本完美的台詞） ───
+                // ─── 選項1：點擊「•?」（絕對靜音，直接繞回朕餓了） ───
                 choiceExtra[0].onclick = () => {
                     clearMenuAndPrepareBox();
-                    typeText("幹嘛？沒看過蝸牛討飯？", dialogText, 120, () => {
-                        setTimeout(() => {
-                            startHelloRoute(isFromNoFeed); 
-                        }, 1500);
-                    });
+                    startHelloRoute(isFromNoFeed); 
                 };
 
-                // ─── 選項2：點擊「•餵牠吃仙丹」 ───
+                // ─── 選項2：點擊「•餵牠吃仙丹」（推進到原本的嚼嚼嚼） ───
                 choiceExtra[1].onclick = () => {
                     clearMenuAndPrepareBox();
                     startChewingProcess(); 
                 };
 
-                // ─── 選項3：點擊「•就不餵!」（絕對不說話，直接靜音重新整理） ───
+                // ─── 選項3：點擊「•就不餵!」（絕對靜音，隱藏自己並繞回朕餓了） ───
                 choiceExtra[2].onclick = () => {
                     clearMenuAndPrepareBox();
-                    startHelloRoute(true); // 靜悄悄地繞回朕餓了，並把自己藏起來
+                    startHelloRoute(true); 
                 };
                 // ───────────────────────────────────────────────────
 
