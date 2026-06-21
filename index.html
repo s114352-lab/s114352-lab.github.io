@@ -447,6 +447,66 @@ function startHelloRoute(isFromNoFeed = false) {
     });
 }
 
+function startChewingProcess() {
+    dialogText.innerText = "";
+    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+        setTimeout(() => {
+            dialogText.innerText = "";
+            typeText("要不要", dialogText, 120, () => {
+                setTimeout(() => {
+                    dialogText.innerText = ""; 
+                    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                        setTimeout(() => {
+                            dialogText.innerText = ""; 
+                            typeText("吃…", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    dialogText.innerText = ""; 
+                                    typeText("(嚼嚼嚼)", dialogText, 120, () => {
+                                        setTimeout(() => {
+                                            dialogText.innerText = ""; 
+                                            typeText("?", dialogText, 120, () => {
+                                                
+                                                // 嚼嚼嚼完畢，跳出最後分歧選項
+                                                choiceExtra[0].onclick = () => { 
+                                                    clearMenuAndPrepareBox();
+                                                    typeText("不行，你得吃（塞", dialogText, 120, () => {
+                                                        setTimeout(triggerAscension, 1500);
+                                                    });
+                                                };
+                                                choiceExtra[1].onclick = () => { 
+                                                    clearMenuAndPrepareBox();
+                                                    triggerAscension();
+                                                };
+                                                
+                                                choiceExtra[0].innerText = "•你吃就好";
+                                                choiceExtra[1].innerText = "•我吃";
+                                                choiceExtra[0].style.display = "block";
+                                                choiceExtra[1].style.display = "block";
+                                                document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
+}
+  
+function triggerAscension() {
+    document.getElementById("scene2").style.display = "none";
+    dialogText.innerText = "";
+    document.getElementById("container").style.display = "block"; 
+    showMessage("你成仙了。", 2500);
+}
+
+choiceMain[1].onclick = () => {
+    choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
+    openSubMenu();
+};
 function openSubMenu() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
@@ -463,6 +523,7 @@ function openSubMenu() {
                                 setTimeout(() => {
                                     
                                     // ─── 修正的核心起點：在這裡自建「你……」的前進與倒退嚕 ───
+                                    dialogText.innerText = ""; 
                                     let originalStr = "你……";
                                     let forwardIndex = 0;
                                     
@@ -471,7 +532,7 @@ function openSubMenu() {
                                         if (forwardIndex < originalStr.length) {
                                             forwardIndex++;
                                             dialogText.innerHTML = originalStr.substring(0, forwardIndex) + '<span class="cursor">|</span>';
-                                            setTimeout(typeForward, 120);
+                                            setTimeout(typeForward, 120); // 打字速度 120ms
                                         } else {
                                             // 打完「你……」了，停頓 800 毫秒後開始倒退嚕
                                             setTimeout(startDeleting, 800);
@@ -484,7 +545,7 @@ function openSubMenu() {
                                         if (currentStr.length > 0) {
                                             currentStr = currentStr.substring(0, currentStr.length - 1);
                                             dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
-                                            setTimeout(startDeleting, 150); // 倒退速度
+                                            setTimeout(startDeleting, 150); // 倒退刪除的速度 150ms
                                         } else {
                                             // 完全刪光後，停頓 500 毫秒，接續原本的「殼裡東西有點多==」
                                             dialogText.innerText = "";
@@ -519,66 +580,6 @@ function openSubMenu() {
                                     // ───────────────────────────────────────────────────────────
 
                                 }, 1000);
-                            });
-                        }, 500);
-                    });
-                }, 500);
-            });
-        }, 500);
-    });
-}
-  
-function triggerAscension() {
-    document.getElementById("scene2").style.display = "none";
-    dialogText.innerText = "";
-    document.getElementById("container").style.display = "block"; 
-    showMessage("你成仙了。", 2500);
-}
-
-choiceMain[1].onclick = () => {
-    choiceMain.forEach(e => { e.innerText = ""; e.style.pointerEvents = "none"; });
-    openSubMenu();
-};
-
-function openSubMenu() {
-    document.getElementById("choiceBox").style.pointerEvents = "none";
-    dialogText.innerText = "";
-    typeText("這樣啊……", dialogText, 120, () => {
-        setTimeout(() => {
-            dialogText.innerText = ""; 
-            typeText("等等ㄛ", dialogText, 120, () => {
-                setTimeout(() => {
-                    dialogText.innerText = ""; 
-                    typeText("讓我找找……", dialogText, 120, () => {
-                        setTimeout(() => {
-                            dialogText.innerText = ""; 
-                            typeText("（翻殼）", dialogText, 120, () => {
-                                setTimeout(() => {
-                                    dialogText.innerText = ""; 
-                                    typeText("你……", dialogText, 120, () => {
-                                        setTimeout(() => {
-                                            dialogText.innerText = ""; 
-                                            typeText("殼裡東西有點多==", dialogText, 120, () => {
-                                                setTimeout(() => {
-                                                    let baseText = "殼裡東西有點多==<br>";
-                                                    let i = 0;
-                                                    let nextStr = "你想要什麼？";
-                                                    function typeLine2() {
-                                                        if (i < nextStr.length) {
-                                                            dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
-                                                            i++;
-                                                            setTimeout(typeLine2, 120);
-                                                        } else {
-                                                            dialogText.innerHTML = baseText + nextStr;
-                                                            showFiveOptions();
-                                                        }
-                                                    }
-                                                    typeLine2();
-                                                }, 1000);
-                                            });
-                                        }, 1000);
-                                    });
-                                }, 500);
                             });
                         }, 500);
                     });
