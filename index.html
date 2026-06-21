@@ -427,7 +427,6 @@ function startHelloRoute(isFromNoFeed = false) {
             dialogText.innerText = ""; 
             typeText("朕餓了", dialogText, 120, () => {
                 document.getElementById("choiceBox").style.display = "flex";
-  
                 choiceExtra[0].onclick = () => {
                     clearMenuAndPrepareBox();
                     typeText("?", dialogText, 120, () => {
@@ -436,22 +435,20 @@ function startHelloRoute(isFromNoFeed = false) {
                             typeText("還在等什麼?", dialogText, 120, () => {
                                 setTimeout(() => {
                                     dialogText.innerText = "";
-                                  
                                     typeText("餵我啊!(沒錯就是這麼理所當然)", dialogText, 120, () => {
-                                        
-                                        none"; }
-                                        btnAllNo.style.display = "none";
-                                        
-                                        choiceExtra[0].innerText = "•餵";
-                                        choiceExtra[0].style.display = "block";
-                                        choiceExtra[0].style.pointerEvents = "auto";
-                                        
-                                        choiceExtra[0].onclick = () => {
-                                            clearMenuAndPrepareBox(); 
-                                            startChewingProcess();
-                                        };
-                                        
-                                        document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                        setTimeout(() => {
+                                            for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
+                                            btnAllNo.style.display = "none";
+                                            choiceExtra[0].innerText = "•餵";
+                                            choiceExtra[0].style.display = "block";
+                                            choiceExtra[0].style.pointerEvents = "auto";
+                                            choiceExtra[0].onclick = () => {
+                                                clearMenuAndPrepareBox();
+                                                startChewingProcess();
+                                            };
+                                            
+                                            document.getElementById("choiceBox").style.pointerEvents = "auto";
+                                        }, 1500);
                                     });
                                 }, 1000);
                             });
@@ -459,17 +456,16 @@ function startHelloRoute(isFromNoFeed = false) {
                     });
                 };
 
-                // 選項2：點擊「•餵牠吃仙丹」
                 choiceExtra[1].onclick = () => {
                     clearMenuAndPrepareBox();
                     startChewingProcess(); 
                 };
 
-                // 選項3：點擊「•就不餵!」
                 choiceExtra[2].onclick = () => {
                     clearMenuAndPrepareBox();
                     startHelloRoute(true); 
                 };
+               
                 choiceExtra[0].innerText = "•?";
                 choiceExtra[1].innerText = "•餵牠吃仙丹";
                 choiceExtra[2].innerText = "•就不餵!";
@@ -510,8 +506,7 @@ function startChewingProcess() {
                                                 setTimeout(() => {
                                                     dialogText.innerText = ""; 
                                                     typeText("?", dialogText, 120, () => {
-                                                        
-                                                        // 嚼嚼嚼完畢，跳出最後分歧選項
+                                                       
                                                         choiceExtra[0].onclick = () => { 
                                                             clearMenuAndPrepareBox();
                                                             typeText("不行，你得吃（塞", dialogText, 120, () => {
@@ -634,17 +629,16 @@ function showFiveOptions() {
     choiceExtra[2].innerText = "•我要聽歌!";
     choiceExtra[3].innerText = "•劇荒了，拜託來點劇";
    
-    for(let j=0; j<5; j++) {
-        choiceExtra[j].style.display = "block";
-        choiceExtra[j].style.pointerEvents = "auto";
-    }
+    for(let j=0; j<4; j++) {
+    choiceExtra[j].style.display = "block";
+    choiceExtra[j].style.pointerEvents = "auto";
+}
 
     choiceExtra[0].onclick = handleBookworm;
     choiceExtra[1].onclick = handleNotBookworm;
     choiceExtra[2].onclick = handleListenMusic;
     choiceExtra[3].onclick = handleNoDramas;
-    choiceExtra[4].onclick = handleSignature;
-
+ 
     if (hasPressedNo) {
         btnAllNo.style.display = "block";
         btnAllNo.style.pointerEvents = "auto";
@@ -797,71 +791,6 @@ function startComfortRoute() {
     });
 }
 
-function startHelloRoute(isFromNoFeed = false) {
-    dialogText.innerText = ""; 
-    typeText("很好", dialogText, 120, () => {
-        setTimeout(() => {
-            dialogText.innerText = ""; 
-            typeText("朕餓了", dialogText, 120, () => {
-                document.getElementById("choiceBox").style.display = "flex";
-                choiceExtra[0].onclick = () => {
-                    clearMenuAndPrepareBox();
-                    typeText("?", dialogText, 120, () => {
-                        setTimeout(() => {
-                            dialogText.innerText = "";
-                            typeText("還在等什麼?", dialogText, 120, () => {
-                                setTimeout(() => {
-                                    dialogText.innerText = "";
-                                    typeText("餵我啊!(沒錯就是這麼理所當然)", dialogText, 120, () => {
-                                        setTimeout(() => {
-                                            for(let j=0; j<6; j++) { choiceExtra[j].style.display = "none"; }
-                                            btnAllNo.style.display = "none";
-                                            choiceExtra[0].innerText = "•餵";
-                                            choiceExtra[0].style.display = "block";
-                                            choiceExtra[0].style.pointerEvents = "auto";
-                                            choiceExtra[0].onclick = () => {
-                                                clearMenuAndPrepareBox();
-                                                startChewingProcess();
-                                            };
-                                            
-                                            document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                        }, 1500);
-                                    });
-                                }, 1000);
-                            });
-                        }, 1000);
-                    });
-                };
-
-                choiceExtra[1].onclick = () => {
-                    clearMenuAndPrepareBox();
-                    startChewingProcess(); 
-                };
-
-                choiceExtra[2].onclick = () => {
-                    clearMenuAndPrepareBox();
-                    startHelloRoute(true); 
-                };
-               
-                choiceExtra[0].innerText = "•?";
-                choiceExtra[1].innerText = "•餵牠吃仙丹";
-                choiceExtra[2].innerText = "•就不餵!";
-                choiceExtra[3].innerText = ""; choiceExtra[4].innerText = "";
-                choiceExtra[0].style.display = "block";
-                choiceExtra[1].style.display = "block";
-                
-                if (isFromNoFeed) {
-                    choiceExtra[2].style.display = "none";
-                } else {
-                    choiceExtra[2].style.display = "block";
-                }
-                btnAllNo.style.display = "none";
-                document.getElementById("choiceBox").style.pointerEvents = "auto";
-                choiceExtra.forEach(e => e.style.pointerEvents = "auto");
-            });
-        }, 1000);
-    });
-}
 function showPostBranchOptions(btnLabels) {
     const choiceBox = document.getElementById("choiceBox");
     if (choiceBox) {
