@@ -447,121 +447,85 @@ function startHelloRoute(isFromNoFeed = false) {
     });
 }
 
-function setupHelloClicks() {
-    choiceExtra[0].onclick = () => {
-        if (choiceExtra[0].innerText === "•餵") {
-            startChewingProcess();
-            return;
-        }
-        choiceExtra.forEach(e => e.style.display = "none");
-        document.getElementById("choiceBox").style.pointerEvents = "none";
-        dialogText.innerText = "";
-        typeText("？", dialogText, 120, () => {
-            setTimeout(() => {
-                dialogText.innerText = ""; 
-                typeText("還在等什麼？", dialogText, 120, () => {
-                    setTimeout(() => {
-                        dialogText.innerText = ""; 
-                        typeText("餵我啊！（沒錯就是這麼理所當然）", dialogText, 120, () => {
-                            choiceExtra[0].innerText = "•餵";
-                            choiceExtra[0].style.display = "block";
-                            document.getElementById("choiceBox").style.pointerEvents = "auto";
-                        });
-                    }, 800);
-                });
-            }, 800);
-        });
-    };
-    choiceExtra[1].onclick = () => { startChewingProcess(); };
-    choiceExtra[2].onclick = () => {
-        choiceExtra.forEach(e => e.style.display = "none");
-        document.getElementById("choiceBox").style.pointerEvents = "none";
-        setTimeout(() => { startHelloRoute(true); }, 500);
-    };
-}
-
-function startChewingProcess() {
-    choiceExtra.forEach(e => e.style.display = "none");
+function openSubMenu() {
     document.getElementById("choiceBox").style.pointerEvents = "none";
     dialogText.innerText = "";
-    
-    // 1. 先打出「你……」
-    typeText("你……", dialogText, 120, () => {
-        // 2. 打完後停頓 800 毫秒，開始執行倒退嚕
+    typeText("這樣啊……", dialogText, 120, () => {
         setTimeout(() => {
-            let str = "你……";
-            
-            // 打造一個專屬的倒退嚕定時器，這樣就不會跟原本的 typeText 機制打架
-            function deleteStep() {
-                if (str.length > 0) {
-                    str = str.substring(0, str.length - 1);
-                    // 使用與你原版相同的游標樣式
-                    dialogText.innerHTML = str + '<span class="cursor">|</span>';
-                    // 控制倒退的速度（150毫秒刪一格）
-                    setTimeout(deleteStep, 150);
-                } else {
-                    // 3. 完全刪光後，停頓 500 毫秒接續後面的 (嚼嚼嚼)
-                    dialogText.innerText = "";
-                    setTimeout(nextChew1, 500);
-                }
-            }
-            
-            // 關鍵核心：在執行倒退嚕前，強行切斷舊的 typeText 定時器，防止它在背景覆蓋畫面！
-            clearTimeout(typingTimeout); 
-            currentTypingParams = null; 
-            
-            deleteStep();
-        }, 800);
-    });
-
-    function nextChew1() {
-        dialogText.innerText = ""; 
-        typeText("(嚼嚼嚼)", dialogText, 120, () => {
-            setTimeout(() => {
-                dialogText.innerText = ""; 
-                typeText("要不要", dialogText, 120, () => {
-                    setTimeout(() => {
-                        dialogText.innerText = ""; 
-                        typeText("(嚼嚼嚼)", dialogText, 120, () => {
-                            setTimeout(() => {
-                                dialogText.innerText = ""; 
-                                typeText("吃…", dialogText, 120, () => {
-                                    setTimeout(() => {
-                                        dialogText.innerText = ""; 
-                                        typeText("(嚼嚼嚼)", dialogText, 120, () => {
+            dialogText.innerText = ""; 
+            typeText("等等ㄛ", dialogText, 120, () => {
+                setTimeout(() => {
+                    dialogText.innerText = ""; 
+                    typeText("讓我找找……", dialogText, 120, () => {
+                        setTimeout(() => {
+                            dialogText.innerText = ""; 
+                            typeText("（翻殼）", dialogText, 120, () => {
+                                setTimeout(() => {
+                                    
+                                    // ─── 修正的核心起點：在這裡自建「你……」的前進與倒退嚕 ───
+                                    let originalStr = "你……";
+                                    let forwardIndex = 0;
+                                    
+                                    // 1. 先把「你……」一步步打出來
+                                    function typeForward() {
+                                        if (forwardIndex < originalStr.length) {
+                                            forwardIndex++;
+                                            dialogText.innerHTML = originalStr.substring(0, forwardIndex) + '<span class="cursor">|</span>';
+                                            setTimeout(typeForward, 120);
+                                        } else {
+                                            // 打完「你……」了，停頓 800 毫秒後開始倒退嚕
+                                            setTimeout(startDeleting, 800);
+                                        }
+                                    }
+                                    
+                                    // 2. 把「你……」一個字一個字倒退刪掉
+                                    let currentStr = originalStr;
+                                    function startDeleting() {
+                                        if (currentStr.length > 0) {
+                                            currentStr = currentStr.substring(0, currentStr.length - 1);
+                                            dialogText.innerHTML = currentStr + '<span class="cursor">|</span>';
+                                            setTimeout(startDeleting, 150); // 倒退速度
+                                        } else {
+                                            // 完全刪光後，停頓 500 毫秒，接續原本的「殼裡東西有點多==」
+                                            dialogText.innerText = "";
+                                            setTimeout(goToNextPart, 500);
+                                        }
+                                    }
+                                    
+                                    // 3. 倒退嚕結束後，繼續跑你原本後續的劇情
+                                    function goToNextPart() {
+                                        typeText("殼裡東西有點多==", dialogText, 120, () => {
                                             setTimeout(() => {
-                                                dialogText.innerText = ""; 
-                                                typeText("?", dialogText, 120, () => {
-                                                    // 出現選項
-                                                    choiceExtra[0].onclick = () => { 
-                                                        choiceExtra.forEach(e => e.style.display = "none");
-                                                        dialogText.innerText = "";
-                                                        typeText("不行，你得吃（塞", dialogText, 120, () => {
-                                                            setTimeout(triggerAscension, 1500);
-                                                        });
-                                                    };
-                                                    choiceExtra[1].onclick = () => { 
-                                                        choiceExtra.forEach(e => e.style.display = "none");
-                                                        dialogText.innerText = "";
-                                                        triggerAscension();
-                                                    };
-                                                    choiceExtra[0].innerText = "•你吃就好";
-                                                    choiceExtra[1].innerText = "•我吃";
-                                                    choiceExtra[0].style.display = "block";
-                                                    choiceExtra[1].style.display = "block";
-                                                    document.getElementById("choiceBox").style.pointerEvents = "auto";
-                                                });
-                                            }, 500);
+                                                let baseText = "殼裡東西有點多==<br>";
+                                                let i = 0;
+                                                let nextStr = "你想要什麼？";
+                                                function typeLine2() {
+                                                    if (i < nextStr.length) {
+                                                        dialogText.innerHTML = baseText + nextStr.substring(0, i + 1) + '<span class="cursor">|</span>';
+                                                        i++;
+                                                        setTimeout(typeLine2, 120);
+                                                    } else {
+                                                        dialogText.innerHTML = baseText + nextStr;
+                                                        showFiveOptions();
+                                                    }
+                                                }
+                                                typeLine2();
+                                            }, 1000);
                                         });
-                                    }, 500);
-                                });
-                            }, 500);
-                        });
-                    }, 500);
-                });
-            }, 500);
-        });
-    }
+                                    }
+                                    
+                                    // 啟動這個獨立的打字與倒退嚕流程
+                                    typeForward();
+                                    // ───────────────────────────────────────────────────────────
+
+                                }, 1000);
+                            });
+                        }, 500);
+                    });
+                }, 500);
+            });
+        }, 500);
+    });
 }
   
 function triggerAscension() {
